@@ -27,6 +27,10 @@ input[id='search']{
 	padding-bottom: 10px;
 }
 
-.row img{
+#topbar .row img{
 	height: 70px;
+}
+
+#topbar{
+	margin-bottom: 30px;
 }

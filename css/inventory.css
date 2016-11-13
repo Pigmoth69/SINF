@@ -1,0 +1,19 @@
+.product img{
+	width:100%;
+}
+
+.product button{
+	float: right;
+}
+
+.nav-tabs li{
+	width: 25%;
+}
+
+#products .row{
+	margin-top: 10px;
+}
+
+.productName{
+	font-weight: bold;
+}
