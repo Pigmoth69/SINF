@@ -1,0 +1,24 @@
+#userPhoto img{
+	width: 100%;
+}
+
+.completeRow {
+	border-bottom: 2px solid;
+	padding: 5px;
+}
+
+#userInfo button {
+	width: 100%;
+}
+
+#userInfo p{
+	font-weight: bold;
+}
+
+#userInfo {
+	border: 1px solid;
+}
+
+#userPhoto {
+	border: 1px solid;
+}
