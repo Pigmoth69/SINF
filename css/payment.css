@@ -1,0 +1,28 @@
+#paymentBox .row{
+	width: 50%;
+}
+
+#creditCardForm input{
+	width: 100%;
+}
+
+#creditCardForm span, p{
+	font-size: large;
+}
+
+#checkoutBreadcrumb{
+	width: 80%;
+}
+
+#creditCardForm button{
+	text-align: center;
+	width: 100%;
+}
+
+#paymentBox{
+	margin-left: 25%;
+}
+
+#checkoutBreadcrumb {
+	margin-left: 10%;
+}
