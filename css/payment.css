@@ -1,3 +1,4 @@
+/* PAYMENT */
 #paymentBox .row{
 	width: 50%;
 }
@@ -10,10 +11,6 @@
 	font-size: large;
 }
 
-#checkoutBreadcrumb{
-	width: 80%;
-}
-
 #creditCardForm button{
 	text-align: center;
 	width: 100%;
@@ -22,7 +19,77 @@
 #paymentBox{
 	margin-left: 30%;
 }
+/* END PAYMENT */
+
+/* CONFIRMATION */
+#confirmationBox .row{
+	width: 50%;
+}
+
+#confirmationForm input{
+	width: 100%;
+}
+
+#confirmationForm span, p{
+	font-size: large;
+}
+
+#confirmationForm button{
+	text-align: center;
+	width: 100%;
+}
+
+#confirmationBox{
+	margin-left: 30%;
+}
+/* CONFIRMATION END */
+
+/* ADDRESS */
+#addressBox .row{
+	width: 50%;
+}
+
+#addressForm input{
+	width: 100%;
+}
+
+#addressForm span, p{
+	font-size: large;
+}
+
+#addressForm button{
+	text-align: center;
+	width: 100%;
+}
+
+#addressForm{
+	margin-left: 30%;
+}
+/* ADDRESS END */
+
+/* SHIPMENT */
+#shipmentBox .row{
+	width: 50%;
+}
+
+#shipmentForm span, p{
+	font-size: large;
+}
+
+#shipmentForm button{
+	text-align: center;
+	width: 100%;
+}
+
+#shipmentBox{
+	margin-left: 30%;
+}
+/* SHIPMENT END */
 
 #checkoutBreadcrumb {
 	margin-left: 10%;
+}
+
+#checkoutBreadcrumb{
+	width: 80%;
 }
