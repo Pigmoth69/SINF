@@ -1,5 +1,5 @@
 <?php
-include('../html/common/topbar.html');
-include('../html/profile.html');
-include('../html/common/footer.html');
+    include_once '../config/init.php';
+
+    $smarty->display('../templates/profile.tpl');
 ?>
