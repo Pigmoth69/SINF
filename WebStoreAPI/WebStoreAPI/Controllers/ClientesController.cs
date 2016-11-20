@@ -20,7 +20,11 @@ namespace WebStoreAPI.Controllers
         }
 
 
-        // GET api/clientes/5    
+
+        /// <summary>
+        /// Looks up some data by ID.
+        /// </summary>
+        /// <param name="id">The ID of the data.</param>
         public Cliente Get(string id)
         {
             Lib_Primavera.Model.Cliente cliente = Lib_Primavera.PriIntegration.GetCliente(id);
