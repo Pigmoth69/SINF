@@ -1,4 +1,5 @@
 <?php
-include('../html/topbar.html');
-include('../html/order.html');
+    include_once '../config/init.php';
+
+    $smarty->display('../templates/order.tpl');
 ?>

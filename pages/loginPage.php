@@ -1,4 +1,5 @@
 <?php
-include('../html/topbar.html');
-include('../html/login.html');
+    include_once '../config/init.php';
+
+    $smarty->display('../templates/login.tpl');
 ?>
