@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WebStoreAPI.Lib_Primavera.Model
 {
-    public class RespostaErro
+    public class ResponseError
     {
 
         public int Erro

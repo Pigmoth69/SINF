@@ -70,6 +70,7 @@ namespace WebStoreAPI.Lib_Primavera
                     myCli.CodCliente = objCli.get_Cliente();
                     myCli.NomeCliente = objCli.get_Nome();
                     myCli.Moeda = objCli.get_Moeda();
+
                     myCli.NumContribuinte = objCli.get_NumContribuinte();
                     myCli.Morada = objCli.get_Morada();
                     return myCli;
@@ -83,9 +84,9 @@ namespace WebStoreAPI.Lib_Primavera
                 return null;
         }
 
-        public static Lib_Primavera.Model.RespostaErro UpdCliente(Lib_Primavera.Model.Cliente cliente)
+        public static Lib_Primavera.Model.ResponseError UpdCliente(Lib_Primavera.Model.Cliente cliente)
         {
-            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            Lib_Primavera.Model.ResponseError erro = new Model.ResponseError();
            
 
             GcpBECliente objCli = new GcpBECliente();
@@ -140,10 +141,10 @@ namespace WebStoreAPI.Lib_Primavera
         }
 
 
-        public static Lib_Primavera.Model.RespostaErro DelCliente(string codCliente)
+        public static Lib_Primavera.Model.ResponseError DelCliente(string codCliente)
         {
 
-            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            Lib_Primavera.Model.ResponseError erro = new Model.ResponseError();
             GcpBECliente objCli = new GcpBECliente();
 
 
@@ -187,10 +188,10 @@ namespace WebStoreAPI.Lib_Primavera
 
 
 
-        public static Lib_Primavera.Model.RespostaErro InsereClienteObj(Model.Cliente cli)
+        public static Lib_Primavera.Model.ResponseError InsereClienteObj(Model.Cliente cli)
         {
 
-            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            Lib_Primavera.Model.ResponseError erro = new Model.ResponseError();
             
 
             GcpBECliente myCli = new GcpBECliente();
@@ -251,7 +252,11 @@ namespace WebStoreAPI.Lib_Primavera
                 }
                 else
                 {
-                    StdBELista objList1 = PriEngine.Engine.Consulta("SELECT Artigo.Artigo AS Code,Artigo.Descricao AS ArtDesc,Iva,Desconto,Artigo.STKActual AS STKAct,Familias.Descricao AS FamDesc,SubFamilias.Descricao AS SubFamDesc,Marcas.Descricao AS BrandDesc,Artigo.Modelo AS ArtModel,ArtigoMoeda.Moeda AS ArtCurrency,ArtigoMoeda.PVP1 AS ArtPVP1,ArtigoMoeda.PVP2 AS ArtPVP2,ArtigoMoeda.PVP3 AS ArtPVP3,ArtigoMoeda.PVP4 AS ArtPVP4,ArtigoMoeda.PVP5 AS ArtPVP5,ArtigoMoeda.PVP6 AS ArtPVP6,Garantias.Descricao AS Warranty,Artigo.PrazoEntrega AS DelTime FROM Artigo LEFT JOIN Familias ON Artigo.Familia = Familias.Familia LEFT JOIN Marcas ON Artigo.Marca = Marcas.Marca LEFT JOIN SubFamilias ON Artigo.Familia=SubFamilias.Familia AND Artigo.SubFamilia = SubFamilias.SubFamilia LEFT JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.UnidadeBase = ArtigoMoeda.Unidade LEFT JOIN Garantias on Artigo.Garantia = Garantias.Garantia  WHERE Artigo.Artigo='" + codArtigo + "' AND Familias.Descricao IS NOT NULL' ;");
+                    StdBELista l = PriEngine.Engine.Comercial.Artigos.LstArtigos();
+                    String s = l.Valor("Artigo");
+                    GcpBEArtigo m = PriEngine.Engine.Comercial.Artigos.Edita(s);
+
+                    StdBELista objList1 = PriEngine.Engine.Consulta("SELECT Artigo.Artigo AS Code,Artigo.Descricao AS ArtDesc,Iva,Desconto,Artigo.STKActual AS STKAct,Familias.Descricao AS FamDesc,SubFamilias.Descricao AS SubFamDesc,Marcas.Descricao AS BrandDesc,Artigo.Modelo AS ArtModel,ArtigoMoeda.Moeda AS ArtCurrency,ArtigoMoeda.PVP1 AS ArtPVP1,ArtigoMoeda.PVP2 AS ArtPVP2,ArtigoMoeda.PVP3 AS ArtPVP3,ArtigoMoeda.PVP4 AS ArtPVP4,ArtigoMoeda.PVP5 AS ArtPVP5,ArtigoMoeda.PVP6 AS ArtPVP6,Garantias.Descricao AS Warranty,Artigo.PrazoEntrega AS DelTime FROM Artigo LEFT JOIN Familias ON Artigo.Familia = Familias.Familia LEFT JOIN Marcas ON Artigo.Marca = Marcas.Marca LEFT JOIN SubFamilias ON Artigo.Familia=SubFamilias.Familia AND Artigo.SubFamilia = SubFamilias.SubFamilia LEFT JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.UnidadeBase = ArtigoMoeda.Unidade LEFT JOIN Garantias on Artigo.Garantia = Garantias.Garantia  WHERE Artigo.Artigo='" + codArtigo + "' AND Familias.Descricao IS NOT NULL ;");
                     List<Model.Product> products = retrieveProducts(objList1);
                     return products.First<Model.Product>();
                 }
@@ -274,7 +279,6 @@ namespace WebStoreAPI.Lib_Primavera
 
             if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
             {
-
                 objList1 = PriEngine.Engine.Consulta("SELECT Artigo.Artigo AS Code,Artigo.Descricao AS ArtDesc,Iva,Desconto,Artigo.STKActual AS STKAct,Familias.Descricao AS FamDesc,SubFamilias.Descricao AS SubFamDesc,Marcas.Descricao AS BrandDesc,Artigo.Modelo AS ArtModel,ArtigoMoeda.Moeda AS ArtCurrency,ArtigoMoeda.PVP1 AS ArtPVP1,ArtigoMoeda.PVP2 AS ArtPVP2,ArtigoMoeda.PVP3 AS ArtPVP3,ArtigoMoeda.PVP4 AS ArtPVP4,ArtigoMoeda.PVP5 AS ArtPVP5,ArtigoMoeda.PVP6 AS ArtPVP6,Garantias.Descricao AS Warranty,Artigo.PrazoEntrega AS DelTime FROM Artigo LEFT JOIN Familias ON Artigo.Familia = Familias.Familia LEFT JOIN Marcas ON Artigo.Marca = Marcas.Marca LEFT JOIN SubFamilias ON Artigo.Familia=SubFamilias.Familia AND Artigo.SubFamilia = SubFamilias.SubFamilia LEFT JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.UnidadeBase = ArtigoMoeda.Unidade LEFT JOIN Garantias on Artigo.Garantia = Garantias.Garantia  WHERE Familias.Descricao IS NOT NULL AND Familias.Descricao <>'Serviços' ;");
                 List<Model.Product> listProducts = new List<Model.Product>();
                 listProducts = retrieveProducts(objList1);
@@ -327,7 +331,7 @@ namespace WebStoreAPI.Lib_Primavera
                 if (prod.Warranty == String.Empty)
                     prod.Warranty = "No Warranty";
 
-
+               
                 prod.Prices.PVP1 = objList1.Valor("ArtPVP1");
                 prod.Prices.PVP2 = objList1.Valor("ArtPVP2");
                 prod.Prices.PVP3 = objList1.Valor("ArtPVP3");
@@ -335,6 +339,7 @@ namespace WebStoreAPI.Lib_Primavera
                 prod.Prices.PVP5 = objList1.Valor("ArtPVP5");
                 prod.Prices.PVP6 = objList1.Valor("ArtPVP6");
                 prod.Prices = prod.Prices;
+
                 StdBELista objList2 = PriEngine.Engine.Consulta("SELECT Armazem,SUM(StkActual) AS Total FROM ArtigoArmazem where Artigo= '" + prod.Code + "' GROUP BY Armazem;");
                 prod.Warehouses = new List<Model.SimpleWarehouse>();
                 Model.SimpleWarehouse warehouse = new Model.SimpleWarehouse();
@@ -380,6 +385,11 @@ namespace WebStoreAPI.Lib_Primavera
                 return null;
 
             }            
+        }
+
+        public static List<Model.Product> GetWarehouseProductsByFamily()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion Products
@@ -558,9 +568,9 @@ namespace WebStoreAPI.Lib_Primavera
         }
 
                 
-        public static Model.RespostaErro VGR_New(Model.DocCompra dc)
+        public static Model.ResponseError VGR_New(Model.DocCompra dc)
         {
-            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            Lib_Primavera.Model.ResponseError erro = new Model.ResponseError();
             
 
             GcpBEDocumentoCompra myGR = new GcpBEDocumentoCompra();
@@ -622,9 +632,9 @@ namespace WebStoreAPI.Lib_Primavera
 
         #region DocsVenda
 
-        public static Model.RespostaErro Encomendas_New(Model.DocVenda dv)
+        public static Model.ResponseError Encomendas_New(Model.DocVenda dv)
         {
-            Lib_Primavera.Model.RespostaErro erro = new Model.RespostaErro();
+            Lib_Primavera.Model.ResponseError erro = new Model.ResponseError();
             GcpBEDocumentoVenda myEnc = new GcpBEDocumentoVenda();
              
             GcpBELinhaDocumentoVenda myLin = new GcpBELinhaDocumentoVenda();
@@ -787,6 +797,8 @@ namespace WebStoreAPI.Lib_Primavera
         }
 
         #endregion DocsVenda
+
+
 
         
     }

@@ -41,7 +41,7 @@ namespace WebStoreAPI.Controllers
 
         public HttpResponseMessage Post(Lib_Primavera.Model.DocVenda dv)
         {
-            Lib_Primavera.Model.RespostaErro erro = new Lib_Primavera.Model.RespostaErro();
+            Lib_Primavera.Model.ResponseError erro = new Lib_Primavera.Model.ResponseError();
             erro = Lib_Primavera.PriIntegration.Encomendas_New(dv);
 
             if (erro.Erro == 0)
@@ -64,7 +64,7 @@ namespace WebStoreAPI.Controllers
         public HttpResponseMessage Put(int id, Lib_Primavera.Model.Cliente cliente)
         {
 
-            Lib_Primavera.Model.RespostaErro erro = new Lib_Primavera.Model.RespostaErro();
+            Lib_Primavera.Model.ResponseError erro = new Lib_Primavera.Model.ResponseError();
 
             try
             {
@@ -91,7 +91,7 @@ namespace WebStoreAPI.Controllers
         {
 
 
-            Lib_Primavera.Model.RespostaErro erro = new Lib_Primavera.Model.RespostaErro();
+            Lib_Primavera.Model.ResponseError erro = new Lib_Primavera.Model.ResponseError();
 
             try
             {

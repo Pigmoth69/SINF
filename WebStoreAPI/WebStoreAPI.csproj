@@ -49,7 +49,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework">
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Interop.BasBE900">
@@ -57,27 +58,83 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.CblBE900">
-      <HintPath>..\..\..\..\..\Program Files\Common Files\PRIMAVERA\SG900\Interop.CblBE900.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.CblBE900.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.CblCtlMovs900">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.CblCtlMovs900.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.CrmBE900">
-      <HintPath>..\..\..\..\..\Program Files\Common Files\PRIMAVERA\SG900\Interop.CrmBE900.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.CrmBE900.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.EapBE900">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.EapBE900.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.ErpBS900">
-      <HintPath>..\..\..\..\..\Program Files\Common Files\PRIMAVERA\SG900\Interop.ErpBS900.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.ErpBS900.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.FacBE900">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.FacBE900.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.GcpBE900">
-      <HintPath>..\..\..\..\..\Program Files\Common Files\PRIMAVERA\SG900\Interop.GcpBE900.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.GcpBE900.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.IBasBS900">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.IBasBS900.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.ICblBS900">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.ICblBS900.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.ICrmBS900">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.ICrmBS900.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.ICrmDS900">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.ICrmDS900.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.IEapBS900">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.IEapBS900.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.IFacBS900">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.IFacBS900.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.IGcpBS900">
-      <HintPath>..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.IGcpBS900.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.IGcpBS900.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.IRhpBS900">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.IRhpBS900.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.Microsoft.Office.Core">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.Microsoft.Office.Core.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.Primavera.BusinessData.ERPEngine900">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.Primavera.BusinessData.ERPEngine900.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.Primavera.Platform.Caching900">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.Primavera.Platform.Caching900.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.RhpBE900">
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.RhpBE900.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.StdBE900">
-      <HintPath>..\..\..\..\..\Program Files\Common Files\PRIMAVERA\SG900\Interop.StdBE900.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.StdBE900.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.StdBESql900">
@@ -89,18 +146,20 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.StdPlatBE900">
-      <HintPath>..\..\..\..\..\Program Files\Common Files\PRIMAVERA\SG900\Interop.StdPlatBE900.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.StdPlatBE900.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.StdPlatBS900">
-      <HintPath>..\..\..\..\..\Program Files\Common Files\PRIMAVERA\SG900\Interop.StdPlatBS900.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG900\Apl\Interop.StdPlatBS900.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Data.Edm">
+    <Reference Include="Microsoft.Data.Edm, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Microsoft.Data.Edm.5.2.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Data.OData">
+    <Reference Include="Microsoft.Data.OData, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Microsoft.Data.OData.5.2.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -120,7 +179,8 @@
       <HintPath>packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Spatial">
+    <Reference Include="System.Spatial, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\System.Spatial.5.2.0\lib\net40\System.Spatial.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Entity" />
@@ -136,10 +196,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http.OData">
+    <Reference Include="System.Web.Http.OData, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Microsoft.AspNet.WebApi.OData.4.0.30506\lib\net40\System.Web.Http.OData.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http.Tracing">
+    <Reference Include="System.Web.Http.Tracing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Microsoft.AspNet.WebApi.Tracing.4.0.30506\lib\net40\System.Web.Http.Tracing.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -154,7 +216,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Providers">
+    <Reference Include="System.Web.Providers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Microsoft.AspNet.Providers.Core.1.2\lib\net40\System.Web.Providers.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -243,7 +306,7 @@
     <Compile Include="Lib_Primavera\Model\DocVenda.cs" />
     <Compile Include="Lib_Primavera\Model\LinhaDocCompra.cs" />
     <Compile Include="Lib_Primavera\Model\LinhaDocVenda.cs" />
-    <Compile Include="Lib_Primavera\Model\RespostaErro.cs" />
+    <Compile Include="Lib_Primavera\Model\ResponseError.cs" />
     <Compile Include="Lib_Primavera\PriEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
