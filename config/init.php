@@ -4,7 +4,7 @@
 */
   error_reporting(E_ERROR | E_WARNING); // E_NOTICE by default
 
-  $BASE_DIR = '/wamp64/www/SINF/'; //FIXME
+  $BASE_DIR = '/Users/test/Desktop/Faculdade/4/SINF/project/SINF/'; //FIXME
   //$BASE_URL = '/~lbaw1523/final/'; //FIXME
 /*
   $conn = new PDO('pgsql:host=dbm;dbname=lbaw1523', 'lbaw1523', 'YX18C6X0'); //FIXME
@@ -13,7 +13,7 @@
 
   $conn->exec('SET SCHEMA \'final\''); //FIXME
 */
-  include_once( '/wamp64/www/SINF/smarty-3.1.30/Smarty.class.php');
+  include_once( '/Users/test/Desktop/Faculdade/4/SINF/project/SINF/smarty-3.1.30/Smarty.class.php');
 
   $smarty = new Smarty;
   $smarty->template_dir = $BASE_DIR . 'templates/';
