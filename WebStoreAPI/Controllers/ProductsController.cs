@@ -40,10 +40,10 @@ namespace WebStoreAPI.Controllers
 
         [Route("api/products/families")]
         [HttpGet]
-        public String GetFamilies()
+        public List<String> GetFamilies()
         {
-            String s = "CARALHO ";
-            return s;
+            List<String> families = Lib_Primavera.PriIntegration.GetFamilies();
+            return families;
         }
 
     }

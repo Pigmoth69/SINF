@@ -235,7 +235,7 @@ namespace WebStoreAPI.Lib_Primavera
         #endregion Cliente;   // -----------------------------  END   CLIENTE    -----------------------
 
 
-        #region Artigo
+        #region Products
 
         public static Lib_Primavera.Model.Product GetProduct(string codArtigo)
         {
@@ -251,7 +251,7 @@ namespace WebStoreAPI.Lib_Primavera
                 }
                 else
                 {
-                    StdBELista objList1 = PriEngine.Engine.Consulta("SELECT Artigo.Artigo AS Code,Artigo.Descricao AS ArtDesc,Iva,Desconto,Artigo.STKActual AS STKAct,Familias.Descricao AS FamDesc,SubFamilias.Descricao AS SubFamDesc,Marcas.Descricao AS BrandDesc,Artigo.Modelo AS ArtModel,ArtigoMoeda.Moeda AS ArtCurrency,ArtigoMoeda.PVP1 AS ArtPVP1,ArtigoMoeda.PVP2 AS ArtPVP2,ArtigoMoeda.PVP3 AS ArtPVP3,ArtigoMoeda.PVP4 AS ArtPVP4,ArtigoMoeda.PVP5 AS ArtPVP5,ArtigoMoeda.PVP6 AS ArtPVP6,Garantias.Descricao AS Warranty,Artigo.PrazoEntrega AS DelTime FROM Artigo LEFT JOIN Familias ON Artigo.Familia = Familias.Familia LEFT JOIN Marcas ON Artigo.Marca = Marcas.Marca LEFT JOIN SubFamilias ON Artigo.Familia=SubFamilias.Familia AND Artigo.SubFamilia = SubFamilias.SubFamilia LEFT JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.UnidadeBase = ArtigoMoeda.Unidade LEFT JOIN Garantias on Artigo.Garantia = Garantias.Garantia  WHERE Artigo.Artigo='" + codArtigo + "' AND Familias.Descricao IS NOT NULL AND Familias.Descricao <>'Serviços' ;");
+                    StdBELista objList1 = PriEngine.Engine.Consulta("SELECT Artigo.Artigo AS Code,Artigo.Descricao AS ArtDesc,Iva,Desconto,Artigo.STKActual AS STKAct,Familias.Descricao AS FamDesc,SubFamilias.Descricao AS SubFamDesc,Marcas.Descricao AS BrandDesc,Artigo.Modelo AS ArtModel,ArtigoMoeda.Moeda AS ArtCurrency,ArtigoMoeda.PVP1 AS ArtPVP1,ArtigoMoeda.PVP2 AS ArtPVP2,ArtigoMoeda.PVP3 AS ArtPVP3,ArtigoMoeda.PVP4 AS ArtPVP4,ArtigoMoeda.PVP5 AS ArtPVP5,ArtigoMoeda.PVP6 AS ArtPVP6,Garantias.Descricao AS Warranty,Artigo.PrazoEntrega AS DelTime FROM Artigo LEFT JOIN Familias ON Artigo.Familia = Familias.Familia LEFT JOIN Marcas ON Artigo.Marca = Marcas.Marca LEFT JOIN SubFamilias ON Artigo.Familia=SubFamilias.Familia AND Artigo.SubFamilia = SubFamilias.SubFamilia LEFT JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.UnidadeBase = ArtigoMoeda.Unidade LEFT JOIN Garantias on Artigo.Garantia = Garantias.Garantia  WHERE Artigo.Artigo='" + codArtigo + "' AND Familias.Descricao IS NOT NULL' ;");
                     List<Model.Product> products = retrieveProducts(objList1);
                     return products.First<Model.Product>();
                 }
@@ -357,7 +357,32 @@ namespace WebStoreAPI.Lib_Primavera
             return listProducts;
         }
 
-        #endregion Artigo
+        public static List<string> GetFamilies()
+        {
+            
+            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                List<String> familias = new List<String>();
+                StdBELista objList;
+                objList = PriEngine.Engine.Consulta("SELECT Descricao FROM Familias;");
+
+                while (!objList.NoFim())
+                {
+                    String f = objList.Valor("Descricao");
+                    familias.Add(f);
+                    objList.Seguinte();
+                }
+                return familias;
+            }
+            else
+            {
+                return null;
+
+            }            
+        }
+
+        #endregion Products
 
 
         #region Warehouses
@@ -762,5 +787,7 @@ namespace WebStoreAPI.Lib_Primavera
         }
 
         #endregion DocsVenda
+
+        
     }
 }
