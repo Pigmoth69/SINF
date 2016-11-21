@@ -1,2 +1,5 @@
 # Templates from smarty
 templates_c
+
+#init.php
+config/init.php
