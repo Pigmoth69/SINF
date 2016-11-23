@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -22,7 +21,7 @@ namespace WebStoreAPI.Controllers
         }
 
 
-        // GET api/cliente/5    
+        // GET api/DocVenda/{id}-> id do doc   
         public Lib_Primavera.Model.DocVenda Get(string id)
         {
             Lib_Primavera.Model.DocVenda docvenda = Lib_Primavera.PriIntegration.Encomenda_Get(id);
@@ -35,6 +34,23 @@ namespace WebStoreAPI.Controllers
             else
             {
                 return docvenda;
+            }
+        }
+
+        [Route("api/orders")]
+        public HttpResponseMessage GetClientOrder(string client)
+        {
+            List<Lib_Primavera.Model.DocVenda> docvendas = Lib_Primavera.PriIntegration.Encomenda_GetClientsOrders(client);
+
+            if (docvendas == null)
+            {
+                var message = string.Format("Document with id = {0} not found", client);
+                HttpError err = new HttpError(message);
+                return Request.CreateResponse(HttpStatusCode.NotFound, err);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, docvendas);
             }
         }
 
@@ -60,30 +76,6 @@ namespace WebStoreAPI.Controllers
 
         }
 
-
-        public HttpResponseMessage Put(int id, Lib_Primavera.Model.Cliente cliente)
-        {
-
-            Lib_Primavera.Model.ResponseError erro = new Lib_Primavera.Model.ResponseError();
-
-            try
-            {
-                erro = Lib_Primavera.PriIntegration.UpdCliente(cliente);
-                if (erro.Erro == 0)
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, erro.Descricao);
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, erro.Descricao);
-                }
-            }
-
-            catch (Exception exc)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, erro.Descricao);
-            }
-        }
 
 
 

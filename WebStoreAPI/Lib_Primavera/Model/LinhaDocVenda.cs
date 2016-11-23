@@ -65,6 +65,12 @@ namespace WebStoreAPI.Lib_Primavera.Model
             set;
         }
 
+          public String Armazem
+          {
+              get;
+              set;
+          }
+
 
     }
 }

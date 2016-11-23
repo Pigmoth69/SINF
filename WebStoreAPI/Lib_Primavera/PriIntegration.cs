@@ -29,7 +29,11 @@ namespace WebStoreAPI.Lib_Primavera
 
                 //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
 
+  
+
                 objList = PriEngine.Engine.Consulta("SELECT Cliente, Nome, Moeda, NumContrib as NumContribuinte, Fac_Mor AS campo_exemplo FROM  CLIENTES");
+
+                
 
                 
                 while (!objList.NoFim())
@@ -637,7 +641,7 @@ namespace WebStoreAPI.Lib_Primavera
             Lib_Primavera.Model.ResponseError erro = new Model.ResponseError();
             GcpBEDocumentoVenda myEnc = new GcpBEDocumentoVenda();
              
-            GcpBELinhaDocumentoVenda myLin = new GcpBELinhaDocumentoVenda();
+            //GcpBELinhaDocumentoVenda myLin = new GcpBELinhaDocumentoVenda();
 
             GcpBELinhasDocumentoVenda myLinhas = new GcpBELinhasDocumentoVenda();
              
@@ -649,7 +653,7 @@ namespace WebStoreAPI.Lib_Primavera
                 if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
                 {
                     // Atribui valores ao cabecalho do doc
-                    //myEnc.set_DataDoc(dv.Data);
+                    myEnc.set_DataDoc(dv.Data);
                     myEnc.set_Entidade(dv.Entidade);
                     myEnc.set_Serie(dv.Serie);
                     myEnc.set_Tipodoc("ECL");
@@ -660,11 +664,11 @@ namespace WebStoreAPI.Lib_Primavera
                     PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
                     foreach (Model.LinhaDocVenda lin in lstlindv)
                     {
-                        PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, "", "", lin.PrecoUnitario, lin.Desconto);
+                        //PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, "", "", lin.PrecoUnitario, lin.Desconto);//Especificar o Armazem!
+                        PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, lin.Armazem, "", lin.PrecoUnitario, lin.Desconto);
                     }
 
 
-                   // PriEngine.Engine.Comercial.Compras.TransformaDocumento(
 
                     PriEngine.Engine.IniciaTransaccao();
                     //PriEngine.Engine.Comercial.Vendas.Edita Actualiza(myEnc, "Teste");
@@ -725,7 +729,6 @@ namespace WebStoreAPI.Lib_Primavera
                         lindv = new Model.LinhaDocVenda();
                         lindv.IdCabecDoc = objListLin.Valor("idCabecDoc");
                         lindv.CodArtigo = objListLin.Valor("Artigo");
-                        lindv.DescArtigo = objListLin.Valor("Descricao");
                         lindv.Quantidade = objListLin.Valor("Quantidade");
                         lindv.Unidade = objListLin.Valor("Unidade");
                         lindv.Desconto = objListLin.Valor("Desconto1");
@@ -760,7 +763,7 @@ namespace WebStoreAPI.Lib_Primavera
 
             if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
             {
-                
+
 
                 string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
                 objListCab = PriEngine.Engine.Consulta(st);
@@ -796,9 +799,106 @@ namespace WebStoreAPI.Lib_Primavera
             return null;
         }
 
+        public static List<Model.DocVenda> Encomenda_GetClientsOrders(string client)
+        {
+            StdBELista objListCab;
+            StdBELista objListLin;
+            Model.DocVenda dv = new Model.DocVenda();
+            Model.LinhaDocVenda lindv = new Model.LinhaDocVenda();
+            List<Model.LinhaDocVenda> listlindv = new List<Model.LinhaDocVenda>();
+            List<Model.DocVenda> listDocVend = new List<Model.DocVenda>();
+
+            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
+            {
+
+                if (!PriEngine.Engine.Comercial.Clientes.Existe(client))
+                {
+                    System.Diagnostics.Debug.WriteLine("MERDA!");
+                    return null;
+                }
+                    
+
+                //PriEngine.Engine.Comercial.Vendas.
+
+                string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and Entidade='" + client + "'";
+                objListCab = PriEngine.Engine.Consulta(st);
+
+                while (!objListCab.NoFim())
+                {
+                    dv = new Model.DocVenda();
+
+                    dv.id = objListCab.Valor("id");
+                    dv.Entidade = objListCab.Valor("Entidade");
+                    dv.NumDoc = objListCab.Valor("NumDoc");
+                    dv.Data = objListCab.Valor("Data");
+                    dv.TotalMerc = objListCab.Valor("TotalMerc");
+                    dv.Serie = objListCab.Valor("Serie");
+                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido,Data from LinhasDoc where IdCabecDoc='" + dv.id + "' order By Data");
+                    listlindv = new List<Model.LinhaDocVenda>();
+
+                    while (!objListLin.NoFim())
+                    {
+                        lindv = new Model.LinhaDocVenda();
+                        lindv.IdCabecDoc = objListLin.Valor("idCabecDoc");
+                        lindv.CodArtigo = objListLin.Valor("Artigo");
+                        lindv.DescArtigo = objListLin.Valor("Descricao");
+                        lindv.Quantidade = objListLin.Valor("Quantidade");
+                        lindv.Unidade = objListLin.Valor("Unidade");
+                        lindv.Desconto = objListLin.Valor("Desconto1");
+                        lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
+                        lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
+                        lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                        listlindv.Add(lindv);
+                        objListLin.Seguinte();
+                    }
+
+                    dv.LinhasDoc = listlindv;
+                    listDocVend.Add(dv);
+                    objListCab.Seguinte();
+                }
+                return listDocVend;
+            }
+            return null;
+        }
+
         #endregion DocsVenda
 
 
+
+
+
+        public static List<string> GetTestes(string id)
+        {
+            
+            List<string> testes = new List<string>();
+
+            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                //double d = PriEngine.Engine.Comercial.ArtigosArmazens.DaStockArtigo(id);
+                GcpBEArtigoArmazens objList = PriEngine.Engine.Comercial.ArtigosArmazens.ListaArtigosArmazens(id);
+                PriEngine.Engine.Comercial.ArtigosArmazens.ListaInventario(true,false,false,id);
+
+                foreach (GcpBEArtigoArmazem obj in objList)
+                {
+                    testes.Add("Artigo: " + obj.get_Armazem() + " Armazem: " + obj.get_Armazem()+ " Quant: "+obj.get_StkActual());
+                    //obj.Conteudo
+                }
+
+                return testes;
+                /*objList.
+                objList = PriEngine.Engine.Comercial.ArtigosArmazens.ListaInventario(true, false, false, id);
+                while (!objList.NoFim())
+                {
+                    testes.Add(objList.Valor("Artigo"));
+                    objList.Seguinte();
+                }
+                return testes;*/
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         
     }

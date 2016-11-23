@@ -53,6 +53,14 @@ namespace WebStoreAPI.Controllers
             List<Lib_Primavera.Model.Product> products = Lib_Primavera.PriIntegration.GetWarehouseProductsByFamily();
             return products;
         }
+
+        [Route("api/products/teste")]
+        [HttpGet]
+        public List<String> GetTeste(string id)
+        {
+            List<String> teste = Lib_Primavera.PriIntegration.GetTestes(id);
+            return teste;
+        }
     }
 }
 
