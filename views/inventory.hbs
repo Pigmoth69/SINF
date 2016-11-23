@@ -3,8 +3,7 @@
 		<div id="tabs" class="row">
 			<ul class="nav nav-tabs col-xs-9 col-xs-offset-2">
 				{{#each warehouses}}
-					<!-- sempre que carregar neste link, mudar o li para active-->
-					<li><a href="#">Warehouse {{Code}}</a></li>
+					<li class="armazem" id="Warehouse{{Code}}"><a href="#" onclick="changeToActiveWare('{{Code}}');return false;">Warehouse {{Code}}</a></li>
 				{{/each}}
 			</ul>
 		</div>
@@ -12,9 +11,8 @@
 		<div class="row">
 			<div id="category" class="col-xs-2">
 				<ul class="nav nav-pills nav-stacked">
-					<!-- sempre que carregar neste link, mudar o li para active-->
 					{{#each families}}
-					<li><a href="#">{{Code}}</a></li>
+					<li class="familia" id="Family{{Code}}"><a href="#" onclick="changeToActiveFam('{{Code}}');return false;">{{Code}}</a></li>
 					{{/each}}
 				</ul>
 			</div>
@@ -98,4 +96,5 @@
 			</div>
 		</div>
 	</div>
+	<script src="/js/inventory.js"></script>
 {{> footer}}
