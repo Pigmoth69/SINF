@@ -23,6 +23,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/partials');
 
+hbs.registerHelper('if_less', function(a, b, opts) {
+    if (a < b) 
+      return opts.fn(this);
+    else opts.inverse(this);
+});
+
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public','images','ico', 'favicon.png')));
 app.use(logger('dev'));

@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request');
-var invs = require('../public/js/inventory.js');
 
 
 router.get('/', function(req, res) {
@@ -56,7 +55,7 @@ router.get('/warehouse/:idW/family/:idF', function(req, res) {
 });
 
 router.get('/warehouse/:idW/', function(req, res) {
-    var ware = "http://localhost:49822/api/products?warehouseId=" + req.params.idW;
+    var ware = "http://localhost:49822/api/warehouse?warehouseId=" + req.params.idW;
     request.get({url : ware, proxy : 'http://localhost:49822'}, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var temp = JSON.parse(body);
@@ -65,6 +64,7 @@ router.get('/warehouse/:idW/', function(req, res) {
 
             // dar-lhe replace com jquery exatamente igual, mas com os produtos de temp
             //invs.addProductsWebPage(temp);
+            console.log(temp);
             res.json(temp);
         }
         else {

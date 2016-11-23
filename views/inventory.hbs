@@ -1,102 +1,23 @@
 {{> topbar}}
-	<div id="content" class="container">
-		<div id="tabs" class="row">
-			<ul class="nav nav-tabs col-xs-9 col-xs-offset-2">
-				{{#each warehouses}}
-					<li class="armazem" id="Warehouse{{Code}}"><a href="#" onclick="changeToActiveWare('{{Code}}');return false;">Warehouse {{Code}}</a></li>
+<div id="content" class="container">
+	<div id="tabs" class="row">
+		<ul class="nav nav-tabs col-xs-9 col-xs-offset-2">
+			{{#each warehouses}}
+			<li class="armazem" id="Warehouse{{Code}}"><a href="#" onclick="changeToActiveWare('{{Code}}');return false;">Warehouse {{Code}}</a></li>
+			{{/each}}
+		</ul>
+	</div>
+	<!-- ver quais estão ativos, e redirecionar nesse sentido -->
+	<div class="row" id="mainPage">
+		<div id="category" class="col-xs-2">
+			<ul class="nav nav-pills nav-stacked">
+				{{#each families}}
+				<li class="familia" id="Family{{Code}}"><a href="#" onclick="changeToActiveFam('{{Code}}');return false;">{{Code}}</a></li>
 				{{/each}}
 			</ul>
 		</div>
-		<!-- ver quais estão ativos, e redirecionar nesse sentido -->
-		<div class="row" id="mainPage">
-			<div id="category" class="col-xs-2">
-				<ul class="nav nav-pills nav-stacked">
-					{{#each families}}
-					<li class="familia" id="Family{{Code}}"><a href="#" onclick="changeToActiveFam('{{Code}}');return false;">{{Code}}</a></li>
-					{{/each}}
-				</ul>
-			</div>
-			<div id="home">
-			<div id="products" class="col-xs-10">
-				<div class="row">
-					<div class="product col-xs-2">
-						<div class="clickableProduct">
-							<a href="/product"><img src="/images/product.png" alt="product image" class="row"></a>
-							<div class="productInfo row">
-								<span class="productName col-xs-8">Product 1</span><span class="col-xs-3 col-xs-offset-1">9.99€</span>
-							</div>
-						</div>
-						<button class="row">Add to Cart</button>
-					</div>
-					<div class="product col-xs-2 col-xs-offset-1">
-						<div class="clickableProduct">
-							<a href="/product"><img src="/images/product.png" alt="product image" class="row"></a>
-							<div class="productInfo row">
-								<span class="productName col-xs-8">Product 2</span><span class="col-xs-3 col-xs-offset-1">9.99€</span>
-							</div>
-						</div>
-						<button class="row">Add to Cart</button>
-					</div>
-					<div class="product col-xs-2 col-xs-offset-1">
-						<div class="clickableProduct">
-							<a href="/product"><img src="/images/product.png" alt="product image" class="row"></a>
-							<div class="productInfo row">
-								<span class="productName col-xs-8">Product 2</span><span class="col-xs-3 col-xs-offset-1">9.99€</span>
-							</div>
-						</div>
-						<button class="row">Add to Cart</button>
-					</div>
-					<div class="product col-xs-2 col-xs-offset-1">
-						<div class="clickableProduct">
-							<a href="/product"><img src="/images/product.png" alt="product image" class="row"></a>
-							<div class="productInfo row">
-								<span class="productName col-xs-8">Product 2</span><span class="col-xs-3 col-xs-offset-1">9.99€</span>
-							</div>
-						</div>
-						<button class="row">Add to Cart</button>
-					</div>
-				</div>
-				<div class="row">
-					<div class="product col-xs-2">
-						<div class="clickableProduct">
-							<a href="/product"><img src="/images/product.png" alt="product image" class="row"></a>
-							<div class="productInfo row">
-								<span class="productName col-xs-8">Product 1</span><span class="col-xs-3 col-xs-offset-1">9.99€</span>
-							</div>
-						</div>
-						<button class="row">Add to Cart</button>
-					</div>
-					<div class="product col-xs-2 col-xs-offset-1">
-						<div class="clickableProduct">
-							<a href="/product"><img src="/images/product.png" alt="product image" class="row"></a>
-							<div class="productInfo row">
-								<span class="productName col-xs-8">Product 2</span><span class="col-xs-3 col-xs-offset-1">9.99€</span>
-							</div>
-						</div>
-						<button class="row">Add to Cart</button>
-					</div>
-					<div class="product col-xs-2 col-xs-offset-1">
-						<div class="clickableProduct">
-							<a href="/product"><img src="/images/product.png" alt="product image" class="row"></a>
-							<div class="productInfo row">
-								<span class="productName col-xs-8">Product 2</span><span class="col-xs-3 col-xs-offset-1">9.99€</span>
-							</div>
-						</div>
-						<button class="row">Add to Cart</button>
-					</div>
-					<div class="product col-xs-2 col-xs-offset-1">
-						<div class="clickableProduct">
-							<a href="/product"><img src="/images/product.png" alt="product image" class="row"></a>
-							<div class="productInfo row">
-								<span class="productName col-xs-8">Product 2</span><span class="col-xs-3 col-xs-offset-1">9.99€</span>
-							</div>
-						</div>
-						<button class="row">Add to Cart</button>
-					</div>
-				</div>
-			</div>
-			</div>
+		<div id="home">
 		</div>
 	</div>
-	<script src="/js/inventory.js"></script>
-{{> footer}}
+</div>
+<script src="/js/inventory.js"></script> {{> footer}}
