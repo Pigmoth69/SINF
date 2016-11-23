@@ -5,36 +5,30 @@ using System.Web;
 
 namespace WebStoreAPI.Lib_Primavera.Model
 {
-    public class Cliente
+    public class SimpleOrder
     {
-        public string Morada
-        {
-            get;
-            set;
-        }
-        public string CodCliente
+        public string id
         {
             get;
             set;
         }
 
-        public string NomeCliente
+        public string Entidade
         {
             get;
             set;
         }
 
-        public string NumContribuinte
+        public int NumDoc
         {
             get;
             set;
         }
 
-        public string Moeda
+        public DateTime Data
         {
             get;
             set;
         }
-
     }
 }

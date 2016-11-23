@@ -296,6 +296,8 @@
     </Compile>
     <Compile Include="Lib_Primavera\Model\Prices.cs" />
     <Compile Include="Lib_Primavera\Model\Product.cs" />
+    <Compile Include="Lib_Primavera\Model\SimpleClient.cs" />
+    <Compile Include="Lib_Primavera\Model\SimpleOrder.cs" />
     <Compile Include="Lib_Primavera\Model\SimpleProduct.cs" />
     <Compile Include="Lib_Primavera\Model\SimpleWarehouse.cs" />
     <Compile Include="Lib_Primavera\Model\Warehouse.cs" />

@@ -16,13 +16,13 @@ namespace WebStoreAPI.Lib_Primavera
 
         # region Cliente
 
-        public static List<Model.Cliente> ListaClientes()
+        public static List<Model.SimpleClient> ListaClientes()
         {
             
             
             StdBELista objList;
 
-            List<Model.Cliente> listClientes = new List<Model.Cliente>();
+            List<Model.SimpleClient> listClientes = new List<Model.SimpleClient>();
 
             if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
             {
@@ -33,12 +33,10 @@ namespace WebStoreAPI.Lib_Primavera
 
                 objList = PriEngine.Engine.Consulta("SELECT Cliente, Nome, Moeda, NumContrib as NumContribuinte, Fac_Mor AS campo_exemplo FROM  CLIENTES");
 
-                
 
-                
                 while (!objList.NoFim())
                 {
-                    listClientes.Add(new Model.Cliente
+                    listClientes.Add(new Model.SimpleClient
                     {
                         CodCliente = objList.Valor("Cliente"),
                         NomeCliente = objList.Valor("Nome"),
@@ -391,9 +389,26 @@ namespace WebStoreAPI.Lib_Primavera
             }            
         }
 
-        public static List<Model.Product> GetWarehouseProductsByFamily()
+        public static List<Model.SimpleProduct> GetWarehouseProductsByFamily(string warehouseId,string familyId)
         {
-            throw new NotImplementedException();
+            StdBELista objList1;
+
+            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                if (!PriEngine.Engine.Comercial.Armazens.Existe(warehouseId))
+                    return null;
+                objList1 = PriEngine.Engine.Consulta("SELECT ArtigoArmazem.Artigo,SUM(ArtigoArmazem.StkActual) AS Stock FROM ArtigoArmazem LEFT JOIN Artigo ON Artigo.Artigo = ArtigoArmazem.Artigo LEFT JOIN Familias ON Familias.Familia = Artigo.Familia where ArtigoArmazem.Armazem='"+warehouseId+"' AND Familias.Descricao ='"+familyId+"' GROUP BY ArtigoArmazem.Artigo,Armazem;");
+                
+                List<Model.SimpleProduct> listProducts = new List<Model.SimpleProduct>();
+                listProducts = retrieveSimpleProducts(objList1);
+                return listProducts;
+
+            }
+            else
+            {
+                return null;
+
+            }
         }
 
         #endregion Products
@@ -476,7 +491,7 @@ namespace WebStoreAPI.Lib_Primavera
 
             }
         }
-        //ARRANJAR ISTO
+        
         private static List<Model.SimpleProduct> retrieveSimpleProducts(StdBELista objList1)
         {
             List<Model.SimpleProduct> products = new List<Model.SimpleProduct>();
@@ -498,6 +513,8 @@ namespace WebStoreAPI.Lib_Primavera
                 product.IVA = prod.get_IVA();
 
                 prices = PriEngine.Engine.Consulta("SELECT Artigo,PVP1,PVP2,PVP3,PVP4,PVP5,PVP6 FROM ArtigoMoeda WHERE Artigo ='" + product.Code + "';");
+
+
                 price.PVP1 = prices.Valor("PVP1");
                 price.PVP2 = prices.Valor("PVP2");
                 price.PVP3 = prices.Valor("PVP3");

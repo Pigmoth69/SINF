@@ -48,9 +48,9 @@ namespace WebStoreAPI.Controllers
 
         [Route("api/products/")]
         [HttpGet]
-        public List<Lib_Primavera.Model.Product> GetFamilyProducts(string warehouseId, string familyId)
+        public List<Lib_Primavera.Model.SimpleProduct> GetFamilyProducts(string warehouseId, string familyId)
         {
-            List<Lib_Primavera.Model.Product> products = Lib_Primavera.PriIntegration.GetWarehouseProductsByFamily();
+            List<Lib_Primavera.Model.SimpleProduct> products = Lib_Primavera.PriIntegration.GetWarehouseProductsByFamily(warehouseId,familyId);
             return products;
         }
 

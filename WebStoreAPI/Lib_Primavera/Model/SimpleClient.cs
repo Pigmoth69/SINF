@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WebStoreAPI.Lib_Primavera.Model
 {
-    public class Cliente
+    public class SimpleClient
     {
         public string Morada
         {
@@ -35,6 +35,5 @@ namespace WebStoreAPI.Lib_Primavera.Model
             get;
             set;
         }
-
     }
 }
