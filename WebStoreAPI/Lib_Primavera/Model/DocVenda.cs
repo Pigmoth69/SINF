@@ -14,7 +14,7 @@ namespace WebStoreAPI.Lib_Primavera.Model
             set;
         }
 
-        public string Entidade
+        public Model.Client Client
         {
             get;
             set;

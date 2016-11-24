@@ -191,7 +191,6 @@ namespace WebStoreAPI.Lib_Primavera
 
         #endregion Cliente;   // -----------------------------  END   CLIENTE    -----------------------
 
-
         #region Products
 
         public static Lib_Primavera.Model.Product GetProduct(string codArtigo)
@@ -347,7 +346,6 @@ namespace WebStoreAPI.Lib_Primavera
 
         #endregion Products
 
-
         #region Warehouses
 
         /// <summary>
@@ -442,7 +440,6 @@ namespace WebStoreAPI.Lib_Primavera
         }
 
         #endregion Warehouses
-
 
         #region DocCompra
         
@@ -550,7 +547,6 @@ namespace WebStoreAPI.Lib_Primavera
 
         #endregion DocCompra
 
-
         #region DocsVenda
 
         public static Model.ResponseError Encomendas_New(Model.DocVenda dv)
@@ -569,7 +565,7 @@ namespace WebStoreAPI.Lib_Primavera
             {
                     // Atribui valores ao cabecalho do doc
                     myEnc.set_DataDoc(dv.Data);
-                    myEnc.set_Entidade(dv.Entidade);
+                    myEnc.set_Entidade(dv.Client.TaxpayNumber);
                     myEnc.set_Serie(dv.Serie);
                     myEnc.set_Tipodoc("ECL");
                     myEnc.set_TipoEntidade("C");
@@ -620,8 +616,9 @@ namespace WebStoreAPI.Lib_Primavera
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.DocVenda();
+             
                     dv.id = objListCab.Valor("id");
-                    dv.Entidade = objListCab.Valor("Entidade");
+                    dv.Client = GetCliente(objListCab.Valor("Entidade"));
                     dv.NumDoc = objListCab.Valor("NumDoc");
                     dv.Data = objListCab.Valor("Data");
                     dv.TotalMerc = objListCab.Valor("TotalMerc");
@@ -670,7 +667,7 @@ namespace WebStoreAPI.Lib_Primavera
                 objListCab = PriEngine.Engine.Consulta(st);
                 dv = new Model.DocVenda();
                 dv.id = objListCab.Valor("id");
-                dv.Entidade = objListCab.Valor("Entidade");
+                dv.Client = GetCliente(objListCab.Valor("Entidade"));
                 dv.NumDoc = objListCab.Valor("NumDoc");
                 dv.Data = objListCab.Valor("Data");
                 dv.TotalMerc = objListCab.Valor("TotalMerc");
@@ -726,7 +723,7 @@ namespace WebStoreAPI.Lib_Primavera
                     dv = new Model.DocVenda();
 
                     dv.id = objListCab.Valor("id");
-                    dv.Entidade = objListCab.Valor("Entidade");
+                    dv.Client = GetCliente(objListCab.Valor("Entidade"));
                     dv.NumDoc = objListCab.Valor("NumDoc");
                     dv.Data = objListCab.Valor("Data");
                     dv.TotalMerc = objListCab.Valor("TotalMerc");
@@ -783,7 +780,7 @@ namespace WebStoreAPI.Lib_Primavera
                 dv = new Model.DocVenda();
 
                 dv.id = objListCab.Valor("id");
-                dv.Entidade = objListCab.Valor("Entidade");
+                dv.Client = GetCliente(objListCab.Valor("Entidade"));
                 dv.NumDoc = objListCab.Valor("NumDoc");
                 dv.Data = objListCab.Valor("Data");
                 dv.TotalMerc = objListCab.Valor("TotalMerc");
@@ -814,6 +811,7 @@ namespace WebStoreAPI.Lib_Primavera
 
         #endregion DocsVenda
 
+        #region Tests
         public static List<string> GetTestes(string id)
         {
             
@@ -838,6 +836,7 @@ namespace WebStoreAPI.Lib_Primavera
                 }
                 return testes;*/
         }
-   
+
+        #endregion Tests
     }
 }
