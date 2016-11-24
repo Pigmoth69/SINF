@@ -54,27 +54,42 @@ namespace WebStoreAPI.Lib_Primavera
                 return null;
         }
 
-        public static Lib_Primavera.Model.Cliente GetCliente(string codCliente)
+        public static Lib_Primavera.Model.Client GetCliente(string codCliente)
         {
             
 
             GcpBECliente objCli = new GcpBECliente();
 
+            Model.Client myCli = new Model.Client();
 
-            Model.Cliente myCli = new Model.Cliente();
 
             if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
             {
 
                 if (PriEngine.Engine.Comercial.Clientes.Existe(codCliente) == true)
                 {
+                    
                     objCli = PriEngine.Engine.Comercial.Clientes.Edita(codCliente);
-                    myCli.CodCliente = objCli.get_Cliente();
-                    myCli.NomeCliente = objCli.get_Nome();
-                    myCli.Moeda = objCli.get_Moeda();
+                    myCli.CodClient = objCli.get_Cliente();
+                    myCli.NameClient = objCli.get_Nome();
+                    myCli.FiscalName = objCli.get_NomeFiscal();
+                    myCli.TaxpayNumber = objCli.get_NumContribuinte();
+                    myCli.Email = objCli.get_B2BEnderecoMail();
+                    myCli.Adress = objCli.get_Morada();
+                    myCli.Adress2 = objCli.get_Morada2();
+                    myCli.PostCode = objCli.get_CodigoPostal();
+                    myCli.Local = objCli.get_Localidade();
+                    myCli.Phone = objCli.get_Telefone();
+                    myCli.Phone2 = objCli.get_Telefone2();
+                    myCli.Country = objCli.get_Pais();
+                    myCli.ClientDiscount = objCli.get_Desconto();
+                    myCli.PaymentWay = objCli.get_ModoPag();
+                    //myCli.PaymentType = objCli.get
+                    myCli.ClientType = objCli.get_TipoTerceiro();
+                    myCli.Currency = objCli.get_Moeda();
+                    myCli.ExpeditionWay = objCli.get_ModoExp();
+                    myCli.Disctrict = objCli.get_Distrito();
 
-                    myCli.NumContribuinte = objCli.get_NumContribuinte();
-                    myCli.Morada = objCli.get_Morada();
                     return myCli;
                 }
                 else
@@ -86,7 +101,7 @@ namespace WebStoreAPI.Lib_Primavera
                 return null;
         }
 
-        public static Lib_Primavera.Model.ResponseError UpdCliente(Lib_Primavera.Model.Cliente cliente)
+        public static Lib_Primavera.Model.ResponseError UpdCliente(Lib_Primavera.Model.Client cliente)
         {
             Lib_Primavera.Model.ResponseError erro = new Model.ResponseError();
            
@@ -99,7 +114,7 @@ namespace WebStoreAPI.Lib_Primavera
                 if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
                 {
 
-                    if (PriEngine.Engine.Comercial.Clientes.Existe(cliente.CodCliente) == false)
+                    if (PriEngine.Engine.Comercial.Clientes.Existe(cliente.CodClient) == false)
                     {
                         erro.Erro = 1;
                         erro.Descricao = "O cliente não existe";
@@ -108,13 +123,13 @@ namespace WebStoreAPI.Lib_Primavera
                     else
                     {
 
-                        objCli = PriEngine.Engine.Comercial.Clientes.Edita(cliente.CodCliente);
+                        objCli = PriEngine.Engine.Comercial.Clientes.Edita(cliente.CodClient);
                         objCli.set_EmModoEdicao(true);
 
-                        objCli.set_Nome(cliente.NomeCliente);
-                        objCli.set_NumContribuinte(cliente.NumContribuinte);
-                        objCli.set_Moeda(cliente.Moeda);
-                        objCli.set_Morada(cliente.Morada);
+                        objCli.set_Nome(cliente.NameClient);
+                        objCli.set_NumContribuinte(cliente.TaxpayNumber);
+                        objCli.set_Moeda(cliente.Currency);
+                        objCli.set_Morada(cliente.Adress);
 
                         PriEngine.Engine.Comercial.Clientes.Actualiza(objCli);
 
@@ -190,7 +205,7 @@ namespace WebStoreAPI.Lib_Primavera
 
 
 
-        public static Lib_Primavera.Model.ResponseError InsereClienteObj(Model.Cliente cli)
+        public static Lib_Primavera.Model.ResponseError InsereClienteObj(Model.Client cli)
         {
 
             Lib_Primavera.Model.ResponseError erro = new Model.ResponseError();
@@ -203,11 +218,11 @@ namespace WebStoreAPI.Lib_Primavera
                 if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
                 {
 
-                    myCli.set_Cliente(cli.CodCliente);
-                    myCli.set_Nome(cli.NomeCliente);
-                    myCli.set_NumContribuinte(cli.NumContribuinte);
-                    myCli.set_Moeda(cli.Moeda);
-                    myCli.set_Morada(cli.Morada);
+                    myCli.set_Cliente(cli.CodClient);
+                    myCli.set_Nome(cli.NameClient);
+                    myCli.set_NumContribuinte(cli.TaxpayNumber);
+                    myCli.set_Moeda(cli.Currency);
+                    myCli.set_Morada(cli.Adress);
 
                     PriEngine.Engine.Comercial.Clientes.Actualiza(myCli);
 
@@ -399,6 +414,47 @@ namespace WebStoreAPI.Lib_Primavera
                     return null;
                 objList1 = PriEngine.Engine.Consulta("SELECT ArtigoArmazem.Artigo,SUM(ArtigoArmazem.StkActual) AS Stock FROM ArtigoArmazem LEFT JOIN Artigo ON Artigo.Artigo = ArtigoArmazem.Artigo LEFT JOIN Familias ON Familias.Familia = Artigo.Familia where ArtigoArmazem.Armazem='"+warehouseId+"' AND Familias.Descricao ='"+familyId+"' GROUP BY ArtigoArmazem.Artigo,Armazem;");
                 
+                List<Model.SimpleProduct> listProducts = new List<Model.SimpleProduct>();
+                listProducts = retrieveSimpleProducts(objList1);
+                return listProducts;
+
+            }
+            else
+            {
+                return null;
+
+            }
+        }
+
+        internal static List<Model.SimpleProduct> GetSearchProducts(string code)
+        {
+            StdBELista objList1;
+
+            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                objList1 = PriEngine.Engine.Consulta("SELECT ArtigoArmazem.Artigo,SUM(ArtigoArmazem.StkActual) AS Stock FROM ArtigoArmazem LEFT JOIN Artigo ON Artigo.Artigo = ArtigoArmazem.Artigo where Artigo.Descricao LIKE '%"+code+"%' GROUP BY ArtigoArmazem.Artigo,Armazem;");
+
+                List<Model.SimpleProduct> listProducts = new List<Model.SimpleProduct>();
+                listProducts = retrieveSimpleProducts(objList1);
+                return listProducts;
+
+            }
+            else
+            {
+                return null;
+
+            }
+        }
+
+        public static List<Model.SimpleProduct> GetFamilyProducts(string id)
+        {
+            StdBELista objList1;
+
+
+            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
+            {
+                objList1 = PriEngine.Engine.Consulta("SELECT ArtigoArmazem.Artigo,SUM(ArtigoArmazem.StkActual) AS Stock FROM ArtigoArmazem LEFT JOIN Artigo ON Artigo.Artigo = ArtigoArmazem.Artigo LEFT JOIN Familias ON Familias.Familia = Artigo.Familia where Familias.Descricao ='"+id+"' GROUP BY ArtigoArmazem.Artigo,Armazem;");
+
                 List<Model.SimpleProduct> listProducts = new List<Model.SimpleProduct>();
                 listProducts = retrieveSimpleProducts(objList1);
                 return listProducts;
@@ -916,6 +972,10 @@ namespace WebStoreAPI.Lib_Primavera
                 return null;
             }
         }
+
+
+
+
 
         
     }

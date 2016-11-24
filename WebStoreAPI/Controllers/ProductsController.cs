@@ -45,6 +45,13 @@ namespace WebStoreAPI.Controllers
             List<String> families = Lib_Primavera.PriIntegration.GetFamilies();
             return families;
         }
+        [Route("api/products/family")]
+        [HttpGet]
+        public List<Lib_Primavera.Model.SimpleProduct> GetFamilyProducts(string id)
+        {
+            List<Lib_Primavera.Model.SimpleProduct>  products = Lib_Primavera.PriIntegration.GetFamilyProducts(id);
+            return products;
+        }
 
         [Route("api/products/")]
         [HttpGet]
@@ -60,6 +67,14 @@ namespace WebStoreAPI.Controllers
         {
             List<String> teste = Lib_Primavera.PriIntegration.GetTestes(id);
             return teste;
+        }
+        [Route("api/products/search/{code}")]
+        [HttpGet]
+        public List<Lib_Primavera.Model.SimpleProduct> GetSearchProducts(string code)
+        {
+            List<Lib_Primavera.Model.SimpleProduct> products = new List<Lib_Primavera.Model.SimpleProduct>();
+            products = Lib_Primavera.PriIntegration.GetSearchProducts(code);
+            return products;
         }
     }
 }

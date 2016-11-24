@@ -285,7 +285,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
-    <Compile Include="Controllers\ClientesController.cs" />
+    <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\DocCompraController.cs" />
     <Compile Include="Controllers\DocVendaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -303,7 +303,7 @@
     <Compile Include="Lib_Primavera\Model\Warehouse.cs" />
     <Compile Include="Lib_Primavera\PriIntegration.cs" />
     <Compile Include="Lib_Primavera\Model\Artigo.cs" />
-    <Compile Include="Lib_Primavera\Model\Cliente.cs" />
+    <Compile Include="Lib_Primavera\Model\Client.cs" />
     <Compile Include="Lib_Primavera\Model\DocCompra.cs" />
     <Compile Include="Lib_Primavera\Model\DocVenda.cs" />
     <Compile Include="Lib_Primavera\Model\LinhaDocCompra.cs" />
