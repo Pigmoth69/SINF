@@ -19,20 +19,13 @@ namespace WebStoreAPI.Lib_Primavera
         public static List<Model.SimpleClient> ListaClientes()
         {
             
-            
             StdBELista objList;
 
             List<Model.SimpleClient> listClientes = new List<Model.SimpleClient>();
 
-            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-            {
-
                 //objList = PriEngine.Engine.Comercial.Clientes.LstClientes();
 
-  
-
                 objList = PriEngine.Engine.Consulta("SELECT Cliente, Nome, Moeda, NumContrib as NumContribuinte, Fac_Mor AS campo_exemplo FROM  CLIENTES");
-
 
                 while (!objList.NoFim())
                 {
@@ -47,24 +40,13 @@ namespace WebStoreAPI.Lib_Primavera
                     objList.Seguinte();
 
                 }
-
                 return listClientes;
-            }
-            else
-                return null;
         }
 
         public static Lib_Primavera.Model.Client GetCliente(string codCliente)
         {
-            
-
             GcpBECliente objCli = new GcpBECliente();
-
             Model.Client myCli = new Model.Client();
-
-
-            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-            {
 
                 if (PriEngine.Engine.Comercial.Clientes.Existe(codCliente) == true)
                 {
@@ -96,9 +78,6 @@ namespace WebStoreAPI.Lib_Primavera
                 {
                     return null;
                 }
-            }
-            else
-                return null;
         }
 
         public static Lib_Primavera.Model.ResponseError UpdCliente(Lib_Primavera.Model.Client cliente)
@@ -110,10 +89,6 @@ namespace WebStoreAPI.Lib_Primavera
 
             try
             {
-
-                if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-                {
-
                     if (PriEngine.Engine.Comercial.Clientes.Existe(cliente.CodClient) == false)
                     {
                         erro.Erro = 1;
@@ -137,14 +112,6 @@ namespace WebStoreAPI.Lib_Primavera
                         erro.Descricao = "Sucesso";
                         return erro;
                     }
-                }
-                else
-                {
-                    erro.Erro = 1;
-                    erro.Descricao = "Erro ao abrir a empresa";
-                    return erro;
-
-                }
 
             }
 
@@ -164,12 +131,8 @@ namespace WebStoreAPI.Lib_Primavera
             Lib_Primavera.Model.ResponseError erro = new Model.ResponseError();
             GcpBECliente objCli = new GcpBECliente();
 
-
             try
             {
-
-                if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-                {
                     if (PriEngine.Engine.Comercial.Clientes.Existe(codCliente) == false)
                     {
                         erro.Erro = 1;
@@ -184,14 +147,6 @@ namespace WebStoreAPI.Lib_Primavera
                         erro.Descricao = "Sucesso";
                         return erro;
                     }
-                }
-
-                else
-                {
-                    erro.Erro = 1;
-                    erro.Descricao = "Erro ao abrir a empresa";
-                    return erro;
-                }
             }
 
             catch (Exception ex)
@@ -203,8 +158,6 @@ namespace WebStoreAPI.Lib_Primavera
 
         }
 
-
-
         public static Lib_Primavera.Model.ResponseError InsereClienteObj(Model.Client cli)
         {
 
@@ -215,9 +168,6 @@ namespace WebStoreAPI.Lib_Primavera
 
             try
             {
-                if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-                {
-
                     myCli.set_Cliente(cli.CodClient);
                     myCli.set_Nome(cli.NameClient);
                     myCli.set_NumContribuinte(cli.TaxpayNumber);
@@ -229,23 +179,13 @@ namespace WebStoreAPI.Lib_Primavera
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
                     return erro;
-                }
-                else
-                {
-                    erro.Erro = 1;
-                    erro.Descricao = "Erro ao abrir empresa";
-                    return erro;
-                }
             }
-
             catch (Exception ex)
             {
                 erro.Erro = 1;
                 erro.Descricao = ex.Message;
                 return erro;
             }
-
-
         }
 
        
@@ -261,8 +201,6 @@ namespace WebStoreAPI.Lib_Primavera
             GcpBEArtigo objArtigo = new GcpBEArtigo();
             Model.Product myProduct = new Model.Product();
 
-            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-            {
                 if (PriEngine.Engine.Comercial.Artigos.Existe(codArtigo) == false)
                 {
                     return null;
@@ -277,13 +215,6 @@ namespace WebStoreAPI.Lib_Primavera
                     List<Model.Product> products = retrieveProducts(objList1);
                     return products.First<Model.Product>();
                 }
-
-            }
-            else
-            {
-                return null;
-            }
-
         }
         /// <summary>
         /// The method that is called by the api/products
@@ -291,24 +222,12 @@ namespace WebStoreAPI.Lib_Primavera
         /// <returns>List of products</returns>
         public static List<Model.Product> GetProducts()
         {
-
             StdBELista objList1;
-
-            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-            {
                 objList1 = PriEngine.Engine.Consulta("SELECT Artigo.Artigo AS Code,Artigo.Descricao AS ArtDesc,Iva,Desconto,Artigo.STKActual AS STKAct,Familias.Descricao AS FamDesc,SubFamilias.Descricao AS SubFamDesc,Marcas.Descricao AS BrandDesc,Artigo.Modelo AS ArtModel,ArtigoMoeda.Moeda AS ArtCurrency,ArtigoMoeda.PVP1 AS ArtPVP1,ArtigoMoeda.PVP2 AS ArtPVP2,ArtigoMoeda.PVP3 AS ArtPVP3,ArtigoMoeda.PVP4 AS ArtPVP4,ArtigoMoeda.PVP5 AS ArtPVP5,ArtigoMoeda.PVP6 AS ArtPVP6,Garantias.Descricao AS Warranty,Artigo.PrazoEntrega AS DelTime FROM Artigo LEFT JOIN Familias ON Artigo.Familia = Familias.Familia LEFT JOIN Marcas ON Artigo.Marca = Marcas.Marca LEFT JOIN SubFamilias ON Artigo.Familia=SubFamilias.Familia AND Artigo.SubFamilia = SubFamilias.SubFamilia LEFT JOIN ArtigoMoeda ON Artigo.Artigo = ArtigoMoeda.Artigo AND Artigo.UnidadeBase = ArtigoMoeda.Unidade LEFT JOIN Garantias on Artigo.Garantia = Garantias.Garantia  WHERE Familias.Descricao IS NOT NULL AND Familias.Descricao <>'Serviços' ;");
                 List<Model.Product> listProducts = new List<Model.Product>();
                 listProducts = retrieveProducts(objList1);
 
                 return listProducts;
-
-            }
-            else
-            {
-                return null;
-
-            }
-
         }
         /// <summary>
         /// Retrieves all the products existing in the StdBELista
@@ -381,10 +300,6 @@ namespace WebStoreAPI.Lib_Primavera
 
         public static List<string> GetFamilies()
         {
-            
-            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-            {
-
                 List<String> familias = new List<String>();
                 StdBELista objList;
                 objList = PriEngine.Engine.Consulta("SELECT Descricao FROM Familias;");
@@ -395,21 +310,12 @@ namespace WebStoreAPI.Lib_Primavera
                     familias.Add(f);
                     objList.Seguinte();
                 }
-                return familias;
-            }
-            else
-            {
-                return null;
-
-            }            
+                return familias;         
         }
 
         public static List<Model.SimpleProduct> GetWarehouseProductsByFamily(string warehouseId,string familyId)
         {
             StdBELista objList1;
-
-            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-            {
                 if (!PriEngine.Engine.Comercial.Armazens.Existe(warehouseId))
                     return null;
                 objList1 = PriEngine.Engine.Consulta("SELECT ArtigoArmazem.Artigo,SUM(ArtigoArmazem.StkActual) AS Stock FROM ArtigoArmazem LEFT JOIN Artigo ON Artigo.Artigo = ArtigoArmazem.Artigo LEFT JOIN Familias ON Familias.Familia = Artigo.Familia where ArtigoArmazem.Armazem='"+warehouseId+"' AND Familias.Descricao ='"+familyId+"' GROUP BY ArtigoArmazem.Artigo,Armazem;");
@@ -417,54 +323,27 @@ namespace WebStoreAPI.Lib_Primavera
                 List<Model.SimpleProduct> listProducts = new List<Model.SimpleProduct>();
                 listProducts = retrieveSimpleProducts(objList1);
                 return listProducts;
-
-            }
-            else
-            {
-                return null;
-
-            }
         }
 
         internal static List<Model.SimpleProduct> GetSearchProducts(string code)
         {
             StdBELista objList1;
-
-            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-            {
                 objList1 = PriEngine.Engine.Consulta("SELECT ArtigoArmazem.Artigo,SUM(ArtigoArmazem.StkActual) AS Stock FROM ArtigoArmazem LEFT JOIN Artigo ON Artigo.Artigo = ArtigoArmazem.Artigo where Artigo.Descricao LIKE '%"+code+"%' GROUP BY ArtigoArmazem.Artigo,Armazem;");
 
                 List<Model.SimpleProduct> listProducts = new List<Model.SimpleProduct>();
                 listProducts = retrieveSimpleProducts(objList1);
                 return listProducts;
-
-            }
-            else
-            {
-                return null;
-
-            }
         }
 
         public static List<Model.SimpleProduct> GetFamilyProducts(string id)
         {
             StdBELista objList1;
 
-
-            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-            {
                 objList1 = PriEngine.Engine.Consulta("SELECT ArtigoArmazem.Artigo,SUM(ArtigoArmazem.StkActual) AS Stock FROM ArtigoArmazem LEFT JOIN Artigo ON Artigo.Artigo = ArtigoArmazem.Artigo LEFT JOIN Familias ON Familias.Familia = Artigo.Familia where Familias.Descricao ='"+id+"' GROUP BY ArtigoArmazem.Artigo,Armazem;");
 
                 List<Model.SimpleProduct> listProducts = new List<Model.SimpleProduct>();
                 listProducts = retrieveSimpleProducts(objList1);
                 return listProducts;
-
-            }
-            else
-            {
-                return null;
-
-            }
         }
 
         #endregion Products
@@ -481,10 +360,6 @@ namespace WebStoreAPI.Lib_Primavera
             List<Model.Warehouse> warehouses = new List<Model.Warehouse>();
             StdBELista objList;
             List<Model.Warehouse> listWarehouses = new List<Model.Warehouse>();
-
-
-            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-            {
 
                 objList = PriEngine.Engine.Consulta("SELECT Armazem,Morada,Descricao,Telefone,Cp,CpLocalidade FROM Armazens");
                 Model.Warehouse warehouse = new Model.Warehouse();
@@ -512,13 +387,6 @@ namespace WebStoreAPI.Lib_Primavera
                 }
 
                 return listWarehouses;
-
-            }
-            else
-            {
-                return null;
-
-            }
         }
 
         /// <summary>
@@ -529,9 +397,6 @@ namespace WebStoreAPI.Lib_Primavera
         public static List<Model.SimpleProduct> GetProductWarehouse(string warehouseId)
         {
             StdBELista objList1;
-
-            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-            {
                 if (!PriEngine.Engine.Comercial.Armazens.Existe(warehouseId))
                     return null;
                 objList1 = PriEngine.Engine.Consulta("SELECT Artigo,SUM(ArtigoArmazem.StkActual) AS Stock FROM ArtigoArmazem where ArtigoArmazem.Armazem='" + warehouseId + "' GROUP BY ArtigoArmazem.Artigo,Armazem;");
@@ -539,13 +404,6 @@ namespace WebStoreAPI.Lib_Primavera
                 List<Model.SimpleProduct> listProducts = new List<Model.SimpleProduct>();
                 listProducts = retrieveSimpleProducts(objList1);
                 return listProducts;
-
-            }
-            else
-            {
-                return null;
-
-            }
         }
         
         private static List<Model.SimpleProduct> retrieveSimpleProducts(StdBELista objList1)
@@ -599,9 +457,6 @@ namespace WebStoreAPI.Lib_Primavera
             List<Model.DocCompra> listdc = new List<Model.DocCompra>();
             Model.LinhaDocCompra lindc = new Model.LinhaDocCompra();
             List<Model.LinhaDocCompra> listlindc = new List<Model.LinhaDocCompra>();
-
-            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-            {
                 objListCab = PriEngine.Engine.Consulta("SELECT id, NumDocExterno, Entidade, DataDoc, NumDoc, TotalMerc, Serie From CabecCompras where TipoDoc='VGR'");
                 while (!objListCab.NoFim())
                 {
@@ -640,7 +495,7 @@ namespace WebStoreAPI.Lib_Primavera
                     listdc.Add(dc);
                     objListCab.Seguinte();
                 }
-            }
+            
             return listdc;
         }
 
@@ -659,8 +514,7 @@ namespace WebStoreAPI.Lib_Primavera
 
             try
             {
-                if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-                {
+
                     // Atribui valores ao cabecalho do doc
                     //myEnc.set_DataDoc(dv.Data);
                     myGR.set_Entidade(dc.Entidade);
@@ -684,15 +538,6 @@ namespace WebStoreAPI.Lib_Primavera
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
                     return erro;
-                }
-                else
-                {
-                    erro.Erro = 1;
-                    erro.Descricao = "Erro ao abrir empresa";
-                    return erro;
-
-                }
-
             }
             catch (Exception ex)
             {
@@ -723,8 +568,6 @@ namespace WebStoreAPI.Lib_Primavera
             
             try
             {
-                if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-                {
                     // Atribui valores ao cabecalho do doc
                     myEnc.set_DataDoc(dv.Data);
                     myEnc.set_Entidade(dv.Entidade);
@@ -750,14 +593,6 @@ namespace WebStoreAPI.Lib_Primavera
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
                     return erro;
-                }
-                else
-                {
-                    erro.Erro = 1;
-                    erro.Descricao = "Erro ao abrir empresa";
-                    return erro;
-
-                }
 
             }
             catch (Exception ex)
@@ -782,8 +617,6 @@ namespace WebStoreAPI.Lib_Primavera
             List<Model.LinhaDocVenda> listlindv = new
             List<Model.LinhaDocVenda>();
 
-            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-            {
                 objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL'");
                 while (!objListCab.NoFim())
                 {
@@ -816,8 +649,7 @@ namespace WebStoreAPI.Lib_Primavera
                     dv.LinhasDoc = listlindv;
                     listdv.Add(dv);
                     objListCab.Seguinte();
-                }
-            }
+                } 
             return listdv;
         }
 
@@ -833,9 +665,6 @@ namespace WebStoreAPI.Lib_Primavera
             Model.DocVenda dv = new Model.DocVenda();
             Model.LinhaDocVenda lindv = new Model.LinhaDocVenda();
             List<Model.LinhaDocVenda> listlindv = new List<Model.LinhaDocVenda>();
-
-            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-            {
 
 
                 string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
@@ -868,8 +697,7 @@ namespace WebStoreAPI.Lib_Primavera
 
                 dv.LinhasDoc = listlindv;
                 return dv;
-            }
-            return null;
+            
         }
 
         public static List<Model.DocVenda> Encomenda_GetClientsOrders(string client)
@@ -881,8 +709,6 @@ namespace WebStoreAPI.Lib_Primavera
             List<Model.LinhaDocVenda> listlindv = new List<Model.LinhaDocVenda>();
             List<Model.DocVenda> listDocVend = new List<Model.DocVenda>();
 
-            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-            {
 
                 if (!PriEngine.Engine.Comercial.Clientes.Existe(client))
                 {
@@ -930,8 +756,6 @@ namespace WebStoreAPI.Lib_Primavera
                     objListCab.Seguinte();
                 }
                 return listDocVend;
-            }
-            return null;
         }
 
         #endregion DocsVenda
@@ -944,9 +768,6 @@ namespace WebStoreAPI.Lib_Primavera
         {
             
             List<string> testes = new List<string>();
-
-            if (PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
-            {
                 //double d = PriEngine.Engine.Comercial.ArtigosArmazens.DaStockArtigo(id);
                 GcpBEArtigoArmazens objList = PriEngine.Engine.Comercial.ArtigosArmazens.ListaArtigosArmazens(id);
                 PriEngine.Engine.Comercial.ArtigosArmazens.ListaInventario(true,false,false,id);
@@ -966,11 +787,6 @@ namespace WebStoreAPI.Lib_Primavera
                     objList.Seguinte();
                 }
                 return testes;*/
-            }
-            else
-            {
-                return null;
-            }
         }
 
 

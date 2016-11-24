@@ -23,7 +23,14 @@ namespace WebStoreAPI
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             GlobalConfiguration.Configuration.EnsureInitialized();
-
+            if(Lib_Primavera.PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim())==true)
+            {
+                return;
+            }
+            else
+            {
+                throw new Exception("Error in Company Initialization!");
+            }
             
         }
     }

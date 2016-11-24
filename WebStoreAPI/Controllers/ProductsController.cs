@@ -45,7 +45,7 @@ namespace WebStoreAPI.Controllers
             List<String> families = Lib_Primavera.PriIntegration.GetFamilies();
             return families;
         }
-        [Route("api/products/family")]
+        [Route("api/products/family/{id}")]
         [HttpGet]
         public List<Lib_Primavera.Model.SimpleProduct> GetFamilyProducts(string id)
         {
