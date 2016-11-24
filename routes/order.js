@@ -27,7 +27,7 @@ router.get('/pdf/:idOrder', function (req, res) {
 
     var html = '<div id="headerpdf" style="inline-block"><img id="logoPdf" src="../public/images/logo.png" alt="logo"><h1>Order document</h1></div>';
     //var html = "12343252342";
-    //var html = '<h1>Cenas</h1>'; 
+    //var html = '<h1>Cenas</h1>';  
 
     var filename = req.params.idOrder + '.pdf';
     
