@@ -37,7 +37,7 @@ namespace WebStoreAPI.Controllers
             }
         }
 
-        [Route("api/orders")]
+        [Route("api/orders/{client}")]
         public HttpResponseMessage GetClientOrder(string client)
         {
             List<Lib_Primavera.Model.DocVenda> docvendas = Lib_Primavera.PriIntegration.Encomenda_GetClientsOrders(client);
@@ -53,7 +53,22 @@ namespace WebStoreAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, docvendas);
             }
         }
+        [Route("api/orders/{client}")]
+        public HttpResponseMessage GetClientOrder(string client,string orderId)
+        {
+            Lib_Primavera.Model.DocVenda docvendas = Lib_Primavera.PriIntegration.Encomenda_GetClientOrder(client,orderId);
 
+            if (docvendas == null)
+            {
+                var message = string.Format("Document with id = {0} not found", client);
+                HttpError err = new HttpError(message);
+                return Request.CreateResponse(HttpStatusCode.NotFound, err);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, docvendas);
+            }
+        }
 
         public HttpResponseMessage Post(Lib_Primavera.Model.DocVenda dv)
         {

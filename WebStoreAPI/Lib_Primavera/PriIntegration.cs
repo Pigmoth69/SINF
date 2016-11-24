@@ -66,7 +66,7 @@ namespace WebStoreAPI.Lib_Primavera
                     myCli.Country = objCli.get_Pais();
                     myCli.ClientDiscount = objCli.get_Desconto();
                     myCli.PaymentWay = objCli.get_ModoPag();
-                    //myCli.PaymentType = objCli.get
+                    myCli.PaymentType = objCli.get_CondPag();
                     myCli.ClientType = objCli.get_TipoTerceiro();
                     myCli.Currency = objCli.get_Moeda();
                     myCli.ExpeditionWay = objCli.get_ModoExp();
@@ -123,7 +123,6 @@ namespace WebStoreAPI.Lib_Primavera
             }
 
         }
-
 
         public static Lib_Primavera.Model.ResponseError DelCliente(string codCliente)
         {
@@ -325,10 +324,10 @@ namespace WebStoreAPI.Lib_Primavera
                 return listProducts;
         }
 
-        internal static List<Model.SimpleProduct> GetSearchProducts(string code)
+        internal static List<Model.SimpleProduct> GetSearchProducts(string query)
         {
             StdBELista objList1;
-                objList1 = PriEngine.Engine.Consulta("SELECT ArtigoArmazem.Artigo,SUM(ArtigoArmazem.StkActual) AS Stock FROM ArtigoArmazem LEFT JOIN Artigo ON Artigo.Artigo = ArtigoArmazem.Artigo where Artigo.Descricao LIKE '%"+code+"%' GROUP BY ArtigoArmazem.Artigo,Armazem;");
+            objList1 = PriEngine.Engine.Consulta("SELECT ArtigoArmazem.Artigo,SUM(ArtigoArmazem.StkActual) AS Stock FROM ArtigoArmazem LEFT JOIN Artigo ON Artigo.Artigo = ArtigoArmazem.Artigo where Artigo.Descricao LIKE '%" + query + "%' GROUP BY ArtigoArmazem.Artigo,Armazem;");
 
                 List<Model.SimpleProduct> listProducts = new List<Model.SimpleProduct>();
                 listProducts = retrieveSimpleProducts(objList1);
@@ -758,11 +757,62 @@ namespace WebStoreAPI.Lib_Primavera
                 return listDocVend;
         }
 
+        public static Model.DocVenda Encomenda_GetClientOrder(string client,string orderId)
+        {
+            StdBELista objListCab;
+            StdBELista objListLin;
+            Model.DocVenda dv = new Model.DocVenda();
+            Model.LinhaDocVenda lindv = new Model.LinhaDocVenda();
+            List<Model.LinhaDocVenda> listlindv = new List<Model.LinhaDocVenda>();
+            List<Model.DocVenda> listDocVend = new List<Model.DocVenda>();
+
+
+            if (!PriEngine.Engine.Comercial.Clientes.Existe(client))
+            {
+                System.Diagnostics.Debug.WriteLine("MERDA!");
+                return null;
+            }
+
+
+            //PriEngine.Engine.Comercial.Vendas.
+
+            string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and Entidade='" + client + "' AND id ='"+orderId+"';";
+            objListCab = PriEngine.Engine.Consulta(st);
+
+
+                dv = new Model.DocVenda();
+
+                dv.id = objListCab.Valor("id");
+                dv.Entidade = objListCab.Valor("Entidade");
+                dv.NumDoc = objListCab.Valor("NumDoc");
+                dv.Data = objListCab.Valor("Data");
+                dv.TotalMerc = objListCab.Valor("TotalMerc");
+                dv.Serie = objListCab.Valor("Serie");
+                objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido,Data from LinhasDoc where IdCabecDoc='" + dv.id + "' order By Data");
+                listlindv = new List<Model.LinhaDocVenda>();
+
+                while (!objListLin.NoFim())
+                {
+                    lindv = new Model.LinhaDocVenda();
+                    lindv.IdCabecDoc = objListLin.Valor("idCabecDoc");
+                    lindv.CodArtigo = objListLin.Valor("Artigo");
+                    lindv.DescArtigo = objListLin.Valor("Descricao");
+                    lindv.Quantidade = objListLin.Valor("Quantidade");
+                    lindv.Unidade = objListLin.Valor("Unidade");
+                    lindv.Desconto = objListLin.Valor("Desconto1");
+                    lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
+                    lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
+                    lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                    listlindv.Add(lindv);
+                    objListLin.Seguinte();
+                }
+
+                dv.LinhasDoc = listlindv;
+
+            return dv;
+        }
+
         #endregion DocsVenda
-
-
-
-
 
         public static List<string> GetTestes(string id)
         {
@@ -788,11 +838,6 @@ namespace WebStoreAPI.Lib_Primavera
                 }
                 return testes;*/
         }
-
-
-
-
-
-        
+   
     }
 }

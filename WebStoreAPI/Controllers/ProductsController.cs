@@ -68,12 +68,12 @@ namespace WebStoreAPI.Controllers
             List<String> teste = Lib_Primavera.PriIntegration.GetTestes(id);
             return teste;
         }
-        [Route("api/products/search/{code}")]
+        [Route("api/products/search/{query}")]
         [HttpGet]
-        public List<Lib_Primavera.Model.SimpleProduct> GetSearchProducts(string code)
+        public List<Lib_Primavera.Model.SimpleProduct> GetSearchProducts(string query)
         {
             List<Lib_Primavera.Model.SimpleProduct> products = new List<Lib_Primavera.Model.SimpleProduct>();
-            products = Lib_Primavera.PriIntegration.GetSearchProducts(code);
+            products = Lib_Primavera.PriIntegration.GetSearchProducts(query);
             return products;
         }
     }
