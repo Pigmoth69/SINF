@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var hbs = require('hbs');
 
+var db = require('./database/database.js');
 var routes = require('./routes/index');
 var profile = require('./routes/profile');
 var login = require('./routes/login');
@@ -56,6 +57,11 @@ app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
+});
+
+db.populateProducts(function(resp) {
+  if (resp == 'Products populated')
+    console.log('Products Populated');
 });
 
 // create necessary dirs

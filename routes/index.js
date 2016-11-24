@@ -13,13 +13,6 @@ router.get('/', function(req, res) {
                     var famsT = [];
                     for (var i = 0; i < famsReal.length; i++) {
                         famsT[i] = {};
-                        /*
-                        famsReal[i] = famsReal[i].replace('á','a');
-                        famsReal[i] = famsReal[i].replace('é','e');
-                        famsReal[i] = famsReal[i].replace('ó','o');
-                        famsReal[i] = famsReal[i].replace('í','i');
-                        famsReal[i] = famsReal[i].replace('ã','a');
-                        */
                         famsT[i].Code = famsReal[i];
                     }
                     res.render('inventory', {warehouses : waresReal, families : famsT});
@@ -74,7 +67,7 @@ router.get('/warehouse/:idW/', function(req, res) {
 });
 
 router.get('/family/:idF', function(req, res) {
-    var ware = "http://localhost:49822/api/products?familyId=" + req.params.idF; 
+    var ware = "http://localhost:49822/api/products/family/" + req.params.idF; 
     request.get({url : ware, proxy : 'http://localhost:49822'}, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var temp = JSON.parse(body);

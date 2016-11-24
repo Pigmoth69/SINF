@@ -19,8 +19,11 @@ function changeToActiveWare(code) {
 
     // ver se há família ativa
     if ($(".familia.active").attr("id") != undefined) {
-        if (wasActive) { //quer chamar só a família
-            url = "http://localhost:3000/family/" + $(".familia.active").attr("id");
+        var temp2 = $(".familia.active").attr("id");
+        temp2 = temp2.substr(6, temp2.length);
+        if (wasActive) { //quer chamar só a família    
+            url = "http://localhost:3000/family/" + temp2;
+            console.log(url);
             $.blockUI();
             $.get(url, function (data) {
                 addProductsWebPage(data);
@@ -28,7 +31,8 @@ function changeToActiveWare(code) {
             });
         }
         else { // quer chamar a família e o warehouse que acabou de ativar
-            url = "http://localhost:3000/warehouse/" + temp1 + "/family/" + $(".familia.active").attr("id");
+            url = "http://localhost:3000/warehouse/" + temp1 + "/family/" + temp2;
+            console.log(url);
             $.blockUI();
             $.get(url, function (data) {
                 addProductsWebPage(data);
@@ -38,9 +42,9 @@ function changeToActiveWare(code) {
     }
     else { // quer chamar o warehouse só
         url = "http://localhost:3000/warehouse/" + temp1;
+        console.log(url);
         $.blockUI();
         $.get(url, function (data) {
-            console.log(data);
             addProductsWebPage(data);
             $.unblockUI();
         });
@@ -51,6 +55,10 @@ function changeToActiveFam(code) {
     var temp = "[id='Family" + code + "']";
     var temp1 = $(".armazem.active").attr("id") + "";
     temp1 = temp1.substr(9, temp1.length);
+
+    var temp2 = code.substr(5, code.length);
+
+    
 
     var wasActive = false;
     var url;
@@ -68,15 +76,16 @@ function changeToActiveFam(code) {
     if ($(".armazem.active").attr("id") != undefined) {
         if (wasActive) { // quer chamar só o warehouse
             url = "http://localhost:3000/warehouse/" + temp1;
+            console.log(url);
             $.blockUI();
             $.get(url, function (data) {
-                console.log(data);
                 addProductsWebPage(data);
                 $.unblockUI();
             });
         }
         else { // quer chamar warehouse e família
             url = "http://localhost:3000/warehouse/" + temp1 + "/family/" + code;
+            console.log(url);
             $.blockUI();
             $.get(url, function (data) {
                 addProductsWebPage(data);
@@ -86,6 +95,7 @@ function changeToActiveFam(code) {
     }
     else { // quer chamar só a família
         url = "http://localhost:3000/family/" + code;
+        console.log(url);
         $.blockUI();
         $.get(url, function (data) {
             addProductsWebPage(data);
@@ -107,9 +117,14 @@ function addProductsWebPage(products) {
             temp += "<a href='/product/" + products[i].Code + "'>";
             temp += "<img src='/images/product.png' alt='product image' class='row'></a>";
             temp += "<div class='productInfo row'>";
-            temp += "<span class='productName col-xs-8'>" + products[i].Description + "</span>";
+            temp += "<div>";
+            temp += "<span style='height:60px; overflow:hidden;' class='productName col-xs-8'>" + products[i].Description + "</span>";
+            temp += "</div>";
             var temp1 = products[i].Prices.PVP1 + "";
-            temp += "<span class='col-xs-3 col-xs-offset-1'>" + temp1 + "€</span>";
+            if (products[i].Discount > 0) { // tem desconto 
+                temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
+            }
+            else temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + temp1 + "€</h3></div>";
 
             temp += "</div>";
             temp += "</div>";
@@ -122,15 +137,22 @@ function addProductsWebPage(products) {
             temp += "<a href='/product/" + products[i].Code + "'>";
             temp += "<img src='/images/product.png' alt='product image' class='row'></a>";
             temp += "<div class='productInfo row'>";
-            temp += "<span class='productName col-xs-8'>" + products[i].Description + "</span>";
+            temp += "<div>";
+            temp += "<span style='height:60px; overflow:hidden;' class='productName col-xs-8'>" + products[i].Description + "</span>";
+            temp += "</div>";
             var temp1 = products[i].Prices.PVP1 + "";
-            temp += "<span class='col-xs-3 col-xs-offset-1'>" + temp1 + "€</span>";
+            if (products[i].Discount > 0) { // tem desconto 
+                temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
+            }
+            else temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + temp1 + "€</h3></div>";
 
             temp += "</div>";
             temp += "</div>";
             temp += "<button class='row'>Add To Cart</button>";
             temp += "</div>";
             temp += "</div>"; //fechar a row
+            temp += "<br>";
+            temp += "<br>";
             j = -1;
         }
         else { // caso normal
@@ -139,9 +161,14 @@ function addProductsWebPage(products) {
             temp += "<a href='/product/" + products[i].Code + "'>";
             temp += "<img src='/images/product.png' alt='product image' class='row'></a>";
             temp += "<div class='productInfo row'>";
-            temp += "<span class='productName col-xs-8'>" + products[i].Description + "</span>";
+            temp += "<div>"
+            temp += "<span style='height:60px; overflow:hidden;'; class='productName col-xs-8'>" + products[i].Description + "</span>";
+            temp += "</div>";
             var temp1 = products[i].Prices.PVP1 + "";
-            temp += "<span class='col-xs-3 col-xs-offset-1'>" + temp1 + "€</span>";
+            if (products[i].Discount > 0) { // tem desconto 
+                temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
+            }
+            else temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + temp1 + "€</h3></div>";
 
             temp += "</div>";
             temp += "</div>";
