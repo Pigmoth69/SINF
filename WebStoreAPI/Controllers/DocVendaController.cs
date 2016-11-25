@@ -70,6 +70,39 @@ namespace WebStoreAPI.Controllers
             }
         }
 
+        [Route("api/orders/{client}/total")]
+        public HttpResponseMessage GetClientOrdersTotal(string client)
+        {
+            int total = Lib_Primavera.PriIntegration.Encomenda_GetClientsOrdersTotal(client);
+            if(total == -1)
+            {
+                var message = string.Format("Client with client = {0} not found", client);
+                HttpError err = new HttpError(message);
+                return Request.CreateResponse(HttpStatusCode.NotFound, err);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, total);       
+            }     
+        }
+        // WITH Orders AS (SELECT ROW_NUMBER() OVER (ORDER BY id) AS RowNum,* FROM CabecDoc where TipoDoc='ECL' and Entidade='SILVA') SELECT * FROM Orders WHERE  RowNum >= (2- 1) * 100  AND RowNum <= (2) * 100;
+        [Route("api/orders/{client}")]
+        public HttpResponseMessage GetClientOrdersByPage(string client, int page, int numperpage)
+        {
+            List<Lib_Primavera.Model.DocVenda> orders = Lib_Primavera.PriIntegration.Encomenda_GetClientsOrdersByPage(client,page,numperpage);
+
+            if (orders == null)
+            {
+                var message = string.Format("Query with client = {0} and page = {0} and numperpage = {0} not found", client,page,numperpage);
+                HttpError err = new HttpError(message);
+                return Request.CreateResponse(HttpStatusCode.NotFound, err);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, orders);
+            }
+        }
+
         public HttpResponseMessage Post(Lib_Primavera.Model.DocVenda dv)
         {
             Lib_Primavera.Model.ResponseError erro = new Lib_Primavera.Model.ResponseError();
@@ -83,7 +116,6 @@ namespace WebStoreAPI.Controllers
                 response.Headers.Location = new Uri(uri);
                 return response;
             }
-
             else
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest);

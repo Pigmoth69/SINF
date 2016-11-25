@@ -696,6 +696,18 @@ namespace WebStoreAPI.Lib_Primavera
             
         }
 
+        public static int Encomenda_GetClientsOrdersTotal(string client)
+        {
+            StdBELista total;
+            total = PriEngine.Engine.Consulta("SELECT Count(*) as Total From CabecDoc where TipoDoc='ECL' and Entidade='"+client+"';");
+            try
+            {
+                return total.Valor("Total");
+            }catch{
+                return -1;
+            }
+        }
+
         public static List<Model.DocVenda> Encomenda_GetClientsOrders(string client)
         {
             StdBELista objListCab;
@@ -704,7 +716,6 @@ namespace WebStoreAPI.Lib_Primavera
             Model.LinhaDocVenda lindv = new Model.LinhaDocVenda();
             List<Model.LinhaDocVenda> listlindv = new List<Model.LinhaDocVenda>();
             List<Model.DocVenda> listDocVend = new List<Model.DocVenda>();
-
 
                 if (!PriEngine.Engine.Comercial.Clientes.Existe(client))
                 {
@@ -809,6 +820,61 @@ namespace WebStoreAPI.Lib_Primavera
             return dv;
         }
 
+        public static List<Model.DocVenda> Encomenda_GetClientsOrdersByPage(string client, int page, int numperpage)
+        {
+            StdBELista objListCab;
+            StdBELista objListLin;
+            Model.DocVenda dv = new Model.DocVenda();
+            Model.LinhaDocVenda lindv = new Model.LinhaDocVenda();
+            List<Model.LinhaDocVenda> listlindv = new List<Model.LinhaDocVenda>();
+            List<Model.DocVenda> listDocVend = new List<Model.DocVenda>();
+
+            if (!PriEngine.Engine.Comercial.Clientes.Existe(client))
+            {
+                System.Diagnostics.Debug.WriteLine("ERROR!");
+                return null;
+            }
+
+
+            string st = "WITH Orders AS (SELECT ROW_NUMBER() OVER (ORDER BY id) AS RowNum,id,Entidade,Data,NumDoc,TotalMerc,Serie FROM CabecDoc where TipoDoc='ECL' and Entidade='" + client + "') SELECT * FROM Orders WHERE  RowNum >= (" + page + "- 1) * "+numperpage+"  AND RowNum <= ("+page+") * "+numperpage+";";
+            objListCab = PriEngine.Engine.Consulta(st);
+
+            while (!objListCab.NoFim())
+            {
+                dv = new Model.DocVenda();
+
+                dv.id = objListCab.Valor("id");
+                dv.Client = GetCliente(objListCab.Valor("Entidade"));
+                dv.NumDoc = objListCab.Valor("NumDoc");
+                dv.Data = objListCab.Valor("Data");
+                dv.TotalMerc = objListCab.Valor("TotalMerc");
+                dv.Serie = objListCab.Valor("Serie");
+                objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido,Data from LinhasDoc where IdCabecDoc='" + dv.id + "' order By Data");
+                listlindv = new List<Model.LinhaDocVenda>();
+
+                while (!objListLin.NoFim())
+                {
+                    lindv = new Model.LinhaDocVenda();
+                    lindv.IdCabecDoc = objListLin.Valor("idCabecDoc");
+                    lindv.CodArtigo = objListLin.Valor("Artigo");
+                    lindv.DescArtigo = objListLin.Valor("Descricao");
+                    lindv.Quantidade = objListLin.Valor("Quantidade");
+                    lindv.Unidade = objListLin.Valor("Unidade");
+                    lindv.Desconto = objListLin.Valor("Desconto1");
+                    lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
+                    lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
+                    lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                    listlindv.Add(lindv);
+                    objListLin.Seguinte();
+                }
+
+                dv.LinhasDoc = listlindv;
+                listDocVend.Add(dv);
+                objListCab.Seguinte();
+            }
+            return listDocVend;
+        }
+
         #endregion DocsVenda
 
         #region Tests
@@ -838,5 +904,6 @@ namespace WebStoreAPI.Lib_Primavera
         }
 
         #endregion Tests
+
     }
 }
