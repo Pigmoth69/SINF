@@ -2,22 +2,21 @@
 	<div id="content" class="container">
 		<div id="tabs" class="row">
 			<ul class="nav nav-tabs col-xs-9 col-xs-offset-2">
-				<li class="active"><a href="#">Store 1</a></li>
-				<li><a href="#">Store 2</a></li>
-				<li><a href="#">Store 3</a></li>
-				<li><a href="#">Store 4</a></li>
+				{{#each warehouses}}
+					<li class="armazem" id="Warehouse{{Code}}"><a href="#" onclick="changeToActiveWare('{{Code}}');return false;">Warehouse {{Code}}</a></li>
+				{{/each}}
 			</ul>
 		</div>
-		<div class="row">
+		<!-- ver quais estão ativos, e redirecionar nesse sentido -->
+		<div class="row" id="mainPage">
 			<div id="category" class="col-xs-2">
 				<ul class="nav nav-pills nav-stacked">
-					<li class="active"><a href="#">Apps</a></li>
-	 				<li><a href="#">Games</a></li>
-				  	<li><a href="#">Movies</a></li>
-				  	<li><a href="#">Books</a></li>
-				  	<li><a href="#">Newspapers</a></li>
+					{{#each families}}
+					<li class="familia" id="Family{{Code}}"><a href="#" onclick="changeToActiveFam('{{Code}}');return false;">{{Code}}</a></li>
+					{{/each}}
 				</ul>
 			</div>
+			<div id="home">
 			<div id="products" class="col-xs-10">
 				<div class="row">
 					<div class="product col-xs-2">
@@ -96,6 +95,8 @@
 					</div>
 				</div>
 			</div>
+			</div>
 		</div>
 	</div>
+	<script src="/js/inventory.js"></script>
 {{> footer}}
