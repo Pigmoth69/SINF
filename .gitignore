@@ -1,2 +1,5 @@
 # Templates from smarty
 templates_c
+
+# Node Modules
+node_modules
