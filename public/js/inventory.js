@@ -5,7 +5,7 @@ function changeToActiveWare(code) {
 
     var wasActive = false;
     var url;
-    var url_db = "http://localhost:3000/database/products";;
+    var url_db = "http://localhost:3000/database/products";
 
     if ($(temp).attr("class") == 'armazem active') {
         $(temp).removeClass("active");
