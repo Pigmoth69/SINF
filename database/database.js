@@ -76,4 +76,16 @@ function updateTotalSpent(id, nome,next) {
     });
 }
 
-module.exports = { populateProducts, getProducts, updateTotalSpent, populateClients };
+function compareLogin(username, password, next){
+    console.log("vai comparar " + username + " e " + password);   
+    pool.query('SELECT * FROM User WHERE username = ? AND password = ?', [username, password], function(err, rows, fields){
+        if(typeof next === 'function')
+            next(rows);
+        if(err){
+            console.log("PEIDO");
+            throw err;
+        }
+    });
+}
+
+module.exports = { populateProducts, getProducts, updateTotalSpent, populateClients, compareLogin};
