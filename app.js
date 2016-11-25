@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var hbs = require('hbs');
 
+var db = require('./database/database.js');
 var routes = require('./routes/index');
 var profile = require('./routes/profile');
 var login = require('./routes/login');
@@ -22,6 +23,12 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/partials');
+
+hbs.registerHelper('if_less', function(a, b, opts) {
+    if (a < b) 
+      return opts.fn(this);
+    else opts.inverse(this);
+});
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public','images','ico', 'favicon.png')));
@@ -51,6 +58,12 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+/*
+db.updateTotalSpent('VIDRO-Z', 'Vidro Z- Vidraria Especializada,Lda', function(resp) {
+  if (resp == 'sim')
+    console.log('sim'); 
+});
+*/
 
 // create necessary dirs
 /*
