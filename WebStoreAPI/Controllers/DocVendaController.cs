@@ -37,7 +37,7 @@ namespace WebStoreAPI.Controllers
             }
         }
 
-        [Route("api/orders/{client}")]
+        [Route("api/orders/")]
         public HttpResponseMessage GetClientOrder(string client)
         {
             List<Lib_Primavera.Model.DocVenda> docvendas = Lib_Primavera.PriIntegration.Encomenda_GetClientsOrders(client);
