@@ -13,7 +13,10 @@ namespace WebStoreAPI.Controllers
     public class DocCompraController : ApiController
     {
 
-
+        /// <summary>
+        /// Gets all the purchase documents
+        /// </summary>
+        /// <returns>List of documents</returns>
         public IEnumerable<Lib_Primavera.Model.DocCompra> Get()
         {
             return Lib_Primavera.PriIntegration.VGR_List();
@@ -37,7 +40,11 @@ namespace WebStoreAPI.Controllers
         }
         */
 
-
+        /// <summary>
+        /// Purchase document by the company
+        /// </summary>
+        /// <param name="dc">Document to insert</param>
+        /// <returns>The id of the document created!</returns>
         public HttpResponseMessage Post(Lib_Primavera.Model.DocCompra dc)
         {
             Lib_Primavera.Model.ResponseError erro = new Lib_Primavera.Model.ResponseError();

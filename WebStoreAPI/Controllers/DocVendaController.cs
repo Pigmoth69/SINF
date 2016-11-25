@@ -14,14 +14,22 @@ namespace WebStoreAPI.Controllers
     {
         //
         // GET: /Clientes/
-
+        /// <summary>
+        /// All Orders existing in the database
+        /// </summary>
+        /// <returns>List of orders</returns>
         public IEnumerable<Lib_Primavera.Model.DocVenda> Get()
         {
             return Lib_Primavera.PriIntegration.Encomendas_List();
         }
 
 
-        // GET api/DocVenda/{id}-> id do doc   
+        /// <summary>
+        /// Retrieves an Order by the id
+        /// </summary>
+        /// <param name="id">The document id</param>
+        /// <returns>Document selected by the id</returns>
+  
         public Lib_Primavera.Model.DocVenda Get(string id)
         {
             Lib_Primavera.Model.DocVenda docvenda = Lib_Primavera.PriIntegration.Encomenda_Get(id);
@@ -36,7 +44,11 @@ namespace WebStoreAPI.Controllers
                 return docvenda;
             }
         }
-
+        /// <summary>
+        /// All orders of a client
+        /// </summary>
+        /// <param name="client">Client code</param>
+        /// <returns>All order documents of a client</returns>
         [Route("api/orders/")]
         public HttpResponseMessage GetClientOrder(string client)
         {
@@ -53,6 +65,12 @@ namespace WebStoreAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, docvendas);
             }
         }
+        /// <summary>
+        /// Retrieves an order of a client by its id
+        /// </summary>
+        /// <param name="client">Client id</param>
+        /// <param name="orderId">Order id</param>
+        /// <returns>The order of the client</returns>
         [Route("api/orders/{client}")]
         public HttpResponseMessage GetClientOrder(string client,string orderId)
         {
@@ -69,7 +87,11 @@ namespace WebStoreAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, docvendas);
             }
         }
-
+        /// <summary>
+        /// Total number of orders of a client
+        /// </summary>
+        /// <param name="client">Client code</param>
+        /// <returns>An integer with total number of orders of a client</returns>
         [Route("api/orders/{client}/total")]
         public HttpResponseMessage GetClientOrdersTotal(string client)
         {
@@ -85,7 +107,13 @@ namespace WebStoreAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, total);       
             }     
         }
-        // WITH Orders AS (SELECT ROW_NUMBER() OVER (ORDER BY id) AS RowNum,* FROM CabecDoc where TipoDoc='ECL' and Entidade='SILVA') SELECT * FROM Orders WHERE  RowNum >= (2- 1) * 100  AND RowNum <= (2) * 100;
+        /// <summary>
+        /// Orders of a client based on the number of pages and orders per page
+        /// </summary>
+        /// <param name="client">Client code</param>
+        /// <param name="page">Page to see</param>
+        /// <param name="numperpage">Number of orders per page</param>
+        /// <returns></returns>
         [Route("api/orders/{client}")]
         public HttpResponseMessage GetClientOrdersByPage(string client, int page, int numperpage)
         {
@@ -102,7 +130,11 @@ namespace WebStoreAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, orders);
             }
         }
-
+        /// <summary>
+        /// Creates an order
+        /// </summary>
+        /// <param name="dv">Order to create</param>
+        /// <returns>Returns the id of the order created</returns>
         public HttpResponseMessage Post(Lib_Primavera.Model.DocVenda dv)
         {
             Lib_Primavera.Model.ResponseError erro = new Lib_Primavera.Model.ResponseError();
@@ -119,39 +151,6 @@ namespace WebStoreAPI.Controllers
             else
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-
-        }
-
-
-
-
-        public HttpResponseMessage Delete(string id)
-        {
-
-
-            Lib_Primavera.Model.ResponseError erro = new Lib_Primavera.Model.ResponseError();
-
-            try
-            {
-
-                erro = Lib_Primavera.PriIntegration.DelCliente(id);
-
-                if (erro.Erro == 0)
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, erro.Descricao);
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, erro.Descricao);
-                }
-
-            }
-
-            catch (Exception exc)
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, erro.Descricao);
-
             }
 
         }

@@ -13,21 +13,32 @@ namespace WebStoreAPI.Controllers
     {
         //
         // GET: /Clientes/
-
+        /// <summary>
+        /// All clients existent in the ERP
+        /// </summary>
+        /// <returns>List of clients</returns>
         public IEnumerable<Lib_Primavera.Model.SimpleClient> Get()
         {
                 return Lib_Primavera.PriIntegration.ListaClientes();
         }
-
+        /// <summary>
+        /// JUST TEST! DO NOT USE
+        /// </summary>
+        /// <returns></returns>
         [Route("api/clientes/{id}/cenas")]
         [HttpGet]
         public HttpResponseMessage GetCenas()
         {
-            return Request.CreateResponse(HttpStatusCode.OK,"CARALHOOO");
+            return Request.CreateResponse(HttpStatusCode.OK,"TEST");
         }
 
-
+        
         // GET api/cliente/5    
+        /// <summary>
+        /// Retrieves a client with a certain code
+        /// </summary>
+        /// <param name="id">Code of the client</param>
+        /// <returns>The client information</returns>
         public Client Get(string id)
         {
             Lib_Primavera.Model.Client cliente = Lib_Primavera.PriIntegration.GetCliente(id);
@@ -45,7 +56,11 @@ namespace WebStoreAPI.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Creates a new Client
+        /// </summary>
+        /// <param name="cliente">Client body an information</param>
+        /// <returns>Code of the client if success!</returns>
         public HttpResponseMessage Post(Lib_Primavera.Model.Client cliente)
         {
             Lib_Primavera.Model.ResponseError erro = new Lib_Primavera.Model.ResponseError();
@@ -67,7 +82,12 @@ namespace WebStoreAPI.Controllers
 
         }
 
-
+        /// <summary>
+        /// Updates a client information
+        /// </summary>
+        /// <param name="id">Client code</param>
+        /// <param name="cliente">Client information to update</param>
+        /// <returns>Returns OK or error with its information</returns>
         public HttpResponseMessage Put(string id, Lib_Primavera.Model.Client cliente)
         {
 
@@ -93,7 +113,11 @@ namespace WebStoreAPI.Controllers
         }
 
 
-
+        /// <summary>
+        /// Delete a client with its id
+        /// </summary>
+        /// <param name="id">code of the client</param>
+        /// <returns>OK if success, Error with information if failed</returns>
         public HttpResponseMessage Delete(string id)
         {
 
