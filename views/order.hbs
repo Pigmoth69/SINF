@@ -1,26 +1,40 @@
 {{> topbar}}
+
 <head>
-	<link rel="stylesheet" type="text/css" href="../css/order.css">
+  <link rel="stylesheet" type="text/css" href="../css/order.css">
 </head>
 
-	<table id="ordersTable" class="table table-striped">
-    <thead>
+<table id="ordersTable" class="table table-striped">
+  <thead>
+    <tr>
+      <th>Date of Purchase</th>
+      <th>Order</th>
+      <th>Total Value</th>
+      <th>PDF</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each orders}}
+    <tr>
+      <td>{{Data}}</td>
+      <td>{{id}}</td>
+      <td>{{TotalMerc}}€</td>
+      <td>
+        <a href='pdf/{{id}}'><img id="pdficon" src="/images/pdf.png" alt="pdf icon"></a>
+      </td>
       <tr>
-        <th>Date of Purchase</th>
-        <th>Order</th>
-        <th>Total Value</th>
-        <th>PDF</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each orders}}
-      <tr>
-        <td>{{Data}}</td>
-        <td>{{id}}</td>
-        <td>{{TotalMerc}}€</td>
-        <td><a href="pdf/{{id}}"><img id="pdficon" src="/images/pdf.png" alt="pdf icon"></a></td>
-      <tr>
-      {{/each}}
-    </tbody>
-  </table>
+        {{/each}}
+  </tbody>
+</table>
+<div id="pagDiv">
+  <ul class="pagination">
+    <li><a href="first">&laquo;</a></li>
+    <li><a class="active" href="1">1</a></li>
+    <li><a href="2">2</a></li>
+    <li><a href="3">3</a></li>
+    <li><a href="4">4</a></li>
+    <li><a href="5">5</a></li>
+    <li><a href="last">&raquo;</a></li>
+  </ul>
+</div>
 {{> footer}}
