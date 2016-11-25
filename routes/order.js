@@ -17,10 +17,11 @@ router.get('/', function (req, res) {
 router.get('/:page', function (req, res) {
     var user = req.session.user;
     var numPerPage = 10;
-    console.log(req.params.page);
+    console.log(req.session);
     var orderURL = "http://localhost:49822/api/orders/" + user + "?page=" + req.params.page + "&numperpage=" + numPerPage;
     var orderURL2 = "http://localhost:49822/api/orders/" + user + "/total";
     request.get({ url: orderURL, proxy: 'http://localhost:49822' }, function (error, response, orders) {
+
         if (!error && response.statusCode == 200) {
             console.log(user);
             request.get({ url: orderURL2, proxy: 'http://localhost:49822' }, function (error, response, total) {
