@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -45,12 +45,35 @@ namespace WebStoreAPI.Controllers
             List<String> families = Lib_Primavera.PriIntegration.GetFamilies();
             return families;
         }
+        [Route("api/products/family/{id}")]
+        [HttpGet]
+        public List<Lib_Primavera.Model.SimpleProduct> GetFamilyProducts(string id)
+        {
+            List<Lib_Primavera.Model.SimpleProduct>  products = Lib_Primavera.PriIntegration.GetFamilyProducts(id);
+            return products;
+        }
 
         [Route("api/products/")]
         [HttpGet]
-        public List<Lib_Primavera.Model.Product> GetFamilyProducts(string warehouseId, string familyId)
+        public List<Lib_Primavera.Model.SimpleProduct> GetFamilyProducts(string warehouseId, string familyId)
         {
-            List<Lib_Primavera.Model.Product> products = Lib_Primavera.PriIntegration.GetWarehouseProductsByFamily();
+            List<Lib_Primavera.Model.SimpleProduct> products = Lib_Primavera.PriIntegration.GetWarehouseProductsByFamily(warehouseId,familyId);
+            return products;
+        }
+
+        [Route("api/products/teste")]
+        [HttpGet]
+        public List<String> GetTeste(string id)
+        {
+            List<String> teste = Lib_Primavera.PriIntegration.GetTestes(id);
+            return teste;
+        }
+        [Route("api/products/search/{query}")]
+        [HttpGet]
+        public List<Lib_Primavera.Model.SimpleProduct> GetSearchProducts(string query)
+        {
+            List<Lib_Primavera.Model.SimpleProduct> products = new List<Lib_Primavera.Model.SimpleProduct>();
+            products = Lib_Primavera.PriIntegration.GetSearchProducts(query);
             return products;
         }
     }

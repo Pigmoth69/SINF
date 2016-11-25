@@ -1,20 +1,19 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace WebStoreAPI.Lib_Primavera.Model
 {
-    public class DocVenda
+    public class SimpleOrder
     {
-
         public string id
         {
             get;
             set;
         }
 
-        public Model.Client Client
+        public string Entidade
         {
             get;
             set;
@@ -31,25 +30,5 @@ namespace WebStoreAPI.Lib_Primavera.Model
             get;
             set;
         }
-
-        public double TotalMerc
-        {
-            get;
-            set;
-        }
-
-        public string Serie
-        {
-            get;
-            set;
-        }
-
-        public List<Model.LinhaDocVenda> LinhasDoc
-        {
-            get;
-            set;
-        }
- 
-
     }
 }

@@ -1,28 +1,17 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace WebStoreAPI.Lib_Primavera.Model
 {
-    public class Cliente
+    public class SimpleClient
     {
-        public string Morada;
-
-        /* Exemplo para POST e GET com valores específicos
-         public string Morada
+        public string Morada
         {
-            get
-            {
-                return "MORADA: " + _morada;
-            }
-            set
-            {
-                _morada = value;
-            }
+            get;
+            set;
         }
-    
-*/       
         public string CodCliente
         {
             get;
@@ -46,6 +35,5 @@ namespace WebStoreAPI.Lib_Primavera.Model
             get;
             set;
         }
-
     }
 }

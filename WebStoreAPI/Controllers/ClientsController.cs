@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,12 +9,12 @@ using WebStoreAPI.Lib_Primavera.Model;
 
 namespace WebStoreAPI.Controllers
 {
-    public class ClientesController : ApiController
+    public class ClientsController : ApiController
     {
         //
         // GET: /Clientes/
 
-        public IEnumerable<Lib_Primavera.Model.Cliente> Get()
+        public IEnumerable<Lib_Primavera.Model.SimpleClient> Get()
         {
                 return Lib_Primavera.PriIntegration.ListaClientes();
         }
@@ -28,9 +28,9 @@ namespace WebStoreAPI.Controllers
 
 
         // GET api/cliente/5    
-        public Cliente Get(string id)
+        public Client Get(string id)
         {
-            Lib_Primavera.Model.Cliente cliente = Lib_Primavera.PriIntegration.GetCliente(id);
+            Lib_Primavera.Model.Client cliente = Lib_Primavera.PriIntegration.GetCliente(id);
 
 
             if (cliente == null)
@@ -46,7 +46,7 @@ namespace WebStoreAPI.Controllers
         }
 
 
-        public HttpResponseMessage Post(Lib_Primavera.Model.Cliente cliente)
+        public HttpResponseMessage Post(Lib_Primavera.Model.Client cliente)
         {
             Lib_Primavera.Model.ResponseError erro = new Lib_Primavera.Model.ResponseError();
             erro = Lib_Primavera.PriIntegration.InsereClienteObj(cliente);
@@ -55,7 +55,7 @@ namespace WebStoreAPI.Controllers
             {
                 var response = Request.CreateResponse(
                    HttpStatusCode.Created, cliente);
-                string uri = Url.Link("DefaultApi", new { CodCliente = cliente.CodCliente });
+                string uri = Url.Link("DefaultApi", new { CodCliente = cliente.CodClient });
                 response.Headers.Location = new Uri(uri);
                 return response;
             }
@@ -68,7 +68,7 @@ namespace WebStoreAPI.Controllers
         }
 
 
-        public HttpResponseMessage Put(string id, Lib_Primavera.Model.Cliente cliente)
+        public HttpResponseMessage Put(string id, Lib_Primavera.Model.Client cliente)
         {
 
             Lib_Primavera.Model.ResponseError erro = new Lib_Primavera.Model.ResponseError();

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -64,6 +64,12 @@ namespace WebStoreAPI.Lib_Primavera.Model
             get;
             set;
         }
+
+          public String Armazem
+          {
+              get;
+              set;
+          }
 
 
     }
