@@ -58,11 +58,12 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-
-db.populateProducts(function(resp) {
-  if (resp == 'Products populated')
-    console.log('Products Populated');
+/*
+db.updateTotalSpent('VIDRO-Z', 'Vidro Z- Vidraria Especializada,Lda', function(resp) {
+  if (resp == 'sim')
+    console.log('sim'); 
 });
+*/
 
 // create necessary dirs
 /*

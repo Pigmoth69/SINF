@@ -18,8 +18,24 @@
 					{{/if_less}}
 				</div>
 				<div id="categoryRating" class="row">
-					<span class="col-xs-6">Preco: {{product.Prices.PVP1}}€</span>
-					<span class="col-xs-6">IVA: {{iva}}€</span>
+					{{#if typeOne}}
+						<span class="col-xs-6">Preco: {{product.Prices.PVP1}}€</span>
+					{{/if}}
+					{{#if typeTwo}}
+						<span class="col-xs-6">Preco: {{product.Prices.PVP2}}€</span>
+					{{/if}}
+					{{#if typeThree}}
+						<span class="col-xs-6">Preco: {{product.Prices.PVP3}}€</span>
+					{{/if}}
+					{{#if typeFour}}
+						<span class="col-xs-6">Preco: {{product.Prices.PVP4}}€</span>
+					{{/if}}
+					{{#if typeFive}}
+						<span class="col-xs-6">Preco: {{product.Prices.PVP5}}€</span>
+					{{/if}}
+					{{#if typeSix}}
+						<span class="col-xs-6">Preco: {{product.Prices.PVP6}}€</span>
+					{{/if}}
 				</div>
 				<br>
 				<div id="categoryRating" class="row">
