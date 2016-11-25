@@ -1,0 +1,23 @@
+{{> topbar}}
+<div id="content" class="container">
+	<div id="tabs" class="row">
+		<ul class="nav nav-tabs col-xs-9 col-xs-offset-2">
+			{{#each warehouses}}
+			<li class="armazem" id="Warehouse{{Code}}"><a href="#" onclick="changeToActiveWare('{{Code}}');return false;">Warehouse {{Code}}</a></li>
+			{{/each}}
+		</ul>
+	</div>
+	<!-- ver quais estão ativos, e redirecionar nesse sentido -->
+	<div class="row" id="mainPage">
+		<div id="category" class="col-xs-2">
+			<ul class="nav nav-pills nav-stacked">
+				{{#each families}}
+				<li class="familia" id="Family{{Code}}"><a href="#" onclick="changeToActiveFam('{{Code}}');return false;">{{Code}}</a></li>
+				{{/each}}
+			</ul>
+		</div>
+		<div id="home">
+		</div>
+	</div>
+</div>
+{{> footer}}
