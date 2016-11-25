@@ -70,15 +70,12 @@ function updateTotalSpent(id, nome,next) {
                     next('sim');
             });
         }
-        else {
-            res.render('404');
-        }
     });
 }
 
 function compareLogin(username, password, next){
     console.log("vai comparar " + username + " e " + password);   
-    pool.query('SELECT * FROM User WHERE username = ? AND password = ?', [username, password], function(err, rows, fields){
+    pool.query('SELECT * FROM User WHERE idUser = ? AND password = ?', [username, password], function(err, rows, fields){
         if(typeof next === 'function')
             next(rows);
         if(err){
