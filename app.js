@@ -30,6 +30,12 @@ hbs.registerHelper('if_less', function(a, b, opts) {
     else opts.inverse(this);
 });
 
+hbs.registerHelper('if_eq', function(a, b, opts) {
+    if (a == b) 
+      return opts.fn(this);
+    else opts.inverse(this);
+});
+
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public','images','ico', 'favicon.png')));
 app.use(logger('dev'));

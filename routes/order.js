@@ -7,41 +7,47 @@ var pdf = require('html-pdf');
 var path = require('path');
 var mime = require('mime');
 
-var user = "ALCAD";
 
 router.get('/', function (req, res) {
-    var orderURL = "http://localhost:49822/api/orders?client=" + user;
-    request.get({ url: orderURL, proxy: 'http://localhost:49822' }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var ordersJ = JSON.parse(body);
-            res.render('order', { orders: ordersJ });
-        }
-        else {
-            res.render('404');
-        }
-    });
+
+    res.redirect('1');
 
 });
 
 router.get('/:page', function (req, res) {
-    var pagina = req.params.page;
-    /*
-    var orderURL = "http://localhost:49822/api/orders?client=" + user;
-    request.get({ url: orderURL, proxy: 'http://localhost:49822' }, function (error, response, body) {
+    var user = req.session.user;
+    var numPerPage = 10;
+    console.log(req.params.page);
+    var orderURL = "http://localhost:49822/api/orders/" + user + "?page=" + req.params.page + "&numperpage=" + numPerPage;
+    var orderURL2 = "http://localhost:49822/api/orders/" + user + "/total";
+    request.get({ url: orderURL, proxy: 'http://localhost:49822' }, function (error, response, orders) {
         if (!error && response.statusCode == 200) {
-            var ordersJ = JSON.parse(body);
-            res.render('order', { orders: ordersJ });
+            console.log(user);
+            request.get({ url: orderURL2, proxy: 'http://localhost:49822' }, function (error, response, total) {
+                if (!error && response.statusCode == 200) {
+                    console.log(numPerPage);
+                    var ordersJ = JSON.parse(orders);
+                    var totalJ = JSON.parse(total); 
+                    res.render('order', { orders: ordersJ , total: totalJ});
+                }
+                else {
+                    res.render('404');
+                }
+            });
         }
-        else {
+        else{
             res.render('404');
-        }
+        }    
     });
-    */
+    var pagina = req.params.page;
+    
+    
 
 });
 
 router.get('/pdf/:idOrder', function (req, res) {
     var order = req.params.idOrder;
+    var user = req.session.user;
 
     var orderURL = "http://localhost:49822/api/orders/" + user + "?orderId=" + order;
     request.get({ url: orderURL, proxy: 'http://localhost:49822' }, function (error, response, body) {
