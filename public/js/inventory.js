@@ -145,7 +145,6 @@ function addProductsWebPage(products, imgs) {
             temp += "<div>";
             temp += "<span style='height:60px; overflow:hidden;' class='productName col-xs-8'>" + products[i].Description + "</span>";
             temp += "</div>";
-            console.log(products[i].typeUser);
             if (products[i].Discount > 0) { // tem desconto
                 switch (products[i].typeUser) {
                     case 1:
@@ -199,7 +198,9 @@ function addProductsWebPage(products, imgs) {
 
             temp += "</div>";
             temp += "</div>";
-            temp += "<button class='row'>Add To Cart</button>";
+            if (products[i].StkActual > 0)
+                temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
+            else temp += "<span class='row'>No Stock</span>";
             temp += "</div>";
         }
         else if (j == 3) { // fechar a row inicial
@@ -235,7 +236,6 @@ function addProductsWebPage(products, imgs) {
                         temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP6 * products[i].Discount) + "€</h4></div>";
                         break;
                     default:
-                        console.log("entrou");
                         temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
                         break;
                 }
@@ -268,7 +268,9 @@ function addProductsWebPage(products, imgs) {
 
             temp += "</div>";
             temp += "</div>";
-            temp += "<button class='row'>Add To Cart</button>";
+            if (products[i].StkActual > 0)
+                temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
+            else temp += "<span class='row'>No Stock</span>";
             temp += "</div>";
             temp += "</div>"; //fechar a row
             temp += "<br>";
@@ -340,7 +342,9 @@ function addProductsWebPage(products, imgs) {
 
             temp += "</div>";
             temp += "</div>";
-            temp += "<button class='row'>Add To Cart</button>";
+            if (products[i].StkActual > 0)
+                temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
+            else temp += "<span class='row'>No Stock</span>";
             temp += "</div>";
         }
     }
@@ -378,10 +382,10 @@ function searchProduct() {
     });
 }
 
-function teste() {
-    $.blockUI();
-    $.get("http://localhost:3000/populateTotalSpent/", function (data) {
-        console.log(data);
-        $.unblockUI();
-    });
+function callProduct(idP) {
+    window.location.href = "/addProductToCart/" + idP;
+}
+
+function removeProduct(idP) {
+    window.location.href = "/removeProductFromCart/" + idP + "/" + $('#'+idP).find(":selected").text();
 }

@@ -25,15 +25,47 @@ app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/partials');
 
 hbs.registerHelper('if_less', function(a, b, opts) {
+    a = a + 0;
+    console.log(a);
+    console.log(b);
     if (a < b) 
       return opts.fn(this);
     else opts.inverse(this);
 });
 
 hbs.registerHelper('if_eq', function(a, b, opts) {
+  console.log(a);
+  console.log(b);
     if (a == b) 
       return opts.fn(this);
     else opts.inverse(this);
+});
+
+hbs.registerHelper('times', function(n, block) {
+    var accum = '';
+    for(var i = 0; i < n; ++i)
+        accum += block.fn(i);
+    return accum;
+});
+
+hbs.registerHelper("repeat", function (times, opts) {
+    var out = "";
+    var i;
+    var data = {};
+
+    if ( times ) {
+        for (i = 1; i <= times; i += 1 ) {
+            data.index = i;
+            out += opts.fn(this, {
+                data: data
+            });
+        }
+    } else {
+
+        out = opts.inverse(this);
+    }
+
+    return out;
 });
 
 // uncomment after placing your favicon in /public

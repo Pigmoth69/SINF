@@ -50,7 +50,7 @@ function getProducts(next) {
     });
 }
 
-function updateTotalSpent(id, nome,next) {
+function updateTotalSpent(id, nome, next) {
     var war = "http://localhost:49822/api/orders?client=" + id;
     request.get({ url: war, proxy: 'http://localhost:49822' }, function (error, response, re) {
         if (!error && response.statusCode == 200) {
@@ -62,7 +62,7 @@ function updateTotalSpent(id, nome,next) {
                     console.log(re1[j].LinhasDoc[i].TotalILiquido);
                     spent = spent + re1[j].LinhasDoc[i].TotalILiquido;
                 }
-                
+
             }
             //console.log(temp[i]);
             pool.query('INSERT INTO User (idUser, username, password, totalGasto) VALUES(?, ?, \'teste\', ?)', [id, nome, spent], function (err, rows, fields) {
@@ -73,16 +73,107 @@ function updateTotalSpent(id, nome,next) {
     });
 }
 
-function compareLogin(username, password, next){
-    console.log("vai comparar " + username + " e " + password);   
-    pool.query('SELECT * FROM User WHERE idUser = ? AND password = ?', [username, password], function(err, rows, fields){
-        if(typeof next === 'function')
+function compareLogin(idUser, password, next) {
+    pool.query('SELECT * FROM User WHERE idUser = ? AND password = ?', [idUser, password], function (err, rows, fields) {
+        if (typeof next === 'function')
             next(rows);
-        if(err){
+        if (err) {
             console.log("PEIDO");
             throw err;
         }
     });
 }
 
-module.exports = { populateProducts, getProducts, updateTotalSpent, populateClients, compareLogin};
+function addProductToCart(idP, idU, next) {
+    //check if user has a cart created in the database
+    pool.query('SELECT * FROM Carrinho WHERE idUser = ?', idU, function (err, rows, fields) {
+        if (rows[0] == undefined) { // criar carrinho
+            pool.query('INSERT INTO Carrinho (idUser) VALUES(?)', idU, function (err, rows, fields) {
+                auxAddProductToCart(idP, idU, rows.insertId, function (suc) {
+                    if (typeof next == 'function')
+                        next(suc);
+                });
+            });
+        }
+        else { //tem carrinho
+            auxAddProductToCart(idP, idU, rows[0].idCarrinho, function (suc) {
+                if (typeof next == 'function')
+                    next(suc);
+            });
+        }
+    });
+}
+
+function getCart(idU, next) {
+    pool.query('SELECT * FROM Carrinho WHERE idUser = ?', idU, function (err, rows, fields) {
+        if (rows[0] == undefined) {
+            if (typeof next == 'function')
+                next('no carrinho');
+        }
+        else {
+            pool.query('SELECT * FROM ProdutoCarrinho WHERE idCarrinho = ?', rows[0].idCarrinho, function (err, rows, fields) {
+                if (rows.length > 0) { // tem merdas no carrinho
+                    if (typeof next == 'function')
+                        next(rows);
+                }
+                else {
+                    if (typeof next == 'function')
+                        next('sem merdas no carrinho');
+                }
+            });
+        }
+    });
+}
+
+function auxAddProductToCart(idP, idU, idC, next) {
+    //ver se já lá tem algum produto igual
+    pool.query('SELECT * FROM ProdutoCarrinho WHERE idProdutoPrimavera = ? AND idCarrinho = ?', [idP, idC], function (err, rows, fields) {
+        if (rows.length > 0) { //adicionar um
+            pool.query('UPDATE ProdutoCarrinho SET quantidade = quantidade + 1 WHERE idProdutoCarrinho = ?', rows[0].idProdutoCarrinho, function (err, rows, fields) {
+                if (typeof next == 'function')
+                    next('success');
+            });
+        }
+        else { // criar produto no carrinho
+            pool.query('INSERT INTO ProdutoCarrinho(idCarrinho, idProdutoPrimavera, quantidade) VALUES(?,?, 1)', [idC, idP], function (err, rows, fields) {
+                if (typeof next == 'function')
+                    next('success');
+            });
+        }
+    });
+}
+
+function removeProductFromCart(idP, idU, quant, next) {
+    pool.query('SELECT * FROM Carrinho WHERE idUser = ?', idU, function(err, rows, fields) {
+        if (rows.length > 0) {
+            pool.query('SELECT * FROM ProdutoCarrinho WHERE idCarrinho = ? AND idProdutoPrimavera = ?', [rows[0].idCarrinho, idP], function(err, prods, fields) {
+                if (prods.length > 0) {
+                    console.log(quant);
+                    console.log(prods);
+                    if (prods[0].quantidade > quant) { // retirar quantidade
+                        pool.query('UPDATE ProdutoCarrinho SET quantidade = ? WHERE idProdutoCarrinho = ?', [prods[0].quantidade - quant, prods[0].idProdutoCarrinho], function(err, row, fields) {
+                            if (typeof next == 'function')
+                                next('sem problema');
+                        });
+                    }
+                    else { //apagar
+                        pool.query('DELETE FROM ProdutoCarrinho WHERE idCarrinho = ? AND idProdutoPrimavera = ?', [rows[0].idCarrinho, idP], function(err, row, fields) {
+                            if (typeof next == 'function')
+                                next('sem problema');
+                        });
+                    }
+                }
+                else {
+                    if (typeof next == 'function')
+                        next('problema');
+                }
+            });
+        }  
+        else {
+            if (typeof next == 'function')
+                next('problem');
+        }
+    });
+}
+
+module.exports = { populateProducts, getProducts, updateTotalSpent, populateClients, compareLogin, addProductToCart, getCart, removeProductFromCart};
