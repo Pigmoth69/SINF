@@ -836,7 +836,7 @@ namespace WebStoreAPI.Lib_Primavera
             }
 
 
-            string st = "WITH Orders AS (SELECT ROW_NUMBER() OVER (ORDER BY id) AS RowNum,id,Entidade,Data,NumDoc,TotalMerc,Serie FROM CabecDoc where TipoDoc='ECL' and Entidade='" + client + "') SELECT * FROM Orders WHERE  RowNum >= (" + page + "- 1) * "+numperpage+"  AND RowNum <= ("+page+") * "+numperpage+";";
+            string st = "WITH Orders AS (SELECT ROW_NUMBER() OVER (ORDER BY id) AS RowNum,id,Entidade,Data,NumDoc,TotalMerc,Serie FROM CabecDoc where TipoDoc='ECL' and Entidade='" + client + "') SELECT * FROM Orders WHERE  RowNum >= (" + (page-1) + ") * "+numperpage+"  AND RowNum <= ("+page+") * "+numperpage+";";
             objListCab = PriEngine.Engine.Consulta(st);
 
             while (!objListCab.NoFim())
