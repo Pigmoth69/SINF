@@ -6,7 +6,6 @@
 </head>
 
 	<ul class="breadcrumb" id="checkoutBreadcrumb">
-		<li><a href="/login">Login</a></li>
 		<li><a href="#" onclick="addressBox();return false;" >Address</a></li>
 		<li><a href="#" onclick="shipmentBox();return false;">Shipment</a></li>
 		<li><a href="#" onclick="paymentBox();return false;">Payment</a></li>
@@ -18,12 +17,12 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="list-group">
-                      <a href="#" class="list-group-item">First item: 12.0$</a>
-                      <a href="#" class="list-group-item">Second item: 18.0$</a>
-                      <a href="#" class="list-group-item">Third item: 14.0$</a>
-                      <a href="#" class="list-group-item">CTT Económico: 0.0$</a>
+                    {{#each cart}}
+                      <a href="#" class="list-group-item">{{quantidade}} x {{Description}}: {{Price}}€</a>
+                    {{/each}}
+                    <a href="#" class="list-group-item" id="shipmentOptionConfirm">CTT Económico: 0.0$</a>
                     </div>
-                    <p>Final Price is: 44.0$</p>
+                    <p>Final Price is: {{total}}€</p>
                 </div>
             </div>
             <br>
@@ -36,7 +35,7 @@
             <br>
             <div class="row">
                 <div class="col-xs-4 col-xs-offset-4">
-                    <button>Payment</button>
+                    <button>Confirm</button>
                 </div>
             </div>
         </form>
@@ -64,7 +63,7 @@
             <br>
             <div class="row">
                 <div class="col-xs-4 col-xs-offset-4">
-                    <button>Payment</button>
+                    <button onclick="paymentBox(); return false;">Next</button>
                 </div>
             </div>
         </form>
@@ -106,46 +105,46 @@
 			<br>
 			<div class="row">
 				<div class="col-xs-4 col-xs-offset-4">
-					<button>Payment</button>
+					<button onclick="confirmationBox(); return false;">Next</button>
 				</div>
 			</div>
 		</form>
 	</div>
 
-    <div id="addressBox" clas="container" hidden>
+    <div id="addressBox" clas="container">
 		<form id="addressForm">
 			<div class="row">
 				<div class="col-xs-12">
                     <p>Address Line 1: </p>
-                    <input type="text" placeholder="Street address, P.O. box, company name, c/o" name="addressLine1" required>
+                    <input type="text" placeholder="Street address, P.O. box, company name, c/o" name="addressLine1" value="{{userData.Adress}}" required>
 				</div>
 			</div>
 			<br>
 			<div class="row">
 				<div class="col-xs-12">
                     <p>Address Line 2: </p>
-                    <input type="text" placeholder="Apartment, suite , unit, building, floor, etc." name="addressLine2">
+                    <input type="text" placeholder="Apartment, suite , unit, building, floor, etc." name="addressLine2" value="{{userData.Adress2}}">
 				</div>
 			</div>
 			<br>
             <div class="row">
                 <div class="col-xs-12">
                     <p>City/Town: </p>
-                    <input id="city" name="city" type="text" placeholder="City" required>
+                    <input id="city" name="city" type="text" placeholder="City" value="{{userData.Local}}" required>
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-xs-12">
                     <p>State/Province/Region: </p>
-                    <input id="region" name="region" type="text" placeholder="State / Province / Region" required>
+                    <input id="region" name="region" type="text" placeholder="State / Province / Region" value="{{userData.District}}" required>
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-xs-12">
                     <p>Zip/Postal Code: </p>
-                    <input id="postal-code" name="postal-code" type="text" placeholder="Zip or Postal Code" required>
+                    <input id="postal-code" name="postal-code" type="text" placeholder="Zip or Postal Code" value="{{userData.PostCode}}" required>
                 </div>
             </div>
             <br>
@@ -412,7 +411,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-4 col-xs-offset-4">
-					<button>Payment</button>
+					<button onclick="shipmentBox(); return false;">Next</button>
 				</div>
 			</div>
 		</form>
