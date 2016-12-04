@@ -662,7 +662,7 @@ namespace WebStoreAPI.Lib_Primavera
             Model.LinhaDocVenda lindv = new Model.LinhaDocVenda();
             List<Model.LinhaDocVenda> listlindv = new List<Model.LinhaDocVenda>();
 
-
+                double TotalMercReal = 0;
                 string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
                 objListCab = PriEngine.Engine.Consulta(st);
                 dv = new Model.DocVenda();
@@ -672,7 +672,7 @@ namespace WebStoreAPI.Lib_Primavera
                 dv.Data = objListCab.Valor("Data");
                 dv.TotalMerc = objListCab.Valor("TotalMerc");
                 dv.Serie = objListCab.Valor("Serie");
-                objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido from LinhasDoc where IdCabecDoc='" + dv.id + "' order By NumLinha");
+                objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, TotalDC, TotalDA, TotalIva from LinhasDoc where IdCabecDoc='" + dv.id + "' order By NumLinha");
                 listlindv = new List<Model.LinhaDocVenda>();
 
                 while (!objListLin.NoFim())
@@ -687,10 +687,15 @@ namespace WebStoreAPI.Lib_Primavera
                     lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                     lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
                     lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                    lindv.TotalDescArtigo = objListLin.Valor("TotalDA");
+                    lindv.TotalDescontoCliente = objListLin.Valor("TotalDC");
+                    lindv.IvaTotal = objListLin.Valor("TotalIva");
+                    TotalMercReal += lindv.TotalLiquido + lindv.IvaTotal;
                     listlindv.Add(lindv);
                     objListLin.Seguinte();
                 }
 
+                dv.TotalRealMerc = TotalMercReal;
                 dv.LinhasDoc = listlindv;
                 return dv;
             

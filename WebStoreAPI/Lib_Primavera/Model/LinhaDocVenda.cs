@@ -20,21 +20,36 @@ namespace WebStoreAPI.Lib_Primavera.Model
             get;
             set;
         }
-
+         public double TotalDescArtigo
+         {
+             get;
+             set;
+         }
+         public double TotalDescontoCliente
+         {
+             get;
+             set;
+         }
+         public double IvaTotal
+         {
+             get;
+             set;
+         }
          public string IdCabecDoc
          {
              get;
              set;
          }
-
-
-
+         public double TotalRealMerc
+         {
+             get;
+             set;
+         }
          public double Quantidade
         {
             get;
             set;
         }
-
          public string Unidade
         {
             get;

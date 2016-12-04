@@ -44,6 +44,12 @@ namespace WebStoreAPI.Lib_Primavera.Model
             set;
         }
 
+        public double TotalRealMerc
+        {
+            get;
+            set;
+        }
+
         public List<Model.LinhaDocVenda> LinhasDoc
         {
             get;
