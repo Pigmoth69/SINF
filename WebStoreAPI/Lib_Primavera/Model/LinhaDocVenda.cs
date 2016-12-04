@@ -40,11 +40,6 @@ namespace WebStoreAPI.Lib_Primavera.Model
              get;
              set;
          }
-         public double TotalRealMerc
-         {
-             get;
-             set;
-         }
          public double Quantidade
         {
             get;
@@ -79,6 +74,11 @@ namespace WebStoreAPI.Lib_Primavera.Model
             get;
             set;
         }
+          public double TotalPrecoArtigo
+          {
+              get;
+              set;
+          }
 
           public String Armazem
           {

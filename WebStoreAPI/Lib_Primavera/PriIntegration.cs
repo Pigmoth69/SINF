@@ -690,6 +690,7 @@ namespace WebStoreAPI.Lib_Primavera
                     lindv.TotalDescArtigo = objListLin.Valor("TotalDA");
                     lindv.TotalDescontoCliente = objListLin.Valor("TotalDC");
                     lindv.IvaTotal = objListLin.Valor("TotalIva");
+                    lindv.TotalPrecoArtigo = lindv.TotalLiquido + lindv.IvaTotal;
                     TotalMercReal += lindv.TotalLiquido + lindv.IvaTotal;
                     listlindv.Add(lindv);
                     objListLin.Seguinte();
