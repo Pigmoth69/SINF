@@ -17,18 +17,28 @@ router.get('/', function (req, res) {
 router.get('/:page', function (req, res) {
     var user = req.session.user;
     var numPerPage = 10;
-    console.log(req.params.page);
+    console.log(req.session);
     var orderURL = "http://localhost:49822/api/orders/" + user + "?page=" + req.params.page + "&numperpage=" + numPerPage;
     var orderURL2 = "http://localhost:49822/api/orders/" + user + "/total";
     request.get({ url: orderURL, proxy: 'http://localhost:49822' }, function (error, response, orders) {
+
         if (!error && response.statusCode == 200) {
             console.log(user);
             request.get({ url: orderURL2, proxy: 'http://localhost:49822' }, function (error, response, total) {
                 if (!error && response.statusCode == 200) {
-                    console.log(numPerPage);
                     var ordersJ = JSON.parse(orders);
                     var totalJ = JSON.parse(total); 
-                    res.render('order', { orders: ordersJ , total: totalJ});
+                    var totalP = Math.ceil(totalJ/10);
+                    var page = req.params.page;
+                    var pagei = page;
+                    var pagel = page;
+
+                    if (page > 1)
+                        pagei--;
+
+                    if (page < totalP)
+                        pagel = parseInt(page) + 1;
+                    res.render('order', { orders: ordersJ , totalPage: totalP, page: req.params.page, pageA: pagel, pageB:pagei});
                 }
                 else {
                     res.render('404');

@@ -1,11 +1,7 @@
 <div id="pagDiv">
   <ul class="pagination">
-    <li><a id="pag0" class="active" href="0" onclick="changePage(0)">&laquo;</a></li>
-    {{#if page 1}}
-    <li><a id="pag1" href="1" class="active" onclick="changePage(1)">1</a></li>
-    {{else}}
+    <li><a id="pag0" href="0" onclick="changePage(0)">&laquo;</a></li>
     <li><a id="pag1" href="1" onclick="changePage(1)">1</a></li>
-    {{/if_eq}}
     <li><a id="pag2" href="2" onclick="changePage(2)">2</a></li>
     <li><a id="pag3" href="3" onclick="changePage(3)">3</a></li>
     <li><a id="pag4" href="4" onclick="changePage(4)">4</a></li>

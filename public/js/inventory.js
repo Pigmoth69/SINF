@@ -5,7 +5,7 @@ function changeToActiveWare(code) {
 
     var wasActive = false;
     var url;
-    var url_db = "http://localhost:3000/database/products";;
+    var url_db = "http://localhost:3000/database/products";
 
     if ($(temp).attr("class") == 'armazem active') {
         $(temp).removeClass("active");
@@ -130,6 +130,7 @@ function addProductsWebPage(products, imgs) {
     $("#products").remove();
     $("#home").append("<div id='products' class='col-xs-10'></div>");
     var temp = "";
+
     products = addImagesToProducts(products, imgs);
     for (var i = 0; i < products.length; i++ , j++) {
         if (j == 0) { //acrescentar a row inicial
@@ -137,7 +138,7 @@ function addProductsWebPage(products, imgs) {
             temp += "<div class='product col-xs-2'>";
             temp += "<div class='clickableProduct'>";
             temp += "<a href='/product/" + products[i].Code + "'>";
-            temp += "<img src='/images/"; 
+            temp += "<img src='/images/";
             temp += products[i].Imagem;
             temp += "' alt='product image' class='row'></a>";
             temp += "<div class='productInfo row'>";
@@ -146,65 +147,67 @@ function addProductsWebPage(products, imgs) {
             temp += "</div>";
             if (products[i].Discount > 0) { // tem desconto
                 switch (products[i].typeUser) {
-                    case '1':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
-                    break;
-                    case '2':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP2 * products[i].Discount) + "€</h4></div>";
-                    break;
-                    case '3':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP3 * products[i].Discount) + "€</h4></div>";
-                    break;
-                    case '4':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP4 * products[i].Discount) + "€</h4></div>";
-                    break;
-                    case '5':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP5 * products[i].Discount) + "€</h4></div>";
-                    break;
-                    case '6':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP6 * products[i].Discount) + "€</h4></div>";
-                    break;
+                    case 1:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
+                        break;
+                    case 2:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP2 * products[i].Discount) + "€</h4></div>";
+                        break;
+                    case 3:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP3 * products[i].Discount) + "€</h4></div>";
+                        break;
+                    case 4:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP4 * products[i].Discount) + "€</h4></div>";
+                        break;
+                    case 5:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP5 * products[i].Discount) + "€</h4></div>";
+                        break;
+                    case 6:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP6 * products[i].Discount) + "€</h4></div>";
+                        break;
                     default:
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
-                    break;
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
+                        break;
                 }
             }
             else {
                 switch (products[i].typeUser) {
-                    case '1':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
-                    break;
-                    case '2':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP2) + "€</h3></div>";
-                    break;
-                    case '3':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP3) + "€</h3></div>";
-                    break;
-                    case '4':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP4) + "€</h3></div>";
-                    break;
-                    case '5':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP5) + "€</h3></div>";
-                    break;
-                    case '6':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP6) + "€</h3></div>";
-                    break;
+                    case 1:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
+                        break;
+                    case 2:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP2) + "€</h3></div>";
+                        break;
+                    case 3:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP3) + "€</h3></div>";
+                        break;
+                    case 4:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP4) + "€</h3></div>";
+                        break;
+                    case 5:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP5) + "€</h3></div>";
+                        break;
+                    case 6:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP6) + "€</h3></div>";
+                        break;
                     default:
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
-                    break;
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
+                        break;
                 }
             }
 
             temp += "</div>";
             temp += "</div>";
-            temp += "<button class='row'>Add To Cart</button>";
+            if (products[i].StkActual > 0)
+                temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
+            else temp += "<span class='row'>No Stock</span>";
             temp += "</div>";
         }
         else if (j == 3) { // fechar a row inicial
             temp += "<div class='product col-xs-2 col-xs-offset-1'>";
             temp += "<div class='clickableProduct'>";
             temp += "<a href='/product/" + products[i].Code + "'>";
-            temp += "<img src='/images/"; 
+            temp += "<img src='/images/";
             temp += products[i].Imagem;
             temp += "' alt='product image' class='row'></a>";
             temp += "<div class='productInfo row'>";
@@ -214,58 +217,60 @@ function addProductsWebPage(products, imgs) {
             var temp1 = products[i].Prices.PVP1 + "";
             if (products[i].Discount > 0) { // tem desconto 
                 switch (products[i].typeUser) {
-                    case '1':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
-                    break;
-                    case '2':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP2 * products[i].Discount) + "€</h4></div>";
-                    break;
-                    case '3':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP3 * products[i].Discount) + "€</h4></div>";
-                    break;
-                    case '4':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP4 * products[i].Discount) + "€</h4></div>";
-                    break;
-                    case '5':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP5 * products[i].Discount) + "€</h4></div>";
-                    break;
-                    case '6':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP6 * products[i].Discount) + "€</h4></div>";
-                    break;
+                    case 1:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
+                        break;
+                    case 2:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP2 * products[i].Discount) + "€</h4></div>";
+                        break;
+                    case 3:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP3 * products[i].Discount) + "€</h4></div>";
+                        break;
+                    case 4:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP4 * products[i].Discount) + "€</h4></div>";
+                        break;
+                    case 5:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP5 * products[i].Discount) + "€</h4></div>";
+                        break;
+                    case 6:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP6 * products[i].Discount) + "€</h4></div>";
+                        break;
                     default:
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
-                    break;
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
+                        break;
                 }
             }
             else {
                 switch (products[i].typeUser) {
-                    case '1':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
-                    break;
-                    case '2':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP2) + "€</h3></div>";
-                    break;
-                    case '3':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP3) + "€</h3></div>";
-                    break;
-                    case '4':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP4) + "€</h3></div>";
-                    break;
-                    case '5':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP5) + "€</h3></div>";
-                    break;
-                    case '6':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP6) + "€</h3></div>";
-                    break;
+                    case 1:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
+                        break;
+                    case 2:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP2) + "€</h3></div>";
+                        break;
+                    case 3:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP3) + "€</h3></div>";
+                        break;
+                    case 4:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP4) + "€</h3></div>";
+                        break;
+                    case 5:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP5) + "€</h3></div>";
+                        break;
+                    case 6:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP6) + "€</h3></div>";
+                        break;
                     default:
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
-                    break;
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
+                        break;
                 }
             }
 
             temp += "</div>";
             temp += "</div>";
-            temp += "<button class='row'>Add To Cart</button>";
+            if (products[i].StkActual > 0)
+                temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
+            else temp += "<span class='row'>No Stock</span>";
             temp += "</div>";
             temp += "</div>"; //fechar a row
             temp += "<br>";
@@ -276,7 +281,7 @@ function addProductsWebPage(products, imgs) {
             temp += "<div class='product col-xs-2 col-xs-offset-1'>";
             temp += "<div class='clickableProduct'>";
             temp += "<a href='/product/" + products[i].Code + "'>";
-            temp += "<img src='/images/"; 
+            temp += "<img src='/images/";
             temp += products[i].Imagem;
             temp += "' alt='product image' class='row'></a>";
             temp += "<div class='productInfo row'>";
@@ -286,58 +291,60 @@ function addProductsWebPage(products, imgs) {
             var temp1 = products[i].Prices.PVP1 + "";
             if (products[i].Discount > 0) { // tem desconto 
                 switch (products[i].typeUser) {
-                    case '1':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
-                    break;
-                    case '2':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP2 * products[i].Discount) + "€</h4></div>";
-                    break;
-                    case '3':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP3 * products[i].Discount) + "€</h4></div>";
-                    break;
-                    case '4':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP4 * products[i].Discount) + "€</h4></div>";
-                    break;
-                    case '5':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP5 * products[i].Discount) + "€</h4></div>";
-                    break;
-                    case '6':
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP6 * products[i].Discount) + "€</h4></div>";
-                    break;
+                    case 1:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
+                        break;
+                    case 2:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP2 * products[i].Discount) + "€</h4></div>";
+                        break;
+                    case 3:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP3 * products[i].Discount) + "€</h4></div>";
+                        break;
+                    case 4:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP4 * products[i].Discount) + "€</h4></div>";
+                        break;
+                    case 5:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP5 * products[i].Discount) + "€</h4></div>";
+                        break;
+                    case 6:
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP6 * products[i].Discount) + "€</h4></div>";
+                        break;
                     default:
-                    temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
-                    break;
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
+                        break;
                 }
             }
             else {
                 switch (products[i].typeUser) {
-                    case '1':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
-                    break;
-                    case '2':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP2) + "€</h3></div>";
-                    break;
-                    case '3':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP3) + "€</h3></div>";
-                    break;
-                    case '4':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP4) + "€</h3></div>";
-                    break;
-                    case '5':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP5) + "€</h3></div>";
-                    break;
-                    case '6':
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP6) + "€</h3></div>";
-                    break;
+                    case 1:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
+                        break;
+                    case 2:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP2) + "€</h3></div>";
+                        break;
+                    case 3:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP3) + "€</h3></div>";
+                        break;
+                    case 4:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP4) + "€</h3></div>";
+                        break;
+                    case 5:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP5) + "€</h3></div>";
+                        break;
+                    case 6:
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP6) + "€</h3></div>";
+                        break;
                     default:
-                    temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
-                    break;
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
+                        break;
                 }
             }
 
             temp += "</div>";
             temp += "</div>";
-            temp += "<button class='row'>Add To Cart</button>";
+            if (products[i].StkActual > 0)
+                temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
+            else temp += "<span class='row'>No Stock</span>";
             temp += "</div>";
         }
     }
@@ -346,12 +353,19 @@ function addProductsWebPage(products, imgs) {
 
 function addImagesToProducts(products, images) {
     var temp = products;
-    for (var i = 0; i < temp.length; i++) {
-        for (var j = 0; j < images.length; j++) {
-            if (temp[i].Code == images[j].idProdutoPrimavera) {
-                temp[i].Imagem = images[j].imagem;
-                j = images.length;
-            }   
+    if (images != null) {
+        for (var i = 0; i < temp.length; i++) {
+            for (var j = 0; j < images.length; j++) {
+                if (temp[i].Code == images[j].idProdutoPrimavera) {
+                    temp[i].Imagem = images[j].imagem;
+                    j = images.length;
+                }
+            }
+        }
+    }
+    else {
+        for (var i = 0; i < temp.length; i++) {
+            temp[i].Imagem = 'product.png';
         }
     }
     return temp;
@@ -368,10 +382,10 @@ function searchProduct() {
     });
 }
 
-function teste() {
-    $.blockUI();
-    $.get("http://localhost:3000/populateTotalSpent/", function (data) {
-        console.log(data);
-        $.unblockUI();
-    });
+function callProduct(idP) {
+    window.location.href = "/addProductToCart/" + idP;
+}
+
+function removeProduct(idP) {
+    window.location.href = "/removeProductFromCart/" + idP + "/" + $('#'+idP).find(":selected").text();
 }

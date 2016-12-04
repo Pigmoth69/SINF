@@ -86,24 +86,24 @@ router.get('/database/products', function (req, res) {
     });
 });
 
-router.post('/login', function(req, res, next){
+router.post('/login', function (req, res, next) {
     console.log("entra aqui " + req.body.username + " e " + req.body.password);
-    if(req.session.user === undefined){
-        db.compareLogin(req.body.username, req.body.password, function(rows){
-            if(rows[0] != undefined){
+    if (req.session.user === undefined) {
+        db.compareLogin(req.body.username, req.body.password, function (rows) {
+            if (rows[0] != undefined) {
                 req.session.user = rows[0].idUser;
                 req.session.name = rows[0].username;
                 req.session.typeUser = rows[0].tipo;
                 console.log("login correto");
                 res.redirect('/');
-            }else{
+            } else {
                 console.log("credenciais erradas");
                 res.redirect('/login');
             }
-            
-            
+
+
         });
-    }else{
+    } else {
         console.log("already logged in");
         res.redirect('/login');
     }
@@ -123,6 +123,38 @@ router.get('/search/:query', function (req, res) {
             res.render('404');
         }
     });
+});
+
+router.get('/addProductToCart/:idP', function (req, res) {
+    if (req.session.user == undefined) {
+        res.redirect('/login');
+    }
+    else {
+        db.addProductToCart(req.params.idP, req.session.user, function (suc) {
+            if (suc == 'success') {
+                res.redirect('/cart');
+            }
+            else {
+                res.render('404');
+            }
+        });
+    }
+});
+
+router.get('/removeProductFromCart/:idP/:quant', function (req, res) {
+    if (req.session.user == undefined) {
+        res.redirect('/login');
+    }
+    else {
+        db.removeProductFromCart(req.params.idP, req.session.user, req.params.quant, function (suc) {
+            if (suc == 'sem problema') {
+                res.redirect('/cart');
+            }
+            else {
+                res.render('404');
+            }
+        });
+    }
 });
 
 

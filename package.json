@@ -7,6 +7,7 @@
     "debug": "node --debug ./bin/www"
   },
   "dependencies": {
+    "async": "^2.1.4",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
@@ -15,8 +16,10 @@
     "express-busboy": "^4.0.0",
     "express-session": "^1.14.1",
     "hbs": "^4.0.1",
+    "html-pdf": "^2.1.0",
     "morgan": "^1.7.0",
     "mysql": "^2.11.1",
+    "pdfkit": "^0.8.0",
     "request": "^2.79.0",
     "serve-favicon": "^2.3.0"
   }
