@@ -26,6 +26,14 @@
         {{/each}}
   </tbody>
 </table>
+
+<div id="pagDiv">
+  <ul class="pagination">
+    <li><a id="pag{{pageB}}" href="{{pageB}}">&laquo;</a></li>
+    <li><a id="pag{{page}}" class="active">{{page}}</a></li>
+    <li><a id="pag{{pageA}}" href="{{pageA}}" >&raquo;</a></li>
+  </ul>
+</div>
+
 <script src="/js/order.js"></script>
-{{> pagination}}
 {{> footer}}

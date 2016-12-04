@@ -26,10 +26,19 @@ router.get('/:page', function (req, res) {
             console.log(user);
             request.get({ url: orderURL2, proxy: 'http://localhost:49822' }, function (error, response, total) {
                 if (!error && response.statusCode == 200) {
-                    console.log(numPerPage);
                     var ordersJ = JSON.parse(orders);
                     var totalJ = JSON.parse(total); 
-                    res.render('order', { orders: ordersJ , total: totalJ});
+                    var totalP = Math.ceil(totalJ/10);
+                    var page = req.params.page;
+                    var pagei = page;
+                    var pagel = page;
+
+                    if (page > 1)
+                        pagei--;
+
+                    if (page < totalP)
+                        pagel = parseInt(page) + 1;
+                    res.render('order', { orders: ordersJ , totalPage: totalP, page: req.params.page, pageA: pagel, pageB:pagei});
                 }
                 else {
                     res.render('404');

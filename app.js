@@ -68,6 +68,7 @@ hbs.registerHelper("repeat", function (times, opts) {
     return out;
 });
 
+
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public','images','ico', 'favicon.png')));
 app.use(logger('dev'));
