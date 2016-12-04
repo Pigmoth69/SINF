@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var config = require('../config/config.js');
 
 var fs = require('fs');
 var request = require('request');
@@ -18,13 +19,13 @@ router.get('/:page', function (req, res) {
     var user = req.session.user;
     var numPerPage = 10;
     console.log(req.session);
-    var orderURL = "http://localhost:49822/api/orders/" + user + "?page=" + req.params.page + "&numperpage=" + numPerPage;
-    var orderURL2 = "http://localhost:49822/api/orders/" + user + "/total";
-    request.get({ url: orderURL, proxy: 'http://localhost:49822' }, function (error, response, orders) {
+    var orderURL = "http://localhost:"+config.PORT+"/api/orders/" + user + "?page=" + req.params.page + "&numperpage=" + numPerPage;
+    var orderURL2 = "http://localhost:"+config.PORT+"/api/orders/" + user + "/total";
+    request.get({ url: orderURL, proxy: config.PROXY }, function (error, response, orders) {
 
         if (!error && response.statusCode == 200) {
             console.log(user);
-            request.get({ url: orderURL2, proxy: 'http://localhost:49822' }, function (error, response, total) {
+            request.get({ url: orderURL2, proxy: config.PROXY }, function (error, response, total) {
                 if (!error && response.statusCode == 200) {
                     var ordersJ = JSON.parse(orders);
                     var totalJ = JSON.parse(total); 
@@ -59,8 +60,8 @@ router.get('/pdf/:idOrder', function (req, res) {
     var order = req.params.idOrder;
     var user = req.session.user;
 
-    var orderURL = "http://localhost:49822/api/orders/" + user + "?orderId=" + order;
-    request.get({ url: orderURL, proxy: 'http://localhost:49822' }, function (error, response, body) {
+    var orderURL = "http://localhost:"+config.PORT+"/api/orders/" + user + "?orderId=" + order;
+    request.get({ url: orderURL, proxy: config.PROXY }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var orderInfo = JSON.parse(body);
 
