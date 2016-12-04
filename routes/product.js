@@ -2,15 +2,16 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 var db = require('../database/database.js');
+var config = require('../config/config.js');
 
 router.get('/', function (req, res) {
     res.render('product');
 });
 
 router.get('/:idP', function (req, res) {
-    var prodURL = "http://localhost:49822/api/products/" + req.params.idP;
+    var prodURL = "http://localhost:"+config.PORT+"/api/products/" + req.params.idP;
 
-    request.get({ url: prodURL, proxy: 'http://localhost:49822' }, function (error, response, body) {
+    request.get({ url: prodURL, proxy: config.PROXY }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var tempB = JSON.parse(body);
             db.getProducts(function (prods) {

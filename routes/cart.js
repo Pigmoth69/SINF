@@ -3,8 +3,9 @@ var router = express.Router();
 var request = require('request');
 var async = require('async');
 var db = require('../database/database.js');
+var config = require('../config/config.js');
 
-router.get('/', function (req, res) {
+router.get('/', function (req, res) {s
     if (req.session.user == undefined)
         res.redirect('/login');
     else {
@@ -37,8 +38,8 @@ router.get('/', function (req, res) {
                     var total = 0;
                     // adicionar infos de cada produto
                     async.each(temp, function (item, callback) {
-                        var prodURL = "http://localhost:49822/api/products/" + item.idProdutoPrimavera;
-                        request.get({ url: prodURL, proxy: 'http://localhost:49822' }, function (error, response, body) {
+                        var prodURL = "http://localhost:"+ config.PORT + "/api/products/" + item.idProdutoPrimavera;
+                        request.get({ url: prodURL, proxy: config.PROXY }, function (error, response, body) {
                             if (!error && response.statusCode == 200) {
                                 var prod = JSON.parse(body);
                                 item.Description = prod.Description;
@@ -78,10 +79,5 @@ router.get('/', function (req, res) {
         });
     }
 });
-
-function aux() {
-
-}
-
 
 module.exports = router;
