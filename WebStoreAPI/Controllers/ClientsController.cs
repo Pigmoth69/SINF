@@ -92,7 +92,22 @@ namespace WebStoreAPI.Controllers
             }
         }
 
-
+        [Route("api/clients/types")]
+        public HttpResponseMessage GetClientTypes()
+        {
+            List<Lib_Primavera.Model.ClientType> types = null;
+            types = Lib_Primavera.PriIntegration.GetClientTypes();
+            if (types == null)
+            {
+                var message = string.Format("Something went wrong with getting types..");
+                HttpError err = new HttpError(message);
+                return Request.CreateResponse(HttpStatusCode.NotFound, err);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, types);
+            }
+        }
 
         public HttpResponseMessage Delete(string id)
         {

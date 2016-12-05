@@ -30,15 +30,5 @@ namespace WebStoreAPI.Controllers
             }
         }
 
-
-
-
-
-
-
-
-
-
-
     }
 }

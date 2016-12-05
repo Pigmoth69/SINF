@@ -201,7 +201,21 @@ namespace WebStoreAPI.Lib_Primavera
             }
         }
 
-       
+        public static List<Model.ClientType> GetClientTypes()
+        {
+           StdBELista types = PriEngine.Engine.Consulta("SELECT TipoTerceiro,Descricao FROM TipoTerceiros");
+           List<Model.ClientType> res = new List<Model.ClientType>();
+           while (!types.NoFim())
+           {
+               Model.ClientType t = new Model.ClientType();
+               t.Code = types.Valor("TipoTerceiro");
+               t.Description = types.Valor("Descricao");
+               res.Add(t);
+               types.Seguinte();
+           }
+
+           return res;
+        }
 
         #endregion Cliente;   // -----------------------------  END   CLIENTE    -----------------------
 
@@ -946,7 +960,5 @@ namespace WebStoreAPI.Lib_Primavera
 
         #endregion Tests
 
-
-       
     }
 }
