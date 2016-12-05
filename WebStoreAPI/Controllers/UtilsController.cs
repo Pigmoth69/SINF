@@ -46,5 +46,55 @@ namespace WebStoreAPI.Controllers
             }
         }
 
+        [Route("api/utils/paymenttypes")]
+        public HttpResponseMessage GetPaymentTypes()
+        {
+            List<Lib_Primavera.Model.PaymentType> payment = null;
+            payment = Lib_Primavera.PriIntegration.Utils_GetPaymentTypes();
+            if (payment == null)
+            {
+                var message = string.Format("Something went wrong with getting payment types..");
+                HttpError err = new HttpError(message);
+                return Request.CreateResponse(HttpStatusCode.NotFound, err);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, payment);
+            }
+        }
+        [Route("api/utils/paymentways")]
+        public HttpResponseMessage GetPaymentWays()
+        {
+            List<Lib_Primavera.Model.PaymentWay> payment = null;
+            payment = Lib_Primavera.PriIntegration.Utils_GetPaymentWays();
+            if (payment == null)
+            {
+                var message = string.Format("Something went wrong with getting payment ways..");
+                HttpError err = new HttpError(message);
+                return Request.CreateResponse(HttpStatusCode.NotFound, err);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, payment);
+            }
+        }
+        [Route("api/utils/expeditionway")]//[ModosExp]
+        public HttpResponseMessage GetExpeditionWays()
+        {
+            List<Lib_Primavera.Model.ExpeditionWay> exp = null;
+            exp = Lib_Primavera.PriIntegration.Utils_GetExpeditionWays();
+            if (exp == null)
+            {
+                var message = string.Format("Something went wrong with getting expedition ways..");
+                HttpError err = new HttpError(message);
+                return Request.CreateResponse(HttpStatusCode.NotFound, err);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, exp);
+            }
+        }
+
+
     }
 }

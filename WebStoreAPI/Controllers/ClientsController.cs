@@ -59,7 +59,13 @@ namespace WebStoreAPI.Controllers
                 response.Headers.Location = new Uri(uri);
                 return response;
             }
-
+            else if (erro.Erro == 2)
+            {
+                var response = Request.CreateResponse(HttpStatusCode.Conflict, cliente);
+                string uri = Url.Link("DefaultApi", new { CodCliente = cliente.CodClient });
+                response.Headers.Location = new Uri(uri);
+                return response;
+            }
             else
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest);

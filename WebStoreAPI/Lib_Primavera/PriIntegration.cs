@@ -958,6 +958,52 @@ namespace WebStoreAPI.Lib_Primavera
             return dists;
         }
 
+        public static List<Model.PaymentType> Utils_GetPaymentTypes()
+        {
+            List<Model.PaymentType> types = new List<Model.PaymentType>();
+            StdBELista list = PriEngine.Engine.Consulta("SELECT CondPag,Descricao FROM CondPag;");
+            while (!list.NoFim())
+            {
+                Model.PaymentType p = new Model.PaymentType();
+                p.PaymentTypeCode = list.Valor("CondPag");
+                p.PaymentTypeDescription = list.Valor("Descricao");
+                types.Add(p);
+                list.Seguinte();
+            }
+            return types;
+        }
+
+        public static List<Model.PaymentWay> Utils_GetPaymentWays()
+        {
+            //ModoPag
+            List<Model.PaymentWay> payments = new List<Model.PaymentWay>();
+            StdBELista list = PriEngine.Engine.Consulta("SELECT Movim,Descricao FROM DocumentosBancos;");
+            while (!list.NoFim())
+            {
+                Model.PaymentWay w = new Model.PaymentWay();
+                w.PaymentWayCode = list.Valor("Movim");
+                w.PaymentWayDescription = list.Valor("Descricao");
+                payments.Add(w);
+                list.Seguinte();
+            }
+            return payments;
+        }
+
+        public static List<Model.ExpeditionWay> Utils_GetExpeditionWays()
+        {
+            List<Model.ExpeditionWay> ways = new List<Model.ExpeditionWay>();
+            StdBELista list = PriEngine.Engine.Consulta("SELECT ModoExp,Descricao FROM ModosExp;");
+            while (!list.NoFim())
+            {
+                Model.ExpeditionWay expway = new Model.ExpeditionWay();
+                expway.ExpeditionCode = list.Valor("ModoExp");
+                expway.ExpeditionDescription = list.Valor("Descricao");
+                ways.Add(expway);
+                list.Seguinte();
+            }
+            return ways;
+        }
+
         #endregion Utils
 
         #region Tests
@@ -988,5 +1034,9 @@ namespace WebStoreAPI.Lib_Primavera
 
         #endregion Tests
 
+
+
+
+        
     }
 }
