@@ -47,7 +47,11 @@
 				<input id="address" type="text" name="address" placeholder="Address">
 				<br><br>
 				<p>District:</p>
-				<input id="district" type="text" name="district" placeholder="District">
+				<select name="district" id="district">
+					{{#each districts}}
+						<option value="{{DistrictCode}}">{{Description}}</option>
+					{{/each}}
+				</select>
 				<br><br>
 				<p>Local:</p>
 				<input id="local" type="text" name="local" placeholder="Local">

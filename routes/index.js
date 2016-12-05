@@ -133,27 +133,34 @@ router.post('/register', function (req, res, next) {
     form.Phone2 = "undefined";
     form.PostCode = req.body.zip;
     form.TaxpayNumber = req.body.taxpay;
-    
     console.log(form);
+
     if (req.body.password != req.body.password2) {
         res.redirect('/login');
     }
     else {
         db.registerUser(req.body.clientCode, req.body.name, req.body.password, function (rows) {
-            request.post({url: quer, proxy: config.PROXY, headers : [{'Content-Type':'application/json'}], json : form}, function (error, response, body) {
+            request.post({ url: quer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
+                console.log(error);
                 if (!error && response.statusCode == 201) {
-                    var temp = JSON.parse(body);
+                    console.log(response.statusCode);
                     res.redirect('/');
                 }
+                else if (body == 'resposta merda do reis') {
+
+                }
+                else if (body == 'resposta merda do reis 2') {
+
+                }
                 else {
+                    console.log(response.statusCode);
                     res.render('404');
                 }
             });
 
         });
-
     }
-    
+
 });
 
 router.get('/search/:query', function (req, res) {

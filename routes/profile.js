@@ -7,4 +7,8 @@ router.get('/', function(req, res) {
     else res.render('profile');
 });
 
+router.get('/edit', function(req, res) {
+    
+});
+
 module.exports = router;
