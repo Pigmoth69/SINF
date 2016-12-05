@@ -14,7 +14,7 @@ namespace WebStoreAPI.Controllers
         //
         // GET: /Clientes/
 
-        public IEnumerable<Lib_Primavera.Model.SimpleClient> Get()
+        /*public IEnumerable<Lib_Primavera.Model.SimpleClient> Get()
         {
                 return Lib_Primavera.PriIntegration.ListaClientes();
         }
@@ -25,7 +25,7 @@ namespace WebStoreAPI.Controllers
         {
             return Request.CreateResponse(HttpStatusCode.OK,"CARALHOOO");
         }
-
+        */
 
         // GET api/cliente/5    
         public Client Get(string id)

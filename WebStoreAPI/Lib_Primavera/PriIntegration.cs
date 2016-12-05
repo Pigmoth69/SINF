@@ -100,7 +100,13 @@ namespace WebStoreAPI.Lib_Primavera
 
                         objCli = PriEngine.Engine.Comercial.Clientes.Edita(cliente.CodClient);
                         objCli.set_EmModoEdicao(true);
-
+                        //client type | Nome | NomeFIscal | Address | Adress2 | Country | District | email | Expedition way | Loca | Num contri | Payment type | Payment way | phone | phone2 | postcode  menos o client discount
+                        
+                        
+                        
+                        
+                        
+                        
                         objCli.set_Nome(cliente.NameClient);
                         objCli.set_NumContribuinte(cliente.TaxpayNumber);
                         objCli.set_Moeda(cliente.Currency);
@@ -172,20 +178,20 @@ namespace WebStoreAPI.Lib_Primavera
                     myCli.set_NumContribuinte(cli.TaxpayNumber);
                     myCli.set_Moeda(cli.Currency);
                     myCli.set_Morada(cli.Address);
-                    myCli.set_Morada2(cli.Address2);
-                    myCli.set_Desconto(cli.ClientDiscount);
+                    //myCli.set_Morada2(cli.Address2);
+                    //myCli.set_Desconto(cli.ClientDiscount);
                     myCli.set_TipoTerceiro(cli.ClientType);
                     myCli.set_Pais(cli.Country);
                     myCli.set_Distrito(cli.Disctrict);
                     myCli.set_B2BEnderecoMail(cli.Email);
                     myCli.set_Telefone(cli.Phone);
-                    myCli.set_Telefone2(cli.Phone2);
+                    //myCli.set_Telefone2(cli.Phone2);
                     myCli.set_CodigoPostal(cli.PostCode);
                     myCli.set_NomeFiscal(cli.FiscalName);
                     myCli.set_Localidade(cli.Local);
-                    myCli.set_ModoExp(cli.ExpeditionWay);
-                    myCli.set_ModoPag(cli.PaymentWay);
-                    myCli.set_CondPag(cli.PaymentType);
+                    //myCli.set_ModoExp(cli.ExpeditionWay);
+                    //myCli.set_ModoPag(cli.PaymentWay);
+                    //myCli.set_CondPag(cli.PaymentType);
                     
                     PriEngine.Engine.Comercial.Clientes.Actualiza(myCli);
 
