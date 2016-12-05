@@ -6,10 +6,10 @@ var request = require('request');
 
 
 router.get('/', function (req, res) {
-    var url = "http://localhost:"+config.PORT +"/api/warehouse";
+    var url = "http://localhost:" + config.PORT + "/api/warehouse";
     request.get({ url: url, proxy: config.PROXY }, function (error, response, wares) {
         if (!error && response.statusCode == 200) {
-            url = "http://localhost:"+config.PORT + "/api/products/family";
+            url = "http://localhost:" + config.PORT + "/api/products/family";
             request.get({ url: url, proxy: config.PROXY }, function (error, response, fams) {
                 if (!error && response.statusCode == 200) {
                     var waresReal = JSON.parse(wares);
@@ -34,7 +34,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/warehouse/:idW/family/:idF', function (req, res) {
-    var ware = "http://localhost:"+config.PORT+"/api/products?warehouseId=" + req.params.idW + "&familyId=" + req.params.idF;
+    var ware = "http://localhost:" + config.PORT + "/api/products?warehouseId=" + req.params.idW + "&familyId=" + req.params.idF;
     request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var temp = JSON.parse(body);
@@ -50,7 +50,7 @@ router.get('/warehouse/:idW/family/:idF', function (req, res) {
 });
 
 router.get('/warehouse/:idW/', function (req, res) {
-    var ware = "http://localhost:"+config.PORT+"/api/warehouse?warehouseId=" + req.params.idW;
+    var ware = "http://localhost:" + config.PORT + "/api/warehouse?warehouseId=" + req.params.idW;
     request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var temp = JSON.parse(body);
@@ -66,7 +66,7 @@ router.get('/warehouse/:idW/', function (req, res) {
 });
 
 router.get('/family/:idF', function (req, res) {
-    var ware = "http://localhost:"+config.PORT+"/api/products/family/" + req.params.idF;
+    var ware = "http://localhost:" + config.PORT + "/api/products/family/" + req.params.idF;
     request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var temp = JSON.parse(body);
@@ -111,8 +111,53 @@ router.post('/login', function (req, res, next) {
     }
 });
 
+router.post('/register', function (req, res, next) {
+    var quer = "http://localhost:" + config.PORT + "/api/Clients";
+    var form = {};
+    form.Address = req.body.address;
+    form.Address2 = "undefined";
+    form.ClientDiscount = 0;
+    form.ClientType = "001";
+    form.CodClient = req.body.clientCode;
+    form.Country = req.body.country; //esperar query do reis
+    form.Currency = "EUR";
+    form.District = req.body.district;
+    form.Email = req.body.email;
+    form.ExpeditionWay = "undefined";
+    form.FiscalName = req.body.fiscal_name;
+    form.Local = req.body.local;
+    form.NameClient = req.body.name;
+    form.PaymentType = "undefined";
+    form.PaymentWay = "undefined";
+    form.Phone = req.body.phone;
+    form.Phone2 = "undefined";
+    form.PostCode = req.body.zip;
+    form.TaxpayNumber = req.body.taxpay;
+    
+    console.log(form);
+    if (req.body.password != req.body.password2) {
+        res.redirect('/login');
+    }
+    else {
+        db.registerUser(req.body.clientCode, req.body.name, req.body.password, function (rows) {
+            request.post({url: quer, proxy: config.PROXY, headers : [{'Content-Type':'application/json'}], json : form}, function (error, response, body) {
+                if (!error && response.statusCode == 201) {
+                    var temp = JSON.parse(body);
+                    res.redirect('/');
+                }
+                else {
+                    res.render('404');
+                }
+            });
+
+        });
+
+    }
+    
+});
+
 router.get('/search/:query', function (req, res) {
-    var quer = "http://localhost:"+config.PORT+"/api/products/search/" + req.params.query;
+    var quer = "http://localhost:" + config.PORT + "/api/products/search/" + req.params.query;
     request.get({ url: quer, proxy: config.PROXY }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var temp = JSON.parse(body);

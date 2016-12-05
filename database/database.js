@@ -143,6 +143,13 @@ function auxAddProductToCart(idP, idU, idC, next) {
     });
 }
 
+function registerUser(idU, username, password, next) {
+    pool.query('INSERT INTO User (idUser, username, password, tipo, totalGasto) VALUES (?,?,?,?,?)',[idU, username, password, 1, 0], function(err, rows, fields) {
+        if (typeof next == 'function')
+            next('success');
+    });
+}
+
 function removeProductFromCart(idP, idU, quant, next) {
     pool.query('SELECT * FROM Carrinho WHERE idUser = ?', idU, function(err, rows, fields) {
         if (rows.length > 0) {
@@ -176,4 +183,4 @@ function removeProductFromCart(idP, idU, quant, next) {
     });
 }
 
-module.exports = { populateProducts, getProducts, updateTotalSpent, populateClients, compareLogin, addProductToCart, getCart, removeProductFromCart};
+module.exports = { populateProducts, getProducts, updateTotalSpent, populateClients, compareLogin, addProductToCart, getCart, removeProductFromCart, registerUser};

@@ -4,39 +4,75 @@
 	<link rel="stylesheet" type="text/css" href="../css/login.css">
 </head>
 
-	<div class="container-fluid">
-		<div class="row">
-			<div id="login" class="formBox col-xs-4 col-md-4 col-xs-offset-1">
-				<h1>Login</h1>
-				<form id="loginForm" action="/login" method="POST">
-					<p>Username:</p>
-					<input id="usernameInput" name="username" type="text" placeholder="Username">
-					<br><br>
-					<p>Password: <a href="http://google.pt">Forgot your password?</a></p>
-					<input id="passwordInput" name="password" type="password" placeholder="Password">
-					<br>
-					<br>
-					<button>Login</button>
-					<br>
-				</form>
-			</div>
-			<div id="Register" class="formBox col-xs-4 col-md-4 col-xs-offset-2">
-				<h1>Register</h1>
-				<form id="registerForm" action="">
-					<p>Username:</p>
-					<input id="usernameInputR" type="text" placeholder="Username">
-					<br><br>
-					<p>Password:</p>
-					<input id="passwordInputR" type="password" placeholder="Password">
-					<br><br>
-					<p>Password again:</p>
-					<input id="passwordInputR2" type="password" placeholder="Password">
-					<br><br>
-					<input type="checkbox" name="terms" value="terms">I agree with terms and conditions<br>
-					<button>Register</button>
-					<br>
-				</form>
-			</div>
+<div class="container-fluid">
+	<div class="row">
+		<div id="login" class="formBox col-xs-4 col-md-4 col-xs-offset-1">
+			<h1>Login</h1>
+			<form id="loginForm" action="/login" method="POST">
+				<p>Username:</p>
+				<input id="usernameInput" name="username" type="text" placeholder="Username">
+				<br><br>
+				<p>Password: <a href="http://google.pt">Forgot your password?</a></p>
+				<input id="passwordInput" name="password" type="password" placeholder="Password">
+				<br>
+				<br>
+				<button>Login</button>
+				<br>
+				<br>
+			</form>
+		</div>
+		<div id="Register" class="formBox col-xs-4 col-md-4 col-xs-offset-2">
+			<h1>Register</h1>
+			<form id="registerForm" action="/register" method="POST">
+				<p>Username:</p>
+				<input id="clientCode" type="text" name="clientCode" placeholder="Client Code">
+				<br><br>
+				<p>E-mail:</p>
+				<input id="email" type="email" name="email" placeholder="E-mail">
+				<br><br>
+				<p>Name:</p>
+				<input id="name" type="text" name="name" placeholder="Client Name">
+				<br><br>
+				<p>Fiscal Name:</p>
+				<input id="fiscal_name" type="text" name="fiscal_name" placeholder="Fiscal Name">
+				<br><br>
+				<p>Country:</p>
+				<select name="country" id="country">
+					{{#each countries}}
+						<option value="{{Initials}}">{{Name}}</option>
+					{{/each}}
+				</select>
+				<br>
+				<p>Address:</p>
+				<input id="address" type="text" name="address" placeholder="Address">
+				<br><br>
+				<p>District:</p>
+				<input id="district" type="text" name="district" placeholder="District">
+				<br><br>
+				<p>Local:</p>
+				<input id="local" type="text" name="local" placeholder="Local">
+				<br><br>
+				<p>Zip-Code:</p>
+				<input id="zip-code" type="text" name="zip" placeholder="Zip-Code">
+				<br><br>
+				<p>Phone Number:</p>
+				<input id="phone" type="number" name="phone" placeholder="Phone Number">
+				<br><br>
+				<p>Taxpay Number:</p>
+				<input id="taxpay" type="number" name="taxpay" placeholder="Taxpay Number">
+				<br><br>
+				<p>Password:</p>
+				<input id="passwordInputR" type="password" name="password" placeholder="Password">
+				<br><br>
+				<p>Confirm Password:</p>
+				<input id="passwordInputR2" name="password2" type="password" placeholder="Password">
+				<br><br>
+				<input type="checkbox" name="terms" value="terms">I agree with terms and conditions<br>
+				<button>Register</button>
+				<br>
+				<br>
+			</form>
 		</div>
 	</div>
+</div>
 {{> footer}}
