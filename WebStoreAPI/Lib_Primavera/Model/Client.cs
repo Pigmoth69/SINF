@@ -7,12 +7,12 @@ namespace WebStoreAPI.Lib_Primavera.Model
 {
     public class Client
     {
-        public string Adress
+        public string Address
         {
             get;
             set;
         }
-        public string Adress2
+        public string Address2
         {
             get;
             set;

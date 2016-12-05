@@ -57,8 +57,8 @@ namespace WebStoreAPI.Lib_Primavera
                     myCli.FiscalName = objCli.get_NomeFiscal();
                     myCli.TaxpayNumber = objCli.get_NumContribuinte();
                     myCli.Email = objCli.get_B2BEnderecoMail();
-                    myCli.Adress = objCli.get_Morada();
-                    myCli.Adress2 = objCli.get_Morada2();
+                    myCli.Address = objCli.get_Morada();
+                    myCli.Address2 = objCli.get_Morada2();
                     myCli.PostCode = objCli.get_CodigoPostal();
                     myCli.Local = objCli.get_Localidade();
                     myCli.Phone = objCli.get_Telefone();
@@ -104,7 +104,7 @@ namespace WebStoreAPI.Lib_Primavera
                         objCli.set_Nome(cliente.NameClient);
                         objCli.set_NumContribuinte(cliente.TaxpayNumber);
                         objCli.set_Moeda(cliente.Currency);
-                        objCli.set_Morada(cliente.Adress);
+                        objCli.set_Morada(cliente.Address);
 
                         PriEngine.Engine.Comercial.Clientes.Actualiza(objCli);
 
@@ -171,8 +171,22 @@ namespace WebStoreAPI.Lib_Primavera
                     myCli.set_Nome(cli.NameClient);
                     myCli.set_NumContribuinte(cli.TaxpayNumber);
                     myCli.set_Moeda(cli.Currency);
-                    myCli.set_Morada(cli.Adress);
-
+                    myCli.set_Morada(cli.Address);
+                    myCli.set_Morada2(cli.Address2);
+                    myCli.set_Desconto(cli.ClientDiscount);
+                    myCli.set_TipoTerceiro(cli.ClientType);
+                    myCli.set_Pais(cli.Country);
+                    myCli.set_Distrito(cli.Disctrict);
+                    myCli.set_B2BEnderecoMail(cli.Email);
+                    myCli.set_Telefone(cli.Phone);
+                    myCli.set_Telefone2(cli.Phone2);
+                    myCli.set_CodigoPostal(cli.PostCode);
+                    myCli.set_NomeFiscal(cli.FiscalName);
+                    myCli.set_Localidade(cli.Local);
+                    myCli.set_ModoExp(cli.ExpeditionWay);
+                    myCli.set_ModoPag(cli.PaymentWay);
+                    myCli.set_CondPag(cli.PaymentType);
+                    
                     PriEngine.Engine.Comercial.Clientes.Actualiza(myCli);
 
                     erro.Erro = 0;
@@ -564,11 +578,13 @@ namespace WebStoreAPI.Lib_Primavera
             try
             {
                     // Atribui valores ao cabecalho do doc
+                
                     myEnc.set_DataDoc(dv.Data);
                     myEnc.set_Entidade(dv.Client.TaxpayNumber);
                     myEnc.set_Serie(dv.Serie);
                     myEnc.set_Tipodoc("ECL");
                     myEnc.set_TipoEntidade("C");
+
                     // Linhas do documento para a lista de linhas
                     lstlindv = dv.LinhasDoc;
                     //PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc, rl);
@@ -883,6 +899,25 @@ namespace WebStoreAPI.Lib_Primavera
 
         #endregion DocsVenda
 
+        #region Utils
+
+        public static List<Model.Country> Utils_GetCountries()
+        {
+            StdBELista countriesInfo =  PriEngine.Engine.Consulta("SELECT Pais,Descricao FROM Paises");
+            List<Model.Country> countries = new List<Model.Country>();
+            while (!countriesInfo.NoFim())
+            {
+                Model.Country c = new Model.Country();
+                c.Initials = countriesInfo.Valor("Pais");
+                c.Name = countriesInfo.Valor("Descricao");
+                countries.Add(c);
+                countriesInfo.Seguinte();
+            }
+            return countries;
+        }
+
+        #endregion Utils
+
         #region Tests
         public static List<string> GetTestes(string id)
         {
@@ -911,5 +946,7 @@ namespace WebStoreAPI.Lib_Primavera
 
         #endregion Tests
 
+
+       
     }
 }
