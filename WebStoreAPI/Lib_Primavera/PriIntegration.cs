@@ -173,6 +173,13 @@ namespace WebStoreAPI.Lib_Primavera
 
             try
             {
+                if (PriEngine.Engine.Comercial.Clientes.Existe(cli.CodClient) == true)
+                {
+                    erro.Erro = 2;
+                    erro.Descricao = "Client with that code already exists!";
+                    return erro;
+                }
+
                     myCli.set_Cliente(cli.CodClient);
                     myCli.set_Nome(cli.NameClient);
                     myCli.set_NumContribuinte(cli.TaxpayNumber);
