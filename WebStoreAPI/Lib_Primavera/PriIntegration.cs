@@ -950,7 +950,7 @@ namespace WebStoreAPI.Lib_Primavera
             while (!list.NoFim())
             {
                 Model.District d = new Model.District();
-                d.DistrictCode = list.Valor("Distrito");
+                d.DistrictCode = Int32.Parse(list.Valor("Distrito"));
                 d.Description = list.Valor("Descricao");
                 dists.Add(d);
                 list.Seguinte();
