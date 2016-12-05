@@ -7,7 +7,7 @@ namespace WebStoreAPI.Lib_Primavera.Model
 {
     public class District
     {
-        public int DistrictCode
+        public string DistrictCode
         {
             get;
             set;
