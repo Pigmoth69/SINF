@@ -295,6 +295,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Lib_Primavera\Model\District.cs" />
     <Compile Include="Lib_Primavera\Model\ClientType.cs" />
     <Compile Include="Lib_Primavera\Model\Country.cs" />
     <Compile Include="Lib_Primavera\Model\Prices.cs" />

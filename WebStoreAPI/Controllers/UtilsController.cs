@@ -29,6 +29,22 @@ namespace WebStoreAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, countries);
             }
         }
+        [Route("api/utils/districts")]
+        public HttpResponseMessage GetDistricts()
+        {
+            List<Lib_Primavera.Model.District> dist = null;
+            dist = Lib_Primavera.PriIntegration.Utils_GetDistricts();
+            if (dist == null)
+            {
+                var message = string.Format("Something went wrong with getting districts..");
+                HttpError err = new HttpError(message);
+                return Request.CreateResponse(HttpStatusCode.NotFound, err);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, dist);
+            }
+        }
 
     }
 }

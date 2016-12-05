@@ -179,7 +179,7 @@ namespace WebStoreAPI.Lib_Primavera
                     myCli.set_Moeda(cli.Currency);
                     myCli.set_Morada(cli.Address);
                     //myCli.set_Morada2(cli.Address2);
-                    //myCli.set_Desconto(cli.ClientDiscount);
+                    myCli.set_Desconto(cli.ClientDiscount);
                     myCli.set_TipoTerceiro(cli.ClientType);
                     myCli.set_Pais(cli.Country);
                     myCli.set_Distrito(cli.Disctrict);
@@ -934,6 +934,21 @@ namespace WebStoreAPI.Lib_Primavera
                 countriesInfo.Seguinte();
             }
             return countries;
+        }
+
+        public static List<Model.District> Utils_GetDistricts()
+        {
+            List<Model.District> dists = new List<Model.District>();
+            StdBELista list = PriEngine.Engine.Consulta("SELECT Distrito,Descricao FROM Distritos");
+            while (!list.NoFim())
+            {
+                Model.District d = new Model.District();
+                d.DistrictCode = list.Valor("Distrito");
+                d.Description = list.Valor("Descricao");
+                dists.Add(d);
+                list.Seguinte();
+            }
+            return dists;
         }
 
         #endregion Utils
