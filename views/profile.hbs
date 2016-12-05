@@ -13,78 +13,196 @@
 			<div class="row completeRow">
 				<p>Client Name:</p>
 				<div class="row">
-					<div class="col-xs-9">User01829</div>
-					<div class="col-xs-3"><button>Edit</button></div>
+					<div class="col-xs-9">{{profile.NameClient}}</div>
+					<div class="col-xs-3"><button id="editClientNameButton">Edit</button></div>
+					<div class="row">
+						<form id="editClientName" method="POST" action="/edit" hidden>
+							<input class="cancro" id="nameClient" type="text" name="nameClient" placeholder="Client Name">
+							<input type="submit">
+						</form>
+					</div>
 				</div>
 			</div>
 			<div class="row completeRow">
 				<p>Fiscal Name:</p>
 				<div class="row">
-					<div class="col-xs-9">User01829@gmail.com</div>
-					<div class="col-xs-3"><button>Edit</button></div>
+					<div class="col-xs-9">{{profile.FiscalName}}</div>
+					<div class="col-xs-3"><button id="editFiscalNameButton">Edit</button></div>
+					<div class="row">
+						<form id="editFiscalName" method="POST" action="/edit" hidden>
+							<input class="cancro" id="fiscalName" type="text" name="fiscalName" placeholder="Fiscal Name">
+							<input type="submit">
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="row completeRow">
+				<p>Client Type:</p>
+				<div class="row">
+					<div class="col-xs-9">{{profile.FiscalName}}</div>
+					<div class="col-xs-3"><button id="editClientTypeButton">Edit</button></div>
+					<div class="row">
+						<form id="editClientType" method="POST" action="/edit" hidden>
+							<select name="clientType" id="clientType">
+								{{#each clientTypes}}
+									<option value="{{DistrictCode}}">{{Description}}</option> <!-- ALTERAR -->
+								{{/each}}
+							</select>
+							<input type="submit">
+						</form>
+					</div>
 				</div>
 			</div>
 			<div class="row completeRow">
 				<p>Email:</p>
 				<div class="row">
-					<div class="col-xs-9">User01829@gmail.com</div>
-					<div class="col-xs-3"><button>Edit</button></div>
+					<div class="col-xs-9">{{profile.Email}}</div>
+					<div class="col-xs-3"><button id="editEmailButton">Edit</button></div>
+					<div class="row">
+						<form id="editEmail" method="POST" action="/edit" hidden>
+							<input class="cancro" id="email" type="text" name="email" placeholder="E-mail">
+							<input type="submit">
+						</form>
+					</div>
 				</div>
 			</div>
 			<div class="row completeRow">
 				<p>Password:</p>
 				<div class="row">
 					<div class="col-xs-9">********</div>
-					<div class="col-xs-3"><button>Edit</button></div>
+					<div class="col-xs-3"><button id="editPasswordButton">Edit</button></div>
+					<div class="row">
+						<form id="editPassword" method="POST" action="/edit" hidden>
+							<input class="cancro" id="password" type="text" name="password" placeholder="Old Password">
+							<input class="cancro" id="newPassword" type="text" name="newPassword" placeholder="New Password">
+							<input type="submit">
+						</form>
+					</div>
 				</div>
 			</div>
 			<div class="row completeRow">
 				<p>Country:</p>
 				<div class="row">
-					<div class="col-xs-9">User01829@gmail.com</div>
-					<div class="col-xs-3"><button>Edit</button></div>
+					<div class="col-xs-9">{{country}}</div>
+					<div class="col-xs-3"><button id="editCountryButton">Edit</button></div>
+					<div class="row">
+						<form id="editCountry" method="POST" action="/edit" hidden>
+							<select name="country" id="country">
+								{{#each countries}}
+									<option value="{{Initials}}">{{Name}}</option>
+								{{/each}}
+							</select>
+							<input type="submit">
+						</form>
+					</div>
 				</div>
 			</div>
 			<div class="row completeRow">
 				<p>Address:</p>
 				<div class="row">
-					<div class="col-xs-9">Rua Dr. Roberto Frias, 4200-465 Porto</div>
-					<div class="col-xs-3"><button>Edit</button></div>
+					<div class="col-xs-9">{{profile.Address}}</div>
+					<div class="col-xs-3"><button id="editAddressButton">Edit</button></div>
+					<div class="row">
+						<form id="editAddress" method="POST" action="/edit" hidden>
+							<input class="cancro" id="address" type="text" name="address" placeholder="Address">
+							<input type="submit">
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="row completeRow">
+				<p>Address 2:</p>
+				<div class="row">
+					<div class="col-xs-9">{{profile.Address2}}</div>
+					<div class="col-xs-3"><button id="editAddress2Button">Edit</button></div>
+					<div class="row">
+						<form id="editAddress2" method="POST" action="/edit" hidden>
+							<input class="cancro" id="address2" type="text" name="address2" placeholder="Address 2">
+							<input type="submit">
+						</form>
+					</div>
 				</div>
 			</div>
 			<div class="row completeRow">
 				<p>District:</p>
 				<div class="row">
-					<div class="col-xs-9">User01829@gmail.com</div>
-					<div class="col-xs-3"><button>Edit</button></div>
+					<div class="col-xs-9">{{profile.District}}</div>
+					<div class="col-xs-3"><button id="editDistrictButton">Edit</button></div>
+					<div class="row">
+						<form id="editDistrict" method="POST" action="/edit" hidden>
+							<select name="district" id="district">
+								{{#each districts}}
+									<option value="{{DistrictCode}}">{{Description}}</option>
+								{{/each}}
+							</select>
+							<input type="submit">
+						</form>
+					</div>
 				</div>
 			</div>
 			<div class="row completeRow">
 				<p>Local:</p>
 				<div class="row">
-					<div class="col-xs-9">User01829@gmail.com</div>
-					<div class="col-xs-3"><button>Edit</button></div>
+					<div class="col-xs-9">{{profile.Local}}</div>
+					<div class="col-xs-3"><button id="editLocalButton">Edit</button></div>
+					<div class="row">
+						<form id="editLocal" method="POST" action="/edit" hidden>
+							<input class="cancro" id="local" type="text" name="local" placeholder="Local">
+							<input type="submit">
+						</form>
+					</div>
 				</div>
 			</div>
 			<div class="row completeRow">
-				<p>>Zip Code:</p>
+				<p>Zip Code:</p>
 				<div class="row">
-					<div class="col-xs-9">User01829@gmail.com</div>
-					<div class="col-xs-3"><button>Edit</button></div>
+					<div class="col-xs-9">{{profile.PostCode}}</div>
+					<div class="col-xs-3"><button id="editPostalCodeButton">Edit</button></div>
+					<div class="row">
+						<form id="editPostalCode" method="POST" action="/edit" hidden>
+							<input class="cancro" id="postalCode" type="text" name="postalCode" placeholder="Zip Code">
+							<input type="submit">
+						</form>
+					</div>
 				</div>
 			</div>
 			<div class="row completeRow">
 				<p>Phone:</p>
 				<div class="row">
-					<div class="col-xs-9">User01829@gmail.com</div>
-					<div class="col-xs-3"><button>Edit</button></div>
+					<div class="col-xs-9">{{profile.Phone}}</div>
+					<div class="col-xs-3"><button id="editPhoneButton">Edit</button></div>
+					<div class="row">
+						<form id="editPhone" method="POST" action="/edit" hidden>
+							<input class="cancro" id="phone" type="text" name="phone" placeholder="Phone Number">
+							<input type="submit">
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="row completeRow">
+				<p>Phone 2:</p>
+				<div class="row">
+					<div class="col-xs-9">{{profile.Phone2}}</div>
+					<div class="col-xs-3"><button id="editPhone2Button">Edit</button></div>
+					<div class="row">
+						<form id="editPhone2" method="POST" action="/edit" hidden>
+							<input class="cancro" id="phone2" type="text" name="phone2" placeholder="Phone Number 2">
+							<input type="submit">
+						</form>
+					</div>
 				</div>
 			</div>
 			<div class="row completeRow">
 				<p>TaxPay Number:</p>
 				<div class="row">
-					<div class="col-xs-9">User01829@gmail.com</div>
-					<div class="col-xs-3"><button>Edit</button></div>
+					<div class="col-xs-9">{{profile.TaxpayNumber}}</div>
+					<div class="col-xs-3"><button id="editTaxpayNumberButton">Edit</button></div>
+					<div class="row">
+						<form id="editTaxpayNumber" method="POST" action="/edit" hidden>
+							<input class="cancro" id="taxpayNumber" type="text" name="taxpayNumber" placeholder="TaxPay Number">
+							<input type="submit">
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
