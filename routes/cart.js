@@ -5,7 +5,7 @@ var async = require('async');
 var db = require('../database/database.js');
 var config = require('../config/config.js');
 
-router.get('/', function (req, res) {s
+router.get('/', function (req, res) {
     if (req.session.user == undefined)
         res.redirect('/login');
     else {
