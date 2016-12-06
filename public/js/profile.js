@@ -86,4 +86,18 @@ function editProfile() {
     temp.phone = $("#phone").val();
     temp.phone2 = $("#phone2").val();
     temp.taxpay = $("#taxpayNumber").val();
+
+    var url = "http://localhost:3000/profile/edit";
+    var data = temp;
+    var dataType = 'json';
+
+    $.post(url, data, function (data1) {
+        if (data1 == 'success') {
+            window.location.href = "/profile";
+        }
+        else {
+            window.location.href = "/";
+        }
+    }, dataType);
+    alert();
 }
