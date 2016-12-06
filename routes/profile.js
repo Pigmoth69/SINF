@@ -7,50 +7,54 @@ router.get('/', function (req, res) {
     if (req.session.user == undefined)
         res.redirect('/login');
     else {
-        var url = "http://localhost:" + config.PORT + "/api/clients/" + req.session.user;
-        request.get({ url: url, proxy: config.PROXY }, function (error, response, wares) {
-            if (!error && response.statusCode == 200) {
-                var client = JSON.parse(wares);
-                var ware = "http://localhost:" + config.PORT + "/api/utils/countries";
-                request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
-                    if (!error && response.statusCode == 200) {
-                        var countries = JSON.parse(body);
-                        ware = "http://localhost:" + config.PORT + "/api/utils/paymenttypes";
-                        request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
-                            if (!error && response.statusCode == 200) {
-                                var paymentTypes = JSON.parse(body);
-                                ware = "http://localhost:" + config.PORT + "/api/utils/paymentways";
-                                request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
-                                    if (!error && response.statusCode == 200) {
-                                        var paymentWays = JSON.parse(body);
-                                        ware = "http://localhost:" + config.PORT + "/api/utils/expeditionway";
-                                        request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
-                                            if (!error && response.statusCode == 200) {
-                                                var expeditionWay = JSON.parse(body);
-                                                ware = "http://localhost:" + config.PORT + "/api/utils/districts";
-                                                request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
-                                                    if (!error && response.statusCode == 200) {
-                                                        var districts = JSON.parse(body);
-                                                        addCodes(client, paymentTypes, paymentWays, expeditionWay, countries, districts, function (result) {
-                                                            // tratar das merdas para por la
-                                                            res.render('profile', {
-                                                                profile: client, countries: countries, districts: districts, expeditionWay: expeditionWay,
-                                                                paymentTypes: paymentTypes, paymentWays: paymentWays, pWay: result.paymentWay, pType: result.paymentType,
-                                                                eWay: result.expeditionWay, country: result.country, district: result.district
+        if (req.session.admin == 'admin')
+            res.redirect('/admin');
+        else {
+            var url = "http://localhost:" + config.PORT + "/api/clients/" + req.session.user;
+            request.get({ url: url, proxy: config.PROXY }, function (error, response, wares) {
+                if (!error && response.statusCode == 200) {
+                    var client = JSON.parse(wares);
+                    var ware = "http://localhost:" + config.PORT + "/api/utils/countries";
+                    request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                            var countries = JSON.parse(body);
+                            ware = "http://localhost:" + config.PORT + "/api/utils/paymenttypes";
+                            request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
+                                if (!error && response.statusCode == 200) {
+                                    var paymentTypes = JSON.parse(body);
+                                    ware = "http://localhost:" + config.PORT + "/api/utils/paymentways";
+                                    request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
+                                        if (!error && response.statusCode == 200) {
+                                            var paymentWays = JSON.parse(body);
+                                            ware = "http://localhost:" + config.PORT + "/api/utils/expeditionway";
+                                            request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
+                                                if (!error && response.statusCode == 200) {
+                                                    var expeditionWay = JSON.parse(body);
+                                                    ware = "http://localhost:" + config.PORT + "/api/utils/districts";
+                                                    request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
+                                                        if (!error && response.statusCode == 200) {
+                                                            var districts = JSON.parse(body);
+                                                            addCodes(client, paymentTypes, paymentWays, expeditionWay, countries, districts, function (result) {
+                                                                // tratar das merdas para por la
+                                                                res.render('profile', {
+                                                                    profile: client, countries: countries, districts: districts, expeditionWay: expeditionWay,
+                                                                    paymentTypes: paymentTypes, paymentWays: paymentWays, pWay: result.paymentWay, pType: result.paymentType,
+                                                                    eWay: result.expeditionWay, country: result.country, district: result.district
+                                                                });
                                                             });
-                                                        });
-                                                    }
-                                                });
-                                            }
-                                        }); // aceder a todos os formulários, ver quais é que não estão vazios, e mandar essa merda para o primavera e para a db
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
+                                                        }
+                                                    });
+                                                }
+                                            }); // aceder a todos os formulários, ver quais é que não estão vazios, e mandar essa merda para o primavera e para a db
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
     }
 });
 

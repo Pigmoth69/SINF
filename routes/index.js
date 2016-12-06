@@ -96,14 +96,15 @@ router.post('/login', function (req, res, next) {
                 req.session.user = rows[0].idUser;
                 req.session.name = rows[0].username;
                 req.session.typeUser = rows[0].tipo;
+                if (req.body.username == 'admin')
+                    req.session.admin = 'admin';
+
                 console.log("login correto");
                 res.redirect('/');
             } else {
                 console.log("credenciais erradas");
                 res.redirect('/login');
             }
-
-
         });
     } else {
         console.log("already logged in");
