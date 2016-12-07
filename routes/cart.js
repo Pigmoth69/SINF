@@ -68,11 +68,13 @@ router.get('/', function (req, res) {
                                         item.Price = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1))* item.quantidade;
                                         break;
                                 }
+                                item.Price = Math.round(item.Price * 100)/100;
                                 total += item.Price;
                                 callback();
                             }
                         });
                     }, function (err) {
+                        total = Math.round(total * 100) / 100;
                         res.render('cart', {total : total, cart : temp});
                     });
                 });

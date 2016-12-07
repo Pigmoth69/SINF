@@ -137,7 +137,7 @@ router.post('/register', function (req, res, next) {
     var quer = "http://localhost:" + config.PORT + "/api/Clients";
     var form = {};
     form.Address = req.body.address;
-    form.Address2 = "undefined";
+    form.Address2 = "";
     form.ClientDiscount = 0;
     form.ClientType = "001";
     form.CodClient = req.body.clientCode;
@@ -145,14 +145,14 @@ router.post('/register', function (req, res, next) {
     form.Currency = "EUR";
     form.District = req.body.district;
     form.Email = req.body.email;
-    form.ExpeditionWay = "undefined";
+    form.ExpeditionWay = "";
     form.FiscalName = req.body.fiscal_name;
     form.Local = req.body.local;
     form.NameClient = req.body.name;
-    form.PaymentType = "undefined";
-    form.PaymentWay = "undefined";
+    form.PaymentType = "";
+    form.PaymentWay = "";
     form.Phone = req.body.phone;
-    form.Phone2 = "undefined";
+    form.Phone2 = "";
     form.PostCode = req.body.zip;
     form.TaxpayNumber = req.body.taxpay;
     console.log(form);
@@ -161,9 +161,8 @@ router.post('/register', function (req, res, next) {
         res.redirect('/login');
     }
     else {
-        db.registerUser(req.body.clientCode, req.body.name, req.body.password, req.body.clientCode, function (rows) {
+        db.registerUser(req.body.clientCode, req.body.name, req.body.password, form.ClientType, function (rows) {
             request.post({ url: quer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
-                console.log(error);
                 if (!error && response.statusCode == 201) {
                     console.log(response.statusCode);
                     res.redirect('/');
