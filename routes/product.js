@@ -52,8 +52,8 @@ router.get('/:idP', function(req, res) {
                         var iva;
                         var price;
                         if (req.session.user != undefined)
-                            prodURL = "http://localhost:" + config.PORT + "/api/clients/" + req.session.user;
-                        else prodURL = "http://localhost:" + config.PORT + "/api/clients/ALCAD";
+                            prodURL = "http://localhost:" + config.PORT + "/api/clients?id=" + req.session.user;
+                        else prodURL = "http://localhost:" + config.PORT + "/api/clients?id=ALCAD";
 
                         request.get({ url: prodURL, proxy: config.PROXY }, function(error, response, body) {
                             if (!error && response.statusCode == 200) {

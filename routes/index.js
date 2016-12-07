@@ -46,8 +46,8 @@ router.get('/warehouse/:idW/family/:idF', function (req, res) {
             for (var i = 0; i < temp.length; i++) {
                 temp[i].typeUser = req.session.typeUser;
                 if (req.session.user != undefined)
-                    temp[i].discount = req.session.discount;
-                else temp[i].discount = 0;
+                    temp[i].disc = req.session.discount;
+                else temp[i].disc = 0;
             }
             res.json(temp);
         }
@@ -65,8 +65,8 @@ router.get('/warehouse/:idW/', function (req, res) {
             for (var i = 0; i < temp.length; i++) {
                 temp[i].typeUser = req.session.typeUser;
                 if (req.session.user != undefined)
-                    temp[i].discount = req.session.discount;
-                else temp[i].discount = 0;
+                    temp[i].disc = req.session.discount;
+                else temp[i].disc = 0;
             }
             res.json(temp);
         }
@@ -84,8 +84,8 @@ router.get('/family/:idF', function (req, res) {
             for (var i = 0; i < temp.length; i++) {
                 temp[i].typeUser = req.session.typeUser;
                 if (req.session.user != undefined)
-                    temp[i].discount = req.session.discount;
-                else temp[i].discount = 0;
+                    temp[i].disc = req.session.discount;
+                else temp[i].disc = 0;
             }
             res.json(temp);
         }
