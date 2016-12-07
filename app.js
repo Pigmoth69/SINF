@@ -27,16 +27,12 @@ hbs.registerPartials(__dirname + '/views/partials');
 
 hbs.registerHelper('if_less', function(a, b, opts) {
     a = a + 0;
-    console.log(a);
-    console.log(b);
     if (a < b) 
       return opts.fn(this);
     else opts.inverse(this);
 });
 
 hbs.registerHelper('if_eq', function(a, b, opts) {
-  console.log(a);
-  console.log(b);
     if (a == b) 
       return opts.fn(this);
     else opts.inverse(this);

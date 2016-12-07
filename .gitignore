@@ -35,3 +35,6 @@ npm-debug.log
 .travis.yml
 # Node Modules
 node_modules
+
+#config file
+config/config.js
