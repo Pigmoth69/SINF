@@ -140,7 +140,7 @@ router.post('/register', function (req, res, next) {
         res.redirect('/login');
     }
     else {
-        db.registerUser(req.body.clientCode, req.body.name, req.body.password, function (rows) {
+        db.registerUser(req.body.clientCode, req.body.name, req.body.password, req.body.clientCode, function (rows) {
             request.post({ url: quer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
                 console.log(error);
                 if (!error && response.statusCode == 201) {

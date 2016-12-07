@@ -2,8 +2,9 @@ var express = require('express');
 var router = express.Router();
 var config = require('../config/config.js');
 var request = require('request');
+var db = require('../database/database.js');
 
-router.get('/', function (req, res) {
+router.get('/', function(req, res) {
     if (req.session.user == undefined)
         res.redirect('/login');
     else {
@@ -11,36 +12,43 @@ router.get('/', function (req, res) {
             res.redirect('/admin');
         else {
             var url = "http://localhost:" + config.PORT + "/api/clients/" + req.session.user;
-            request.get({ url: url, proxy: config.PROXY }, function (error, response, wares) {
+            request.get({ url: url, proxy: config.PROXY }, function(error, response, wares) {
                 if (!error && response.statusCode == 200) {
                     var client = JSON.parse(wares);
                     var ware = "http://localhost:" + config.PORT + "/api/utils/countries";
-                    request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
+                    request.get({ url: ware, proxy: config.PROXY }, function(error, response, body) {
                         if (!error && response.statusCode == 200) {
                             var countries = JSON.parse(body);
                             ware = "http://localhost:" + config.PORT + "/api/utils/paymenttypes";
-                            request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
+                            request.get({ url: ware, proxy: config.PROXY }, function(error, response, body) {
                                 if (!error && response.statusCode == 200) {
                                     var paymentTypes = JSON.parse(body);
                                     ware = "http://localhost:" + config.PORT + "/api/utils/paymentways";
-                                    request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
+                                    request.get({ url: ware, proxy: config.PROXY }, function(error, response, body) {
                                         if (!error && response.statusCode == 200) {
                                             var paymentWays = JSON.parse(body);
                                             ware = "http://localhost:" + config.PORT + "/api/utils/expeditionway";
-                                            request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
+                                            request.get({ url: ware, proxy: config.PROXY }, function(error, response, body) {
                                                 if (!error && response.statusCode == 200) {
                                                     var expeditionWay = JSON.parse(body);
                                                     ware = "http://localhost:" + config.PORT + "/api/utils/districts";
-                                                    request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
+                                                    request.get({ url: ware, proxy: config.PROXY }, function(error, response, body) {
                                                         if (!error && response.statusCode == 200) {
                                                             var districts = JSON.parse(body);
-                                                            addCodes(client, paymentTypes, paymentWays, expeditionWay, countries, districts, function (result) {
-                                                                // tratar das merdas para por la
-                                                                res.render('profile', {
-                                                                    profile: client, countries: countries, districts: districts, expeditionWay: expeditionWay,
-                                                                    paymentTypes: paymentTypes, paymentWays: paymentWays, pWay: result.paymentWay, pType: result.paymentType,
-                                                                    eWay: result.expeditionWay, country: result.country, district: result.district
-                                                                });
+                                                            ware = "http://localhost:" + config.PORT + "/api/clients/types";
+                                                            request.get({ url: ware, proxy: config.PROXY }, function(error, response, body) {
+                                                                if (!error && response.statusCode == 200) {
+                                                                    var clientTypes = JSON.parse(body);
+                                                                    addCodes(client, paymentTypes, paymentWays, expeditionWay, countries, districts, clientTypes, function(result) {
+                                                                        // tratar das merdas para por la
+                                                                        res.render('profile', {
+                                                                            profile: client, countries: countries, districts: districts, expeditionWay: expeditionWay,
+                                                                            paymentTypes: paymentTypes, paymentWays: paymentWays, pWay: result.paymentWay, pType: result.paymentType,
+                                                                            eWay: result.expeditionWay, country: result.country, district: result.district, clientTypes: clientTypes,
+                                                                            cType: result.clientType
+                                                                        });
+                                                                    });
+                                                                }
                                                             });
                                                         }
                                                     });
@@ -58,8 +66,14 @@ router.get('/', function (req, res) {
     }
 });
 
-router.post('/edit', function (req, res) {
+router.post('/edit', function(req, res) {
     var url = "http://localhost:" + config.PORT + "/api/..."; // MUDAR ESTA LINHA
+    console.log(req.body);
+    db.requestType(req.session.user, req.body.clientType + "", function(rows) {
+        res.redirect('/profile');
+        var form = req.body;
+        form.ClientDiscount = "";
+    /*    
     request.post({ url: quer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
         if (!error && response.statusCode == 201) {
             res.send('success');
@@ -68,10 +82,14 @@ router.post('/edit', function (req, res) {
             res.send('error');
         }
     });
+    */
+    });
+    
 });
 
-function addCodes(result, paymentTypes, paymentWays, expeditionWays, countries, districts, next) {
+function addCodes(result, paymentTypes, paymentWays, expeditionWays, countries, districts, clientTypes, next) {
     var temp = {};
+    console.log(result);
     for (var i = 0; i < paymentTypes.length; i++) {
         if (paymentTypes[i].PaymentTypeCode == result.PaymentType) {
             temp.paymentType = paymentTypes[i].PaymentTypeDescription;
@@ -97,6 +115,15 @@ function addCodes(result, paymentTypes, paymentWays, expeditionWays, countries, 
         }
         else {
             expeditionWays[i].Selected = "";
+        }
+    }
+    for (var i = 0; i < clientTypes.length; i++) {
+        if (clientTypes[i].Code == result.ClientType) {
+            temp.clientType = clientTypes[i].Description;
+            clientTypes[i].Selected = clientTypes[i].Code;
+        }
+        else {
+            clientTypes[i].Selected = "";
         }
     }
     for (var i = 0; i < countries.length; i++) {

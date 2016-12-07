@@ -3,25 +3,25 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-xs-12">
-            <h1 class="page-header">Products</h1>
+            <h1 class="page-header">Users</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
-    {{#each products}}
+    {{#each users}}
     <div class="row">
         <div class="col-xs-12">
-            <form id="addImageToProduct{{idProdutoPrimavera}}" action="/admin/products/addImage/{{idProdutoPrimavera}}" method="POST" enctype="multipart/form-data">
+            <form id="acceptUser{{idUser}}" action="/admin/acceptUser/{{idUser}}" method="POST">
                 <div class="row">
                     <div class="col-xs-8">
-                        <h5 style="overflow:hidden;">id: {{idProdutoPrimavera}}, description: {{Description}}</h5>
+                        <h5 style="overflow:hidden;">id: {{idUser}}, description: {{username}}</h5>
                     </div>
                     <br>
-                    <div class="col-xs-3">
-                        <input type="file" name="image" accept="image/*" required="required">
+                    <div class="col-xs-2">
+                        <h5>{{clientType}}</h5>
                     </div>
                     <div class="col-xs-1">
-                        <input type="submit">
+                        <input type="submit" value="Approve">
                     </div>
                 </div>
             </form>

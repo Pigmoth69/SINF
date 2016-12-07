@@ -41,13 +41,13 @@
 			<div class="row completeRow">
 				<p>Client Type:</p>
 				<div class="row">
-					<div class="col-xs-9">{{profile.FiscalName}}</div>
+					<div class="col-xs-9">{{cType}}</div>
 					<div class="col-xs-3"><button id="editClientTypeButton">Edit</button></div>
 					<div class="row">
 						<form id="editClientType" hidden>
 							<select class="cancro" name="clientType" id="clientType">
 								{{#each clientTypes}}
-									<option value="{{DistrictCode}}">{{Description}}</option> <!-- ALTERAR -->
+									<option value="{{Code}}">{{Description}}</option> <!-- ALTERAR -->
 								{{/each}}
 							</select>
 						</form>

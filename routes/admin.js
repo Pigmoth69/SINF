@@ -20,7 +20,7 @@ router.get('/products', function (req, res) {
                 var productsDatabase = prods;
                 // deixar só aqueles que não têm row imagem preenchida
                 getProductsWithoutImage(productsPrimavera, productsDatabase, function (prods) {
-                    console.log(prods);
+                    //console.log(prods);
                     res.render('adminProducts', { products: prods });
                 });
             });
@@ -33,7 +33,74 @@ router.get('/products', function (req, res) {
 
 router.get('/users', function (req, res) {
     //ir a bd e ver que users é que querem mudar o tipo
-    
+    db.getUsersNotApproved(function (rows) {
+        var url = "http://localhost:" + config.PORT + "/api/clients/types";
+        request.get({ url: url, proxy: config.PROXY }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var types = JSON.parse(body);
+                for (var i = 0; i < rows.length; i++) {
+                    for (var j = 0; j < types.length; j++) {
+                        if (rows[i].typeClient == types[j].Code)
+                            rows[i].clientType = types[j].Description;
+                    }
+                }
+                res.render('adminUsers', {
+                    users: rows
+                });
+            }
+            else {
+                res.render('404');
+            }
+        });
+    });
+});
+
+router.get('/updatePrimavera', function (req, res) {
+    db.populateProducts(function (respo) {
+        if (respo == 'Products populated') {
+            res.redirect('/admin');
+        }
+        else {
+            res.render('404');
+        }
+    });
+});
+
+router.post('/acceptUser/:idU', function (req, res) {
+    db.approveUser(req.params.idU, function (rows) {
+        /*
+        var url = "http://localhost:" + config.PORT + "/api/clients/types"; //MUDAR ESTA LINHA
+        var form = {};
+        form.Address = "";
+        form.Address2 = "";
+        form.CodClient = "";
+        form.NameClient = "";
+        form.FiscalName = "";
+        form.TaxpayNumber = "";
+        form.Email = "";
+        form.PostCode = "";
+        form.Local = "";
+        form.Phone = "";
+        form.Phone2 = "";
+        form.Country = "";
+        form.ClientDiscount = "";
+        form.PaymentType = "";
+        form.PaymentWay = "";
+        form.ClientType = req.body.typeClient;
+        form.District = "";
+        form.ExpeditionWay = "";
+        form.Currency = "";
+
+        request.post({ url: quer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
+            if (!error && response.statusCode == 201) {
+                //res.redirect('/admin/users');
+            }
+            else {
+                //
+            }
+        });
+        */
+    });
 });
 
 router.post('/products/addImage/:idProdutoPrimavera', function (req, res) {
