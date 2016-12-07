@@ -134,7 +134,7 @@ router.post('/login', function (req, res, next) {
 });
 
 router.post('/register', function (req, res, next) {
-    var quer = "http://localhost:" + config.PORT + "/api/Clients";
+    var quer = "http://localhost:" + config.PORT + "/api/clients";
     var form = {};
     form.Address = req.body.address;
     form.Address2 = "";
@@ -161,7 +161,7 @@ router.post('/register', function (req, res, next) {
         res.redirect('/login');
     }
     else {
-        db.registerUser(req.body.clientCode, req.body.name, req.body.password, form.ClientType, function (rows) {
+        db.registerUser(req.body.clientCode, req.body.name, req.body.password, "001", function (rows) {
             request.post({ url: quer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
                 if (!error && response.statusCode == 201) {
                     console.log(response.statusCode);

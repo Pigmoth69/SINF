@@ -144,7 +144,11 @@ function auxAddProductToCart(idP, idU, idC, next) {
 }
 
 function registerUser(idU, username, password, clientType, next) {
-    pool.query('INSERT INTO User (idUser, username, password, tipo, totalGasto, typeClient, approved) VALUES (?,?,?,?,?,?,?)', [idU, username, password, 1, 0, clientType, false], function (err, rows, fields) {
+    console.log(idU);
+    console.log(username);
+    console.log(password);
+    console.log(clientType);
+    pool.query('INSERT INTO User (idUser, username, password, tipo, totalGasto, typeClient, approved) VALUES (?,?,?,?,?,?,?)', [idU, username, password, 1, 0, clientType, true], function (err, rows, fields) {
         if (typeof next == 'function')
             next('success');
     });
