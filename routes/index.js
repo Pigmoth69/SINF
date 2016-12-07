@@ -6,6 +6,8 @@ var request = require('request');
 
 
 router.get('/', function (req, res) {
+    if (req.session.discount == undefined)
+        req.session.discount = 0;
     var url = "http://localhost:" + config.PORT + "/api/warehouse";
     request.get({ url: url, proxy: config.PROXY }, function (error, response, wares) {
         if (!error && response.statusCode == 200) {
