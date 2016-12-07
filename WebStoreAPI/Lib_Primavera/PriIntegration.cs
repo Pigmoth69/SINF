@@ -199,16 +199,17 @@ namespace WebStoreAPI.Lib_Primavera
                     //myCli.set_ModoExp(cli.ExpeditionWay);
                     //myCli.set_ModoPag(cli.PaymentWay);
                     //myCli.set_CondPag(cli.PaymentType);
-                    
-                    
-                    PriEngine.Engine.Comercial.Clientes.Actualiza(myCli);
 
+                    System.Diagnostics.Debug.WriteLine("merda1");
+                    PriEngine.Engine.Comercial.Clientes.Actualiza(myCli);
+                    System.Diagnostics.Debug.WriteLine("merda2") ;
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
                     return erro;
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex);
                 erro.Erro = 1;
                 erro.Descricao = ex.Message;
                 return erro;
