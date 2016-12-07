@@ -6,6 +6,7 @@ function changeToActiveWare(code) {
     var wasActive = false;
     var url;
     var url_db = "http://localhost:3000/database/products";
+    
 
     if ($(temp).attr("class") == 'armazem active') {
         $(temp).removeClass("active");
@@ -22,7 +23,7 @@ function changeToActiveWare(code) {
         temp2 = temp2.substr(6, temp2.length);
         if (wasActive) { //quer chamar só a família    
             url = "http://localhost:3000/family/" + temp2;
-            console.log(url);
+            console.log("1: " + url);
             $.blockUI();
             $.get(url, function (data) {
                 $.get(url_db, function (data1) {
@@ -35,9 +36,10 @@ function changeToActiveWare(code) {
         }
         else { // quer chamar a família e o warehouse que acabou de ativar
             url = "http://localhost:3000/warehouse/" + temp1 + "/family/" + temp2;
-            console.log(url);
+            console.log("2: " + url);
             $.blockUI();
             $.get(url, function (data) {
+                console.log(data);
                 $.get(url_db, function (data1) {
                     if (data1 == 'fuck')
                         addProductsWebPage(data, null);
@@ -49,7 +51,7 @@ function changeToActiveWare(code) {
     }
     else { // quer chamar o warehouse só
         url = "http://localhost:3000/warehouse/" + temp1;
-        console.log(url);
+        console.log("3: " + url);
         $.blockUI();
         $.get(url, function (data) {
             $.get(url_db, function (data1) {
@@ -85,7 +87,7 @@ function changeToActiveFam(code) {
     if ($(".armazem.active").attr("id") != undefined) {
         if (wasActive) { // quer chamar só o warehouse
             url = "http://localhost:3000/warehouse/" + temp1;
-            console.log(url);
+            console.log("4: " + url);
             $.blockUI();
             $.get(url, function (data) {
                 $.get(url_db, function (data1) {
@@ -98,7 +100,7 @@ function changeToActiveFam(code) {
         }
         else { // quer chamar warehouse e família
             url = "http://localhost:3000/warehouse/" + temp1 + "/family/" + code;
-            console.log(url);
+            console.log("5: " + url);
             $.blockUI();
             $.get(url, function (data) {
                 $.get(url_db, function (data1) {
@@ -112,7 +114,7 @@ function changeToActiveFam(code) {
     }
     else { // quer chamar só a família
         url = "http://localhost:3000/family/" + code;
-        console.log(url);
+        console.log("6: " + url);
         $.blockUI();
         $.get(url, function (data) {
             $.get(url_db, function (data1) {
@@ -148,50 +150,50 @@ function addProductsWebPage(products, imgs) {
             if (products[i].Discount > 0) { // tem desconto
                 switch (products[i].typeUser) {
                     case 1:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP1 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     case 2:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP2 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP2 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     case 3:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP3 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP3 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     case 4:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP4 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP4 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     case 5:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP5 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP5 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     case 6:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP6 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP6 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     default:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP1 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                 }
             }
             else {
                 switch (products[i].typeUser) {
                     case 1:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP1 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01)*100) / 100 + "€</h3></div>";
                         break;
                     case 2:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP2) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP2 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01)*100) / 100 + "€</h3></div>";
                         break;
                     case 3:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP3) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP3 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100) / 100 + "€</h3></div>";
                         break;
                     case 4:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP4) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP4 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h3></div>";
                         break;
                     case 5:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP5) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP5 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h3></div>";
                         break;
                     case 6:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP6) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP6 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h3></div>";
                         break;
                     default:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP1 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h3></div>";
                         break;
                 }
             }
@@ -215,53 +217,53 @@ function addProductsWebPage(products, imgs) {
             temp += "<span style='height:60px; overflow:hidden;' class='productName col-xs-8'>" + products[i].Description + "</span>";
             temp += "</div>";
             var temp1 = products[i].Prices.PVP1 + "";
-            if (products[i].Discount > 0) { // tem desconto 
+            if (products[i].Discount > 0) { // tem desconto
                 switch (products[i].typeUser) {
                     case 1:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP1 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     case 2:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP2 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP2 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     case 3:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP3 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP3 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     case 4:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP4 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP4 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     case 5:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP5 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP5 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     case 6:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP6 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP6 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     default:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP1 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                 }
             }
             else {
                 switch (products[i].typeUser) {
                     case 1:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP1 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01)*100) / 100 + "€</h3></div>";
                         break;
                     case 2:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP2) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP2 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01)*100) / 100 + "€</h3></div>";
                         break;
                     case 3:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP3) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP3 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100) / 100 + "€</h3></div>";
                         break;
                     case 4:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP4) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP4 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h3></div>";
                         break;
                     case 5:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP5) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP5 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h3></div>";
                         break;
                     case 6:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP6) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP6 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h3></div>";
                         break;
                     default:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP1 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h3></div>";
                         break;
                 }
             }
@@ -289,53 +291,53 @@ function addProductsWebPage(products, imgs) {
             temp += "<span style='height:60px; overflow:hidden;'; class='productName col-xs-8'>" + products[i].Description + "</span>";
             temp += "</div>";
             var temp1 = products[i].Prices.PVP1 + "";
-            if (products[i].Discount > 0) { // tem desconto 
+            if (products[i].Discount > 0) { // tem desconto
                 switch (products[i].typeUser) {
                     case 1:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP1 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     case 2:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP2 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP2 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     case 3:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP3 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP3 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     case 4:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP4 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP4 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     case 5:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP5 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP5 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     case 6:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP6 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP6 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                     default:
-                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + (products[i].Prices.PVP1 * products[i].Discount) + "€</h4></div>";
+                        temp += "<div class='col-xs-3'><h4>PROMOÇÃO: " + Math.round(products[i].Prices.PVP1 * (1 - products[i].Discount * 0.01) * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h4></div>";
                         break;
                 }
             }
             else {
                 switch (products[i].typeUser) {
                     case 1:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP1 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01)*100) / 100 + "€</h3></div>";
                         break;
                     case 2:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP2) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP2 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01)*100) / 100 + "€</h3></div>";
                         break;
                     case 3:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP3) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP3 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100) / 100 + "€</h3></div>";
                         break;
                     case 4:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP4) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP4 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h3></div>";
                         break;
                     case 5:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP5) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP5 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h3></div>";
                         break;
                     case 6:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP6) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP6 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h3></div>";
                         break;
                     default:
-                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + (products[i].Prices.PVP1) + "€</h3></div>";
+                        temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + Math.round(products[i].Prices.PVP1 * (1 - products[i].Discount * 0.01) * (1 - products[i].IVA * 0.01) * 100)/100 + "€</h3></div>";
                         break;
                 }
             }

@@ -12,18 +12,32 @@
 
 				<h1 class="col-xs-9">{{product.Description}}</h1>
 				{{#if_less 0 product.stk}}
-				<span class="col-xs-3">Quantity: {{product.stk}}</span> {{/if_less}} {{#if_less product.stk 0}}
-				<span class="col-xs-3">No stock</span> {{/if_less}}
+				<span class="col-xs-3">Quantity: {{product.stk}}</span>
+				{{/if_less}}
+				{{#if_less product.stk 0}}
+				<span class="col-xs-3">No stock</span>
+				{{/if_less}}
 
 			</div>
 			<div id="categoryRating" class="row">
 				{{#if typeOne}}
-				<span class="col-xs-6">Preco: {{product.Prices.PVP1}}€</span> {{/if}} {{#if typeTwo}}
-				<span class="col-xs-6">Preco: {{product.Prices.PVP2}}€</span> {{/if}} {{#if typeThree}}
-				<span class="col-xs-6">Preco: {{product.Prices.PVP3}}€</span> {{/if}} {{#if typeFour}}
-				<span class="col-xs-6">Preco: {{product.Prices.PVP4}}€</span> {{/if}} {{#if typeFive}}
-				<span class="col-xs-6">Preco: {{product.Prices.PVP5}}€</span> {{/if}} {{#if typeSix}}
-				<span class="col-xs-6">Preco: {{product.Prices.PVP6}}€</span> {{/if}}
+				<span class="col-xs-6">Preco: {{price}}€</span>
+				{{/if}}
+				{{#if typeTwo}}
+				<span class="col-xs-6">Preco: {{price}}€</span>
+				{{/if}}
+				{{#if typeThree}}
+				<span class="col-xs-6">Preco: {{price}}€</span>
+				{{/if}}
+				{{#if typeFour}}
+				<span class="col-xs-6">Preco: {{price}}€</span>
+				{{/if}}
+				{{#if typeFive}}
+				<span class="col-xs-6">Preco: {{price}}€</span>
+				{{/if}}
+				{{#if typeSix}}
+				<span class="col-xs-6">Preco: {{price}}€</span>
+				{{/if}}
 				<span class="col-xs-6">IVA: {{iva}}€</span>
 			</div>
 			<br>
@@ -35,12 +49,6 @@
 			<div id="categoryRating" class="row">
 				<span class="col-xs-6">Garantia: {{product.Warranty}}</span>
 				<span class="col-xs-6">Tempo de Entrega: {{product.DeliveryTime}}</span>
-			</div>
-			<br>
-			<div id="productText" class="col-xs-12">
-				Texto sobre as informações do produto Texto sobre as informações do produto Texto sobre as informações do produto Texto sobre
-				as informações do produto Texto sobre as informações do produto Texto sobre as informações do produto Texto sobre as
-				informações do produto.
 			</div>
 		</div>
 		{{#if_less 0 product.stk}}
