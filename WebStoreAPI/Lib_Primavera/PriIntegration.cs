@@ -613,14 +613,15 @@ namespace WebStoreAPI.Lib_Primavera
                     myEnc.set_Serie(dv.Serie);
                     myEnc.set_Tipodoc("ECL");
                     myEnc.set_TipoEntidade("C");
-
+                    GcpBECliente c = PriEngine.Engine.Comercial.Clientes.Edita(dv.Client.CodClient);
+                    
                     // Linhas do documento para a lista de linhas
                     lstlindv = dv.LinhasDoc;
                     //PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc, rl);
                     PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
                     foreach (Model.LinhaDocVenda lin in lstlindv)
                     {
-                        PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, lin.Armazem, "", lin.PrecoUnitario, lin.Desconto);
+                        PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, lin.Armazem, "", lin.PrecoUnitario, lin.Desconto, "", 0, 0, 0, dv.Client.ClientDiscount);
                     }
 
 

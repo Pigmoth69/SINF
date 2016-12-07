@@ -14,12 +14,12 @@ namespace WebStoreAPI.Controllers
         //
         // GET: /Clientes/
 
-        /*public IEnumerable<Lib_Primavera.Model.SimpleClient> Get()
+        public IEnumerable<Lib_Primavera.Model.SimpleClient> Get()
         {
                 return Lib_Primavera.PriIntegration.ListaClientes();
         }
 
-        [Route("api/clientes/{id}/cenas")]
+       /* [Route("api/clientes/{id}/cenas")]
         [HttpGet]
         public HttpResponseMessage GetCenas()
         {
@@ -28,20 +28,20 @@ namespace WebStoreAPI.Controllers
         */
 
         // GET api/cliente/5    
-        public Client Get(string id)
+        [Route("api/clients")]
+        public HttpResponseMessage Get(string id)
         {
             Lib_Primavera.Model.Client cliente = Lib_Primavera.PriIntegration.GetCliente(id);
 
 
             if (cliente == null)
             {
-                throw new HttpResponseException(
-                        Request.CreateResponse(HttpStatusCode.NotFound));
+                return Request.CreateResponse(HttpStatusCode.BadRequest,"Client with code"+id+"does not exists");
 
             }
             else
             {
-                return cliente;
+                return Request.CreateResponse(HttpStatusCode.OK, cliente);
             }
         }
 
