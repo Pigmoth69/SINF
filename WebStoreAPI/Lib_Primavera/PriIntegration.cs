@@ -602,11 +602,12 @@ namespace WebStoreAPI.Lib_Primavera
              
             PreencheRelacaoVendas rl = new PreencheRelacaoVendas();
             List<Model.LinhaDocVenda> lstlindv = new List<Model.LinhaDocVenda>();
-            
-            try
+            if (Lib_Primavera.PriEngine.InitializeCompany(WebStoreAPI.Properties.Settings.Default.Company.Trim(), WebStoreAPI.Properties.Settings.Default.User.Trim(), WebStoreAPI.Properties.Settings.Default.Password.Trim()) == true)
             {
+                try
+                {
                     // Atribui valores ao cabecalho do doc
-               
+
                     myEnc.set_DataDoc(dv.Data);
                     myEnc.set_Entidade(dv.Client.CodClient);
                     myEnc.set_Serie(dv.Serie);
@@ -619,7 +620,6 @@ namespace WebStoreAPI.Lib_Primavera
                     PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
                     foreach (Model.LinhaDocVenda lin in lstlindv)
                     {
-                        //PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, "", "", lin.PrecoUnitario, lin.Desconto);//Especificar o Armazem!
                         PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, lin.Armazem, "", lin.PrecoUnitario, lin.Desconto);
                     }
 
@@ -633,14 +633,32 @@ namespace WebStoreAPI.Lib_Primavera
                     erro.Descricao = "Sucesso";
                     return erro;
 
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                    PriEngine.Engine.DesfazTransaccao();
+                    erro.Erro = 1;
+                    erro.Descricao = ex.Message;
+                    return erro;
+                }
             }
-            catch (Exception ex)
+            else
             {
-                System.Diagnostics.Debug.WriteLine(ex);
-                PriEngine.Engine.DesfazTransaccao();
+                try {
+                    PriEngine.Engine.DesfazTransaccao();
+                }
+                catch (Exception e)
+                {
+                    erro.Erro = 1;
+                    erro.Descricao = e.Message;
+                    return erro;
+                }
+                
                 erro.Erro = 1;
-                erro.Descricao = ex.Message;
+                erro.Descricao = "ERROR INITIALIZING DATABASE!";
                 return erro;
+
             }
         }
         
