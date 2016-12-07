@@ -49,10 +49,6 @@
 	width: 50%;
 }
 
-#addressForm input{
-	width: 100%;
-}
-
 #addressForm span, p{
 	font-size: large;
 }

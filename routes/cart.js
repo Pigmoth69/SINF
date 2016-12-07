@@ -38,7 +38,6 @@ router.get('/', function (req, res) {
 
                     //adicionar total
                     var total = 0;
-                    console.log("red");
                     // adicionar infos de cada produto
                     async.each(temp, function (item, callback) {
                         var prodURL = "http://localhost:"+ config.PORT + "/api/products/" + item.idProdutoPrimavera;
@@ -46,7 +45,6 @@ router.get('/', function (req, res) {
                             if (!error && response.statusCode == 200) {
                                 var prod = JSON.parse(body);
                                 item.Description = prod.Description;
-                                console.log(prod);
                                 switch (req.session.typeUser) {
                                     case 1:
                                         item.Price = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1))* item.quantidade;

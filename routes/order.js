@@ -64,6 +64,8 @@ router.get('/pdf/:idOrder', function (req, res) {
     request.get({ url: orderURL, proxy: config.PROXY }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var orderInfo = JSON.parse(body);
+            console.log("******** ORDER INFO *********");
+            console.log(orderInfo);
 
             var PDFDocument = require('pdfkit');
             var doc = new PDFDocument;
@@ -88,7 +90,7 @@ router.get('/pdf/:idOrder', function (req, res) {
             doc.text(orderInfo['Client']['TaxpayNumber'], 100, yindex);
             yindex+=20;
             doc.text("Address: ", 50, yindex);
-            doc.text(orderInfo['Client']['Adress'], 100, yindex);
+            doc.text(orderInfo['Client']['Address'], 100, yindex);
             yindex+=30;
             doc.text("Date: ", 50, yindex);
             doc.text(orderInfo['Data'].substring(0, 10) + " " + orderInfo['Data'].substring(11, 19), 100, yindex);

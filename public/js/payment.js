@@ -1,3 +1,7 @@
+var addressChosen;
+var shipmentChosen;
+var result = {};
+
 function addressBox() {
     $('#addressBox').show();
     $('#shipmentBox').hide();
@@ -33,7 +37,8 @@ function paymentBox() {
 }
 
 function confirmationBox() {
-    var isValid = verifyPayment();
+    var isValid = verifyAddress();
+    isValid = verifyShipment();
 
     if(isValid){
         $('#confirmationBox').show();
@@ -42,19 +47,30 @@ function confirmationBox() {
         $('#addressBox').hide();
     }
     else{
-        alert("fill all payment fields before proceeding!");
+        alert("fill all fields before proceeding!");
     }
+}
+
+function confirmPayment(){
+    //console.log("********************confirmaPayment");
+    result.Client = {};
+    result.Client.Address = addressChosen;
+    result.Client.ExpeditionWay = shipmentChosen;
+
+    $.post( "http://localhost:3000/payment/confirm", { req: result }, function( data ) {
+        console.log( data );
+
+    }, "json");
 }
 
 function verifyAddress(){
     var isValid = true;
-    $('#addressBox input[type="text"]').each(function(){
-        if ($(this).val() === ''){
-            isValid = false;
+    var checks = document.getElementsByName("address");
+    for(var i = 0; i < checks.length; i++){
+        if (checks[i].checked){
+            isValid = true;
+            addressChosen = checks[i].value;
         }
-    });
-    if( $('#country').val() === '') {
-        isValid = false; 
     }
     return isValid;
 }
@@ -65,8 +81,8 @@ function verifyShipment(){
     for(var i = 0; i < checks.length; i++){
         if (checks[i].checked){
             isValid = true;
-            //alert(checks[i].value);
-            $('#shipmentOptionConfirm').text("Shipment: " + checks[i].value + ": " );
+            shipmentChosen = checks[i].value;
+            $('#shipmentOptionConfirm').text("Shipment: " + checks[i].value);
         }
     }
     return isValid;
@@ -74,10 +90,10 @@ function verifyShipment(){
 
 function verifyPayment(){
     var isValid = true;
-    $('#paymentBox input').each(function(){
+    /*$('#paymentBox input').each(function(){
         if ($(this).val() === ''){
             isValid = false;
         }
-    });
+    });*/
     return isValid;
 }
