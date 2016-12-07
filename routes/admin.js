@@ -9,6 +9,10 @@ router.get('/', function (req, res) {
     res.render('admin');
 });
 
+router.get('/payments', function(req, res) {
+    res.render('adminPayment');
+});
+
 router.get('/products', function (req, res) {
     // ir buscar todos os produtos existentes no primavera
     var url = "http://localhost:" + config.PORT + "/api/products";

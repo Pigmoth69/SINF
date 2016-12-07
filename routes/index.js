@@ -35,11 +35,17 @@ router.get('/', function (req, res) {
 
 router.get('/warehouse/:idW/family/:idF', function (req, res) {
     var ware = "http://localhost:" + config.PORT + "/api/products?warehouseId=" + req.params.idW + "&familyId=" + req.params.idF;
+    console.log(ware);
+    // há aqui um erro ???
     request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
             var temp = JSON.parse(body);
+            console.log(temp);
             for (var i = 0; i < temp.length; i++) {
                 temp[i].typeUser = req.session.typeUser;
+                if (req.session.user != undefined)
+                    temp[i].discount = req.session.discount;
+                else temp[i].discount = 0;
             }
             res.json(temp);
         }
@@ -56,6 +62,9 @@ router.get('/warehouse/:idW/', function (req, res) {
             var temp = JSON.parse(body);
             for (var i = 0; i < temp.length; i++) {
                 temp[i].typeUser = req.session.typeUser;
+                if (req.session.user != undefined)
+                    temp[i].discount = req.session.discount;
+                else temp[i].discount = 0;
             }
             res.json(temp);
         }
@@ -72,6 +81,9 @@ router.get('/family/:idF', function (req, res) {
             var temp = JSON.parse(body);
             for (var i = 0; i < temp.length; i++) {
                 temp[i].typeUser = req.session.typeUser;
+                if (req.session.user != undefined)
+                    temp[i].discount = req.session.discount;
+                else temp[i].discount = 0;
             }
             res.json(temp);
         }
@@ -93,14 +105,21 @@ router.post('/login', function (req, res, next) {
     if (req.session.user === undefined) {
         db.compareLogin(req.body.username, req.body.password, function (rows) {
             if (rows[0] != undefined) {
-                req.session.user = rows[0].idUser;
-                req.session.name = rows[0].username;
-                req.session.typeUser = rows[0].tipo;
-                if (req.body.username == 'admin')
-                    req.session.admin = 'admin';
+                var quer = "http://localhost:" + config.PORT + "/api/clients?id=" + rows[0].idUser;
+                request.get({ url: quer, proxy: config.PROXY }, function (error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        var cl = JSON.parse(body);
+                        req.session.user = rows[0].idUser;
+                        req.session.name = rows[0].username;
+                        req.session.typeUser = rows[0].tipo;
+                        req.session.discount = cl.ClientDiscount;
+                        if (req.body.username == 'admin')
+                            req.session.admin = 'admin';
 
-                console.log("login correto");
-                res.redirect('/');
+                        console.log("login correto");
+                        res.redirect('/');
+                    }
+                });
             } else {
                 console.log("credenciais erradas");
                 res.redirect('/login');

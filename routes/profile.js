@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
         if (req.session.admin == 'admin')
             res.redirect('/admin');
         else {
-            var url = "http://localhost:" + config.PORT + "/api/clients/" + req.session.user;
+            var url = "http://localhost:" + config.PORT + "/api/clients?id=" + req.session.user;
             request.get({ url: url, proxy: config.PROXY }, function(error, response, wares) {
                 if (!error && response.statusCode == 200) {
                     var client = JSON.parse(wares);
