@@ -5,9 +5,11 @@ var async = require('async');
 var db = require('../database/database.js');
 var config = require('../config/config.js');
 
-router.get('/', function (req, res) {s
-    if (req.session.user == undefined)
+router.get('/', function (req, res) {
+    console.log("what");
+    if (req.session.user == undefined) {
         res.redirect('/login');
+    }
     else {
         db.getCart(req.session.user, function (cart) {
             if (cart == 'no carrinho' || cart == 'sem merdas no carrinho') {
@@ -36,6 +38,7 @@ router.get('/', function (req, res) {s
 
                     //adicionar total
                     var total = 0;
+                    console.log("red");
                     // adicionar infos de cada produto
                     async.each(temp, function (item, callback) {
                         var prodURL = "http://localhost:"+ config.PORT + "/api/products/" + item.idProdutoPrimavera;

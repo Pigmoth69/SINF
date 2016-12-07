@@ -19,6 +19,10 @@
 	border: 1px solid;
 }
 
-#userPhoto {
+#userPhotoImg {
 	border: 1px solid;
+}
+
+.cancro {
+	margin-left: 5%;
 }
