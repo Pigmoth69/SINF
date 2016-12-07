@@ -606,9 +606,9 @@ namespace WebStoreAPI.Lib_Primavera
             try
             {
                     // Atribui valores ao cabecalho do doc
-                
+               
                     myEnc.set_DataDoc(dv.Data);
-                    myEnc.set_Entidade(dv.Client.TaxpayNumber);
+                    myEnc.set_Entidade(dv.Client.CodClient);
                     myEnc.set_Serie(dv.Serie);
                     myEnc.set_Tipodoc("ECL");
                     myEnc.set_TipoEntidade("C");
@@ -636,6 +636,7 @@ namespace WebStoreAPI.Lib_Primavera
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex);
                 PriEngine.Engine.DesfazTransaccao();
                 erro.Erro = 1;
                 erro.Descricao = ex.Message;
