@@ -13,7 +13,7 @@ namespace WebStoreAPI.Controllers
     public class DocVendaController : ApiController
     {
         //
-        // GET: /Clientes/
+        // GET: /orders/
 
         public IEnumerable<Lib_Primavera.Model.DocVenda> Get()
         {

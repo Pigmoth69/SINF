@@ -200,6 +200,7 @@ namespace WebStoreAPI.Lib_Primavera
                     //myCli.set_ModoPag(cli.PaymentWay);
                     //myCli.set_CondPag(cli.PaymentType);
                     
+                    
                     PriEngine.Engine.Comercial.Clientes.Actualiza(myCli);
 
                     erro.Erro = 0;
@@ -641,9 +642,7 @@ namespace WebStoreAPI.Lib_Primavera
                 return erro;
             }
         }
-
-     
-
+        
         public static List<Model.DocVenda> Encomendas_List()
         {
             
@@ -691,9 +690,6 @@ namespace WebStoreAPI.Lib_Primavera
                 } 
             return listdv;
         }
-
-
-       
 
         public static Model.DocVenda Encomenda_Get(string numdoc)
         {
@@ -768,7 +764,7 @@ namespace WebStoreAPI.Lib_Primavera
 
                 if (!PriEngine.Engine.Comercial.Clientes.Existe(client))
                 {
-                    System.Diagnostics.Debug.WriteLine("MERDA!");
+                    System.Diagnostics.Debug.WriteLine("Client does not exists!!");
                     return null;
                 }
                     
@@ -781,14 +777,14 @@ namespace WebStoreAPI.Lib_Primavera
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.DocVenda();
-
+                    double TotalMercReal = 0;
                     dv.id = objListCab.Valor("id");
                     dv.Client = GetCliente(objListCab.Valor("Entidade"));
                     dv.NumDoc = objListCab.Valor("NumDoc");
                     dv.Data = objListCab.Valor("Data");
                     dv.TotalMerc = objListCab.Valor("TotalMerc");
                     dv.Serie = objListCab.Valor("Serie");
-                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido,Data from LinhasDoc where IdCabecDoc='" + dv.id + "' order By Data");
+                    objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, TotalDC, TotalDA, TotalIva from LinhasDoc where IdCabecDoc='" + dv.id + "' order By NumLinha");
                     listlindv = new List<Model.LinhaDocVenda>();
 
                     while (!objListLin.NoFim())
@@ -803,6 +799,11 @@ namespace WebStoreAPI.Lib_Primavera
                         lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                         lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
                         lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                        lindv.TotalDescArtigo = objListLin.Valor("TotalDA");
+                        lindv.TotalDescontoCliente = objListLin.Valor("TotalDC");
+                        lindv.IvaTotal = objListLin.Valor("TotalIva");
+                        lindv.TotalPrecoArtigo = lindv.TotalLiquido + lindv.IvaTotal;
+                        TotalMercReal += lindv.TotalLiquido + lindv.IvaTotal;
                         listlindv.Add(lindv);
                         objListLin.Seguinte();
                     }
@@ -826,7 +827,7 @@ namespace WebStoreAPI.Lib_Primavera
 
             if (!PriEngine.Engine.Comercial.Clientes.Existe(client))
             {
-                System.Diagnostics.Debug.WriteLine("MERDA!");
+                System.Diagnostics.Debug.WriteLine("Client does not exists!!");
                 return null;
             }
 
@@ -835,7 +836,7 @@ namespace WebStoreAPI.Lib_Primavera
 
             string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and Entidade='" + client + "' AND id ='"+orderId+"';";
             objListCab = PriEngine.Engine.Consulta(st);
-
+            double TotalMercReal = 0;
 
                 dv = new Model.DocVenda();
 
@@ -845,7 +846,7 @@ namespace WebStoreAPI.Lib_Primavera
                 dv.Data = objListCab.Valor("Data");
                 dv.TotalMerc = objListCab.Valor("TotalMerc");
                 dv.Serie = objListCab.Valor("Serie");
-                objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido,Data from LinhasDoc where IdCabecDoc='" + dv.id + "' order By Data");
+                objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, TotalDC, TotalDA, TotalIva from LinhasDoc where IdCabecDoc='" + dv.id + "' order By NumLinha");
                 listlindv = new List<Model.LinhaDocVenda>();
 
                 while (!objListLin.NoFim())
@@ -860,6 +861,11 @@ namespace WebStoreAPI.Lib_Primavera
                     lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                     lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
                     lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                    lindv.TotalDescArtigo = objListLin.Valor("TotalDA");
+                    lindv.TotalDescontoCliente = objListLin.Valor("TotalDC");
+                    lindv.IvaTotal = objListLin.Valor("TotalIva");
+                    lindv.TotalPrecoArtigo = lindv.TotalLiquido + lindv.IvaTotal;
+                    TotalMercReal += lindv.TotalLiquido + lindv.IvaTotal;
                     listlindv.Add(lindv);
                     objListLin.Seguinte();
                 }
@@ -1007,6 +1013,7 @@ namespace WebStoreAPI.Lib_Primavera
         #endregion Utils
 
         #region Tests
+        
         public static List<string> GetTestes(string id)
         {
             
