@@ -10,65 +10,99 @@ var userD;
 
 router.get('/', function (req, res) {
     var user = req.session.user;
-    var userURL = "http://localhost:49822/api/Clients/" + user;
+    var userURL = "http://localhost:" + config.PORT + "/api/clients?id=" + user;
 
-    request.get({ url: userURL, proxy: 'http://localhost:49822' }, function (error, response, userJ) {
+    request.get({ url: userURL, proxy: config.PROXY }, function (error, response, userJ) {
 
         if (!error && response.statusCode == 200) {
             userD = JSON.parse(userJ);
             //console.log(userD);
+            var paymentsURL = "http://localhost:49822/api/utils/paymenttypes";
+            var paymentsWURL = "http://localhost:49822/api/utils/paymentways";
+            var expeditionURL = "http://localhost:49822/api/utils/expeditionway";
+            request.get({ url: paymentsURL, proxy: config.PROXY }, function (error3, response3, paymenttypesB) {
+                request.get({ url: paymentsWURL, proxy: config.PROXY }, function (error4, response4, paymentwaysB) {
+                    request.get({ url: expeditionURL, proxy: config.PROXY }, function (error5, response5, expeditionB) {
+                        var paymentT = JSON.parse(paymenttypesB);
+                        var paymentW = JSON.parse(paymentwaysB);
+                        var expeditionW = JSON.parse(expeditionB);
+                        var p1, p2, e1;
+                        //console.log(paymentW);
 
-            db.getCart(req.session.user, function (cart) {
-                if (cart == 'no carrinho' || cart == 'sem merdas no carrinho') {
-                    res.render('cart', { empty: "damn" });
-                }
-                else {
-                    db.getProducts(function (prods) {
-                        var temp = cart;
+                        for (var i = 0; i < paymentT.length; i++) {
+                            if (paymentT[i].PaymentTypeCode == userD.PaymentType) {
+                                p1 = paymentT[i].PaymentTypeDescription;
+                            }
+                        }
+                        for (var i = 0; i < paymentW.length; i++) {
+                            if (paymentW[i].PaymentWayCode == userD.PaymentWay) {
+                                p2 = paymentW[i].PaymentWayDescription;
+                            }
+                        }
+                        for (var i = 0; i < expeditionW.length; i++) {
+                            if (expeditionW[i].ExpeditionCode == userD.ExpeditionWay) {
+                                e1 = expeditionW[i].ExpeditionDescription;
+                            }
+                        }
 
-                        //adicionar total
-                        var total = 0;
-                        // adicionar infos de cada produto
-                        async.each(temp, function (item, callback) {
-                            var prodURL2 = "http://localhost:49822/api/products/" + item.idProdutoPrimavera;
-                            request.get({ url: prodURL2, proxy: 'http://localhost:49822' }, function (error2, response2, body) {
-                                if (!error2 && response2.statusCode == 200) {
-                                    var prod = JSON.parse(body);
-                                    item.Description = prod.Description;
-                                    switch (req.session.typeUser) {
-                                        case 1:
-                                            item.Price = prod.Prices.PVP1 * item.quantidade;
-                                            break;
-                                        case 2:
-                                            item.Price = prod.Prices.PVP2 * item.quantidade;
-                                            break;
-                                        case 3:
-                                            item.Price = prod.Prices.PVP3 * item.quantidade;
-                                            break;
-                                        case 4:
-                                            item.Price = prod.Prices.PVP4 * item.quantidade;
-                                            break;
-                                        case 5:
-                                            item.Price = prod.Prices.PVP5 * item.quantidade;
-                                            break;
-                                        case 6:
-                                            item.Price = prod.Prices.PVP6 * item.quantidade;
-                                            break;
-                                        default:
-                                            item.Price = prod.Prices.PVP1 * item.quantidade;
-                                            break;
-                                    }
-                                    total += item.Price;
-                                    callback();
-                                }
-                            });
-                        }, function (err) {
-                            //console.log(temp);
-                            //console.log("total: " + total);
-                            res.render('payment', { userData: userD, total: total, cart: temp });
+                        //console.log(p1);
+                        //console.log(p2);
+                        //console.log(e1);
+
+                        db.getCart(req.session.user, function (cart) {
+                            if (cart == 'no carrinho' || cart == 'sem merdas no carrinho') {
+                                res.render('cart', { empty: "damn" });
+                            }
+                            else {
+                                db.getProducts(function (prods) {
+                                    var temp = cart;
+
+                                    //adicionar total
+                                    var total = 0;
+                                    // adicionar infos de cada produto
+                                    async.each(temp, function (item, callback) {
+                                        var prodURL2 = "http://localhost:49822/api/products/" + item.idProdutoPrimavera;
+                                        request.get({ url: prodURL2, proxy: config.PROXY }, function (error2, response2, body) {
+                                            if (!error2 && response2.statusCode == 200) {
+                                                var prod = JSON.parse(body);
+                                                item.Description = prod.Description;
+                                                switch (req.session.typeUser) {
+                                                    case 1:
+                                                        item.Price = prod.Prices.PVP1 * item.quantidade;
+                                                        break;
+                                                    case 2:
+                                                        item.Price = prod.Prices.PVP2 * item.quantidade;
+                                                        break;
+                                                    case 3:
+                                                        item.Price = prod.Prices.PVP3 * item.quantidade;
+                                                        break;
+                                                    case 4:
+                                                        item.Price = prod.Prices.PVP4 * item.quantidade;
+                                                        break;
+                                                    case 5:
+                                                        item.Price = prod.Prices.PVP5 * item.quantidade;
+                                                        break;
+                                                    case 6:
+                                                        item.Price = prod.Prices.PVP6 * item.quantidade;
+                                                        break;
+                                                    default:
+                                                        item.Price = prod.Prices.PVP1 * item.quantidade;
+                                                        break;
+                                                }
+                                                total += item.Price;
+                                                callback();
+                                            }
+                                        });
+                                    }, function (err) {
+                                        //console.log(temp);
+                                        //console.log("total: " + total);
+                                        res.render('payment', { userData: userD, total: total, cart: temp, payType: p1, payWay: p2, expWay: e1});
+                                    });
+                                });
+                            }
                         });
                     });
-                }
+                });
             });
         }
         else {
@@ -81,7 +115,7 @@ router.get('/', function (req, res) {
 
 router.post('/confirm', function (req, res) {
     var urlQuer = "http://localhost:" + config.PORT + "/api/DocVenda";
-    console.log("req ----------------------");
+    //console.log("req ----------------------");
     //console.log(req.params.Client.Address);
     var form = {};
     form.id = '';
@@ -114,11 +148,13 @@ router.post('/confirm', function (req, res) {
             var temp = cart;
 
             //adicionar total
+            var prodA = {};
+            var j = 0;
             var total = 0;
             // adicionar infos de cada produto
             async.each(temp, function (item, callback) {
                 var prodURL2 = "http://localhost:49822/api/products/" + item.idProdutoPrimavera;
-                request.get({ url: prodURL2, proxy: 'http://localhost:49822' }, function (error2, response2, body) {
+                request.get({ url: prodURL2, proxy: config.PROXY }, function (error2, response2, body) {
                     if (!error2 && response2.statusCode == 200) {
                         var prod = JSON.parse(body);
                         item.Description = prod.Description;
@@ -146,6 +182,7 @@ router.post('/confirm', function (req, res) {
                                 break;
                         }
                         total += item.Price;
+                        prodA[j] = prod; j++;
                         callback();
                     }
                 });
@@ -157,9 +194,10 @@ router.post('/confirm', function (req, res) {
                 form.TotalMerc = total;
                 form.Serie = '2016';
                 form.TotalRealMerc = '';
-                
+
                 form.LinhasDoc = [];
                 //console.log("temp.length = " + temp.length)
+                //console.log(prodA);
                 for (var i = 0; i < temp.length; i++) {
                     //console.log("temp[" + i + "] = " + temp[i].Description);
                     form.LinhasDoc[i] = {};
@@ -168,11 +206,11 @@ router.post('/confirm', function (req, res) {
                     form.LinhasDoc[i].DescArtigo = temp[i].Description;
                     form.LinhasDoc[i].TotalDescArtigo = '';
                     form.LinhasDoc[i].TotalDescontoCliente = '';
-                    form.LinhasDoc[i].IvaTotal = '';
+                    form.LinhasDoc[i].IvaTotal = prodA[i]['IVA'];
                     form.LinhasDoc[i].IdCabecDoc = '';
                     form.LinhasDoc[i].Quantidade = temp[i].quantidade;
                     form.LinhasDoc[i].Unidade = '';
-                    form.LinhasDoc[i].Desconto = '';
+                    form.LinhasDoc[i].Desconto = prodA[i]['Discount'];
                     form.LinhasDoc[i].PrecoUnitario = temp[i].Price;
                     form.LinhasDoc[i].TotalILiquido = '';
                     form.LinhasDoc[i].TotalLiquido = '';
@@ -181,23 +219,27 @@ router.post('/confirm', function (req, res) {
                 }
 
 
-
-
-                
-                request.post({ url: urlQuer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form}, function (error, response, body) {
-                    console.log("error");
-                    console.log(error);
-                    console.log("response");
-                    console.log(response);
-                    console.log("body");
-                    console.log(body);
-                });
-                
-
                 console.log(form);
+
+
+                request.post({ url: urlQuer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
+
+                    if (!error && response.statusCode == 201) {
+                        
+                        //console.log(error);
+                        //console.log(response.statusCode);
+                        //console.log(body);
+                        
+                    }
+                });
+            
+                
+                //res.render('404');
+                //console.log(form);
             });
         });
     });
+    
 
 });
 

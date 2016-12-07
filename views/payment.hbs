@@ -46,7 +46,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <p><col></col> Name: </p>
-                    <input type="radio" name="ship" value="{{userData.ExpeditionWay}}"> {{userData.ExpeditionWay}}
+                    <input type="radio" name="ship" value="{{expWay}}"> {{expWay}}
                 </div>
             </div>
             <br>
@@ -69,13 +69,13 @@
 		<form id="creditCardForm">
 			<div class="row">
 				<div class="col-xs-12">
-					<p>Payment Type: {{userData.PaymentType}} </p>
+					<p>Payment Type: {{payType}} </p>
                 </div>
 			</div>
 			<br>
 			<div class="row">
 				<div class="col-xs-12">
-					<p>Payment way: {{userData.PaymentWay}} </p>
+					<p>Payment way: {{payWay}} </p>
 				</div>
 			</div>
 			<br>

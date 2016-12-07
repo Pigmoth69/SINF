@@ -37,7 +37,8 @@ function paymentBox() {
 }
 
 function confirmationBox() {
-    var isValid = true;//verifyPayment();
+    var isValid = verifyAddress();
+    isValid = verifyShipment();
 
     if(isValid){
         $('#confirmationBox').show();
@@ -46,7 +47,7 @@ function confirmationBox() {
         $('#addressBox').hide();
     }
     else{
-        alert("fill all payment fields before proceeding!");
+        alert("fill all fields before proceeding!");
     }
 }
 
@@ -81,7 +82,7 @@ function verifyShipment(){
         if (checks[i].checked){
             isValid = true;
             shipmentChosen = checks[i].value;
-            $('#shipmentOptionConfirm').text("Shipment: " + checks[i].value + ": " );
+            $('#shipmentOptionConfirm').text("Shipment: " + checks[i].value);
         }
     }
     return isValid;
