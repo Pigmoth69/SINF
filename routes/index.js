@@ -36,62 +36,74 @@ router.get('/', function (req, res) {
 });
 
 router.get('/warehouse/:idW/family/:idF', function (req, res) {
-    var ware = "http://localhost:" + config.PORT + "/api/products?warehouseId=" + req.params.idW + "&familyId=" + req.params.idF;
-    console.log(ware);
-    // há aqui um erro ???
-    request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var temp = JSON.parse(body);
-            console.log(temp);
-            for (var i = 0; i < temp.length; i++) {
-                temp[i].typeUser = req.session.typeUser;
-                if (req.session.user != undefined)
-                    temp[i].discount = req.session.discount;
-                else temp[i].discount = 0;
+    db.getApprovedProducts(function (apprs) {
+        var ware = "http://localhost:" + config.PORT + "/api/products?warehouseId=" + req.params.idW + "&familyId=" + req.params.idF;
+        console.log(ware);
+        // há aqui um erro ???
+        request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var temp = JSON.parse(body);
+                console.log(temp);
+                for (var i = 0; i < temp.length; i++) {
+                    temp[i].typeUser = req.session.typeUser;
+                    if (req.session.user != undefined)
+                        temp[i].disc = req.session.discount;
+                    else temp[i].disc = 0;
+                }
+                returnApprovedProducts(apprs, temp, function (re) {
+                    res.json(temp);
+                });
             }
-            res.json(temp);
-        }
-        else {
-            res.render('404');
-        }
+            else {
+                res.render('404');
+            }
+        });
     });
 });
 
 router.get('/warehouse/:idW/', function (req, res) {
-    var ware = "http://localhost:" + config.PORT + "/api/warehouse?warehouseId=" + req.params.idW;
-    request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var temp = JSON.parse(body);
-            for (var i = 0; i < temp.length; i++) {
-                temp[i].typeUser = req.session.typeUser;
-                if (req.session.user != undefined)
-                    temp[i].discount = req.session.discount;
-                else temp[i].discount = 0;
+    db.getApprovedProducts(function (apprs) {
+        var ware = "http://localhost:" + config.PORT + "/api/warehouse?warehouseId=" + req.params.idW;
+        request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var temp = JSON.parse(body);
+                for (var i = 0; i < temp.length; i++) {
+                    temp[i].typeUser = req.session.typeUser;
+                    if (req.session.user != undefined)
+                        temp[i].disc = req.session.discount;
+                    else temp[i].disc = 0;
+                }
+                returnApprovedProducts(apprs, temp, function (re) {
+                    res.json(temp);
+                });
             }
-            res.json(temp);
-        }
-        else {
-            res.render('404');
-        }
+            else {
+                res.render('404');
+            }
+        });
     });
 });
 
 router.get('/family/:idF', function (req, res) {
-    var ware = "http://localhost:" + config.PORT + "/api/products/family/" + req.params.idF;
-    request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var temp = JSON.parse(body);
-            for (var i = 0; i < temp.length; i++) {
-                temp[i].typeUser = req.session.typeUser;
-                if (req.session.user != undefined)
-                    temp[i].discount = req.session.discount;
-                else temp[i].discount = 0;
+    db.getApprovedProducts(function (apprs) {
+        var ware = "http://localhost:" + config.PORT + "/api/products/family/" + req.params.idF;
+        request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var temp = JSON.parse(body);
+                for (var i = 0; i < temp.length; i++) {
+                    temp[i].typeUser = req.session.typeUser;
+                    if (req.session.user != undefined)
+                        temp[i].disc = req.session.discount;
+                    else temp[i].disc = 0;
+                }
+                returnApprovedProducts(apprs, temp, function (re) {
+                    res.json(temp);
+                });
             }
-            res.json(temp);
-        }
-        else {
-            res.render('404');
-        }
+            else {
+                res.render('404');
+            }
+        });
     });
 });
 
@@ -134,10 +146,10 @@ router.post('/login', function (req, res, next) {
 });
 
 router.post('/register', function (req, res, next) {
-    var quer = "http://localhost:" + config.PORT + "/api/Clients";
+    var quer = "http://localhost:" + config.PORT + "/api/clients";
     var form = {};
     form.Address = req.body.address;
-    form.Address2 = "undefined";
+    form.Address2 = "";
     form.ClientDiscount = 0;
     form.ClientType = "001";
     form.CodClient = req.body.clientCode;
@@ -145,14 +157,14 @@ router.post('/register', function (req, res, next) {
     form.Currency = "EUR";
     form.District = req.body.district;
     form.Email = req.body.email;
-    form.ExpeditionWay = "undefined";
+    form.ExpeditionWay = "";
     form.FiscalName = req.body.fiscal_name;
     form.Local = req.body.local;
     form.NameClient = req.body.name;
-    form.PaymentType = "undefined";
-    form.PaymentWay = "undefined";
+    form.PaymentType = "";
+    form.PaymentWay = "";
     form.Phone = req.body.phone;
-    form.Phone2 = "undefined";
+    form.Phone2 = "";
     form.PostCode = req.body.zip;
     form.TaxpayNumber = req.body.taxpay;
     console.log(form);
@@ -161,9 +173,8 @@ router.post('/register', function (req, res, next) {
         res.redirect('/login');
     }
     else {
-        db.registerUser(req.body.clientCode, req.body.name, req.body.password, req.body.clientCode, function (rows) {
+        db.registerUser(req.body.clientCode, req.body.name, req.body.password, "001", function (rows) {
             request.post({ url: quer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
-                console.log(error);
                 if (!error && response.statusCode == 201) {
                     console.log(response.statusCode);
                     res.redirect('/');
@@ -186,20 +197,37 @@ router.post('/register', function (req, res, next) {
 });
 
 router.get('/search/:query', function (req, res) {
-    var quer = "http://localhost:" + config.PORT + "/api/products/search/" + req.params.query;
-    request.get({ url: quer, proxy: config.PROXY }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var temp = JSON.parse(body);
-            for (var i = 0; i < temp.length; i++) {
-                temp[i].typeUser = req.session.typeUser;
+    db.getApprovedProducts(function (apprs) {
+        var quer = "http://localhost:" + config.PORT + "/api/products/search/" + req.params.query;
+        request.get({ url: quer, proxy: config.PROXY }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var temp = JSON.parse(body);
+                for (var i = 0; i < temp.length; i++) {
+                    temp[i].typeUser = req.session.typeUser;
+                }
+                returnApprovedProducts(apprs, temp, function (re) {
+                    res.json(temp);
+                });
             }
-            res.json(temp);
-        }
-        else {
-            res.render('404');
-        }
+            else {
+                res.render('404');
+            }
+        });
     });
 });
+
+function returnApprovedProducts(prods, prodsPri, next) {
+    var result = [];
+    for (var i = 0; i < prodsPri.length; i++) {
+        for (var j = 0; j < prods.length; j++) {
+            if (prods[j].idProdutoPrimavera == prodsPri[i].Code) {
+                result[i] = prodsPri[i];
+            }
+        }
+    }
+    if (typeof next == 'function')
+        next(result);
+}
 
 router.get('/addProductToCart/:idP', function (req, res) {
     if (req.session.user == undefined) {

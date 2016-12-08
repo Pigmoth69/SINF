@@ -97,6 +97,14 @@ app.use('/payment', payment);
 app.use('/order', order);
 app.use('/admin', admin);
 
+var CronJob = require('cron').CronJob;
+new CronJob('*/30 * * * * *', function() {
+  console.log('Updating database every 30 seconds');
+  db.populateProducts(function(resp) {
+
+  });
+}, null, true, 'America/Los_Angeles');
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

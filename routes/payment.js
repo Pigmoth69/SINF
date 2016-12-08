@@ -96,7 +96,7 @@ router.get('/', function (req, res) {
                                     }, function (err) {
                                         //console.log(temp);
                                         //console.log("total: " + total);
-                                        res.render('payment', { userData: userD, total: total, cart: temp, payType: p1, payWay: p2, expWay: e1});
+                                        res.render('payment', { userData: userD, total: total, cart: temp, payType: p1, payWay: p2, expWay: e1 });
                                     });
                                 });
                             }
@@ -113,7 +113,7 @@ router.get('/', function (req, res) {
 
 });
 
-router.post('/confirm', function (req, res) {
+router.post('/confirm', function (req, res, next) {
     var urlQuer = "http://localhost:" + config.PORT + "/api/DocVenda";
     //console.log("req ----------------------");
     //console.log(req.params.Client.Address);
@@ -196,12 +196,8 @@ router.post('/confirm', function (req, res) {
                 form.TotalRealMerc = '';
 
                 form.LinhasDoc = [];
-                //console.log("temp.length = " + temp.length)
-                //console.log(prodA);
                 for (var i = 0; i < temp.length; i++) {
-                    //console.log("temp[" + i + "] = " + temp[i].Description);
                     form.LinhasDoc[i] = {};
-
                     form.LinhasDoc[i].CodArtigo = temp[i].idProdutoPrimavera;
                     form.LinhasDoc[i].DescArtigo = temp[i].Description;
                     form.LinhasDoc[i].TotalDescArtigo = '';
@@ -217,29 +213,20 @@ router.post('/confirm', function (req, res) {
                     form.LinhasDoc[i].TotalPrecoArtigo = '';
                     form.LinhasDoc[i].Armazem = '';
                 }
-
-
-                console.log(form);
-
-
+                res.redirect('/');
                 request.post({ url: urlQuer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
-
                     if (!error && response.statusCode == 201) {
-                        
-                        //console.log(error);
-                        //console.log(response.statusCode);
                         //console.log(body);
-                        
+                        //res.send('success');
+                    }
+                    else {
+                        //res.send('demonio');
                     }
                 });
-            
-                
-                //res.render('404');
-                //console.log(form);
             });
         });
     });
-    
+
 
 });
 
