@@ -245,7 +245,21 @@ function approveUser(idU, next) {
     });
 }
 
+function getProductByID(id, next) {
+    pool.query('SELECT * FROM Produto WHERE idProdutoPrimavera = ? AND approved = TRUE', id, function(err, rows, fields) {
+        if (typeof next == 'function')
+            next(rows);
+    });
+}
+
+function getApprovedProducts(next) {
+    pool.query('SELECT * FROM Produto WHERE approved = TRUE', function(err, rows, fields) {
+        if (typeof next == 'function')
+            next(rows);
+    });
+}
+
 module.exports = {
     populateProducts, getProducts, updateTotalSpent, populateClients, compareLogin, addProductToCart, getCart, removeProductFromCart, registerUser, addImageToProduct, getUsers,
-    getCommentsOnProduct, commentOnProduct, requestType, getUsersNotApproved, approveUser
+    getCommentsOnProduct, commentOnProduct, requestType, getUsersNotApproved, approveUser, getProductByID, getApprovedProducts
 };
