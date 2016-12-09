@@ -1,112 +1,285 @@
-{{> topbar}}
+{{> header}}
 
 <head>
-	<link rel="stylesheet" type="text/css" href="/css/payment.css">
+    <link rel="stylesheet" type="text/css" href="/css/payment.css">
     <script src="/js/payment.js"></script>
 </head>
 
-	<ul class="breadcrumb" id="checkoutBreadcrumb">
-		<li><a href="#" onclick="addressBox();return false;" >Address</a></li>
-		<li><a href="#" onclick="shipmentBox();return false;">Shipment</a></li>
-		<li><a href="#" onclick="paymentBox();return false;">Payment</a></li>
-		<li><a href="#" onclick="confirmationBox();return false;">Confirmation</a></li>
-	</ul>
+<body>
 
-    <div id="confirmationBox" class="container" hidden>
-        <form id="confirmationForm">
+
+    <div class="single-product-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="list-group">
-                    {{#each cart}}
-                      <a href="#" class="list-group-item">{{quantidade}} x {{Description}}: {{Price}}€</a>
-                    {{/each}}
-                    <a href="#" class="list-group-item" id="shipmentOptionConfirm">CTT Económico: 0.0$</a>
+                <div class="col-md-4">
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">Search Products</h2>
+                        <form action="">
+                            <input type="text" placeholder="Search products...">
+                            <input type="submit" value="Search">
+                        </form>
                     </div>
-                    <p>Final Price is: {{total}}€</p>
+
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">Products</h2>
+                        <div class="thubmnail-recent">
+                            <img src="/images/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins>
+                                <del>$100.00</del>
+                            </div>
+                        </div>
+                        <div class="thubmnail-recent">
+                            <img src="/images/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins>
+                                <del>$100.00</del>
+                            </div>
+                        </div>
+                        <div class="thubmnail-recent">
+                            <img src="/images/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins>
+                                <del>$100.00</del>
+                            </div>
+                        </div>
+                        <div class="thubmnail-recent">
+                            <img src="/images/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins>
+                                <del>$100.00</del>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">Recent Posts</h2>
+                        <ul>
+                            <li><a href="single-product.html">Sony Smart TV - 2015</a></li>
+                            <li><a href="single-product.html">Sony Smart TV - 2015</a></li>
+                            <li><a href="single-product.html">Sony Smart TV - 2015</a></li>
+                            <li><a href="single-product.html">Sony Smart TV - 2015</a></li>
+                            <li><a href="single-product.html">Sony Smart TV - 2015</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="product-content-right">
+                        <div class="woocommerce">
+
+
+
+
+
+                            <form enctype="multipart/form-data" action="#" class="checkout" method="post" name="checkout">
+
+                                <div id="customer_details" class="col2-set">
+                                    <div id="addressBox">
+                                        <div class="col-1">
+                                            <div class="woocommerce-billing-fields">
+                                                <h3>Detalhes utilizador</h3>
+                                                <p id="billing_country_field" class="form-row form-row-wide address-field update_totals_on_change validate-required woocommerce-validated">
+                                                    <label class="" for="billing_country">Endereço <abbr title="required" class="required">*</abbr>
+                                                </label>
+                                                    <input type="radio" name="address" value="{{userData.Address}}">{{userData.Address}}</input><br>
+                                                    <p>
+                                                        <label class="">Utilizador </label>{{userData.CodClient}}
+                                                    </p>
+                                                    <p>
+                                                        <label class="">Nome Fiscal </label>{{userData.FiscalName}}
+                                                    </p>
+                                                    <p>
+                                                        <label class="">Local </label>{{userData.Local}}
+                                                    </p>
+                                                    <p>
+                                                        <label class="">Country </label>{{userData.Country}}
+                                                    </p>
+                                                    <p>
+                                                        <label class="">NIF </label>{{userData.TaxpayNumber}}
+                                                    </p>
+                                                    <br> {{#if_not_eq userData.Adress2 ''}}
+                                                    <input type="radio" name="address" value="{{userData.Address2}}">{{userData.Address2}}
+                                                    {{/if_not_eq}}
+                                                </p>
+
+
+                                                <!--
+                                            <div class="create-account">
+                                                <p>Create an account by entering the information below. If you are a returning
+                                                    customer please login at the top of the page.</p>
+                                                <p id="account_password_field" class="form-row validate-required">
+                                                    <label class="" for="account_password">Account password <abbr title="required" class="required">*</abbr>
+                                                    </label>
+                                                    <input type="password" value="" placeholder="Password" id="account_password" name="account_password" class="input-text">
+                                                </p>
+                                                <div class="clear"></div>
+                                            </div>
+                                            -->
+
+                                                <button onclick="shipmentBox(); return false;" class="btn btn-primary">Próximo</button>
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+
+                                    <div class="col-2" id="shipmentBox" hidden>
+                                        <div class="woocommerce-shipping-fields">
+                                            <h3 id="ship-to-different-address">
+                                                <label class="checkbox" for="ship-to-different-address-checkbox">Ship to a different address?</label>
+                                                <input type="checkbox" value="1" name="ship_to_different_address" checked="checked" class="input-checkbox" id="ship-to-different-address-checkbox">
+                                            </h3>
+                                            <div class="shipping_address" style="display: block;">
+                                                <p id="shipping_country_field" class="form-row form-row-wide address-field update_totals_on_change validate-required woocommerce-validated">
+                                                    <label class="" for="shipping_country">Expedição <abbr title="required" class="required">*</abbr>
+                                                    </label>
+                                                    <select class="country_to_state country_select" id="shipmentOption" name="billing_country">
+                                                        <option value="">Escolha um modo de expedição</option>
+                                                        {{#each expWay}}
+                                                        <option value="{{ExpeditionCode}}">{{ExpeditionDescription}}</option>
+                                                        {{/each}}
+                                                        </select>
+                                                </p>
+
+
+                                            </div>
+
+
+
+
+
+                                            <p id="order_comments_field" class="form-row notes">
+                                                <label class="" for="order_comments">Order Notes</label>
+                                                <textarea cols="5" rows="2" placeholder="Notes about your order, e.g. special notes for delivery." id="order_comments" class="input-text "
+                                                    name="order_comments"></textarea>
+                                            </p>
+
+
+                                        </div>
+
+                                        <button onclick="paymentBox(); return false;" class="btn btn-primary">Próximo</button>
+
+                                    </div>
+                                </div>
+
+
+
+                                <div id="order_review" style="position: relative;">
+
+                                    <div id="confirmationBox" hidden>
+                                        <h3 id="order_review_heading">A tua ordem</h3>
+                                        <table class="shop_table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="product-name">Produto</th>
+                                                    <th class="product-total">Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{#each cart}}
+                                                <tr class="cart_item">
+                                                    <td class="product-name">
+                                                        {{Description}} <strong class="product-quantity">× {{quantidade}}</strong> </td>
+                                                    <td class="product-total">
+                                                        <span class="amount">{{Price}} €</span> </td>
+                                                </tr>
+                                                {{/each}}
+                                            </tbody>
+                                            <tfoot>
+
+                                                <tr class="cart-subtotal">
+                                                    <th>Total Carrinho</th>
+                                                    <td><span class="amount">{{total}} €</span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr class="shipping">
+                                                    <th>Transporte</th>
+                                                    <td>
+
+                                                        0 €
+                                                        <input type="hidden" class="shipping_method" value="free_shipping" id="shipping_method_0" data-index="0" name="shipping_method[0]">
+                                                    </td>
+                                                </tr>
+
+
+                                                <tr class="order-total">
+                                                    <th>Total Ordem</th>
+                                                    <td><strong><span class="amount">{{total}} €</span></strong> </td>
+                                                </tr>
+
+                                            </tfoot>
+                                        </table>
+
+                                        <button onclick="confirmPayment(); return false;" class="btn btn-primary">Confirmar</button>
+
+                                    </div>
+                                    <div id="payment">
+                                        <div id="paymentBox" hidden>
+                                            <ul class="payment_methods methods">
+                                                <li class="payment_method_bacs">
+                                                    <input type="radio" data-order_button_text="" checked="checked" value="bacs" name="payment_method" class="input-radio" id="payment_method_bacs">
+                                                    <label for="payment_method_bacs">Direct Bank Transfer </label>
+                                                    <div class="payment_box payment_method_bacs">
+                                                        <p>Make your payment directly into our bank account. Please use your
+                                                            Order ID as the payment reference. Your order won’t be shipped
+                                                            until the funds have cleared in our account.</p>
+                                                    </div>
+                                                </li>
+                                                <li class="payment_method_cheque">
+                                                    <input type="radio" data-order_button_text="" value="cheque" name="payment_method" class="input-radio" id="payment_method_cheque">
+                                                    <label for="payment_method_cheque">Cheque Payment </label>
+                                                    <div style="display:none;" class="payment_box payment_method_cheque">
+                                                        <p>Please send your cheque to Store Name, Store Street, Store Town,
+                                                            Store State / County, Store Postcode.</p>
+                                                    </div>
+                                                </li>
+                                                <li class="payment_method_paypal">
+                                                    <input type="radio" data-order_button_text="Proceed to PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal">
+                                                    <label for="payment_method_paypal">PayPal <img alt="PayPal Acceptance Mark" src="https://www.paypalobjects.com/webstatic/mktg/Logo/AM_mc_vs_ms_ae_UK.png"><a title="What is PayPal?" onclick="javascript:window.open('https://www.paypal.com/gb/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;" class="about_paypal" href="https://www.paypal.com/gb/webapps/mpp/paypal-popup">What is PayPal?</a>
+                                                </label>
+                                                    <div style="display:none;" class="payment_box payment_method_paypal">
+                                                        <p>Pay via PayPal; you can pay with your credit card if you don’t have
+                                                            a PayPal account.
+                                                        </p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+
+                                            <div class="form-row place-order">
+
+                                                <button onclick="confirmationBox(); return false;" data-value="Place order" value="Place order" id="place_order" name="woocommerce_checkout_place_order"
+                                                    class="btn btn-primary">Confirmar</button>
+
+
+                                            </div>
+
+                                            <div class="clear"></div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
                 </div>
             </div>
-            <br>
-            <div class="row">
-                <div class="col-xs-4">
-                </div>
-                <div class="col-xs-6 col-xs-offset-2">
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-xs-4 col-xs-offset-4">
-                    <button onclick="confirmPayment(); return false;">Confirm</button>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 
-    <div id="shipmentBox" class="container" hidden>
-        <form id="shipmentForm">
-            <div class="row">
-                <div class="col-xs-12">
-                    <p><col></col> Name: </p>
-                    <input type="radio" name="ship" value="{{expWay}}"> {{expWay}}
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-xs-4">
-                </div>
-                <div class="col-xs-6 col-xs-offset-2">
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-xs-4 col-xs-offset-4">
-                    <button onclick="paymentBox(); return false;">Next</button>
-                </div>
-            </div>
-        </form>
-    </div>
 
-	<div id="paymentBox" class="container" hidden>
-		<form id="creditCardForm">
-			<div class="row">
-				<div class="col-xs-12">
-					<p>Payment Type: {{payType}} </p>
-                </div>
-			</div>
-			<br>
-			<div class="row">
-				<div class="col-xs-12">
-					<p>Payment way: {{payWay}} </p>
-				</div>
-			</div>
-			<br>
-			<br>
-			<div class="row">
-				<div class="col-xs-4 col-xs-offset-4">
-					<button onclick="confirmationBox(); return false;">Next</button>
-				</div>
-			</div>
-		</form>
-	</div>
 
-    <div id="addressBox" class="container">
-		<form id="addressForm">
-			<div class="row">
-				<div class="col-xs-12">
-                    <p>Address: </p>
-                    <input type="radio" name="address" value="{{userData.Address}}">{{userData.Address}}<br><br>
-                    {{#if_not_eq userData.Adress2 ''}}
-                    <input type="radio" name="address" value="{{userData.Address2}}">{{userData.Address2}}
-                    {{/if_not_eq}}
-				</div>
-			</div>
-			<br>
-            <br>
-			<div class="row">
-				<div class="col-xs-4 col-xs-offset-4">
-					<button onclick="shipmentBox(); return false;">Next</button>
-				</div>
-			</div>
-		</form>
-	</div>
+</body>
 
-{{> footer}}
+{{> footer1}}

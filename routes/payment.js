@@ -28,7 +28,7 @@ router.get('/', function (req, res) {
                         var expeditionW = JSON.parse(expeditionB);
                         var p1, p2, e1;
                         //console.log(paymentW);
-
+                        /*
                         for (var i = 0; i < paymentT.length; i++) {
                             if (paymentT[i].PaymentTypeCode == userD.PaymentType) {
                                 p1 = paymentT[i].PaymentTypeDescription;
@@ -44,6 +44,7 @@ router.get('/', function (req, res) {
                                 e1 = expeditionW[i].ExpeditionDescription;
                             }
                         }
+                        */
 
                         //console.log(p1);
                         //console.log(p2);
@@ -96,7 +97,10 @@ router.get('/', function (req, res) {
                                     }, function (err) {
                                         //console.log(temp);
                                         //console.log("total: " + total);
-                                        res.render('payment', { userData: userD, total: total, cart: temp, payType: p1, payWay: p2, expWay: e1 });
+                                        console.log(userD);
+                                        console.log(temp);
+                                        console.log(paymentT);
+                                        res.render('payment', { userData: userD, total: total, cart: temp, payType: paymentT, payWay: paymentW, expWay: expeditionW });
                                     });
                                 });
                             }
@@ -113,33 +117,11 @@ router.get('/', function (req, res) {
 
 });
 
-router.post('/confirm', function (req, res, next) {
+router.post('/confirm', function (req, res) {
     var urlQuer = "http://localhost:" + config.PORT + "/api/DocVenda";
     //console.log("req ----------------------");
     //console.log(req.params.Client.Address);
-    var form = {};
-    form.id = '';
 
-    form.Client = {}
-    form.Client.Address = userD.Address;
-    form.Client.Address2 = userD.Address2;
-    form.Client.CodClient = userD.CodClient;
-    form.Client.NameClient = userD.NameClient;
-    form.Client.FiscalName = userD.FiscalName;
-    form.Client.TaxpayNumber = userD.TaxpayNumber;
-    form.Client.Email = userD.Email;
-    form.Client.PostCode = userD.PostCode;
-    form.Client.Local = userD.Local;
-    form.Client.Phone = userD.Phone;
-    form.Client.Phone2 = userD.Phone2;
-    form.Client.Country = userD.Country;
-    form.Client.ClientDiscount = userD.ClientDiscount;
-    form.Client.PaymentType = userD.PaymentType;
-    form.Client.PaymentWay = userD.PaymentWay;
-    form.Client.ClientType = userD.ClientType;
-    form.Client.District = userD.District;
-    form.Client.ExpeditionWay = userD.ExpeditionWay;
-    form.Client.Currency = userD.Currency;
 
 
 
@@ -187,42 +169,25 @@ router.post('/confirm', function (req, res, next) {
                     }
                 });
             }, function (err) {
-                var today = new Date();//.toJSON().slice(0, 19);
-
-                form.NumDoc = '';
-                form.Data = today;
-                form.TotalMerc = total;
-                form.Serie = '2016';
-                form.TotalRealMerc = '';
-
-                form.LinhasDoc = [];
-                for (var i = 0; i < temp.length; i++) {
-                    form.LinhasDoc[i] = {};
-                    form.LinhasDoc[i].CodArtigo = temp[i].idProdutoPrimavera;
-                    form.LinhasDoc[i].DescArtigo = temp[i].Description;
-                    form.LinhasDoc[i].TotalDescArtigo = '';
-                    form.LinhasDoc[i].TotalDescontoCliente = '';
-                    form.LinhasDoc[i].IvaTotal = prodA[i]['IVA'];
-                    form.LinhasDoc[i].IdCabecDoc = '';
-                    form.LinhasDoc[i].Quantidade = temp[i].quantidade;
-                    form.LinhasDoc[i].Unidade = '';
-                    form.LinhasDoc[i].Desconto = prodA[i]['Discount'];
-                    form.LinhasDoc[i].PrecoUnitario = temp[i].Price;
-                    form.LinhasDoc[i].TotalILiquido = '';
-                    form.LinhasDoc[i].TotalLiquido = '';
-                    form.LinhasDoc[i].TotalPrecoArtigo = '';
-                    form.LinhasDoc[i].Armazem = '';
-                }
-                res.redirect('/');
+                //temp é o carrinho (bd) 
+                //console.log("temp.length = " + temp.length)
+                //console.log(prodA); prodA são os produtos na loja (bd)
+                var form = fillOrder(total, '2016', temp, prodA)
+                console.log(form);
+                /*
                 request.post({ url: urlQuer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
                     if (!error && response.statusCode == 201) {
+                        //console.log(error);
+                        //console.log(response.statusCode);
                         //console.log(body);
-                        //res.send('success');
-                    }
-                    else {
-                        //res.send('demonio');
+                        res.send('/');
                     }
                 });
+                */
+
+
+                res.render('404');
+                //console.log(form);
             });
         });
     });
@@ -231,5 +196,64 @@ router.post('/confirm', function (req, res, next) {
 });
 
 
+function fillOrder(total, serie, carrinho, loja) {
+
+    var form = {};
+    form.id = '';
+
+    form.Client = {}
+    form.Client.Address = userD.Address;
+    form.Client.Address2 = userD.Address2;
+    form.Client.CodClient = userD.CodClient;
+    form.Client.NameClient = userD.NameClient;
+    form.Client.FiscalName = userD.FiscalName;
+    form.Client.TaxpayNumber = userD.TaxpayNumber;
+    form.Client.Email = userD.Email;
+    form.Client.PostCode = userD.PostCode;
+    form.Client.Local = userD.Local;
+    form.Client.Phone = userD.Phone;
+    form.Client.Phone2 = userD.Phone2;
+    form.Client.Country = userD.Country;
+    form.Client.ClientDiscount = userD.ClientDiscount;
+    form.Client.PaymentType = userD.PaymentType;
+    form.Client.PaymentWay = userD.PaymentWay;
+    form.Client.ClientType = userD.ClientType;
+    form.Client.District = userD.District;
+    form.Client.ExpeditionWay = userD.ExpeditionWay;
+    form.Client.Currency = userD.Currency;
+
+    var today = new Date().toJSON().slice(0, 19);
+    form.NumDoc = '';
+    form.Data = today;
+    //ter em atenção à diferença entre totalMerc e totalReal
+    form.TotalMerc = total;
+    //não sei o que devo usar nisto, o default era '2016'
+    form.Serie = serie;
+    form.TotalRealMerc = 'isto é o total sem IVA?';
+
+    form.LinhasDoc = [];
+
+    for (var i = 0; i < carrinho.length; i++) {
+        //console.log("temp[" + i + "] = " + temp[i].Description);
+        form.LinhasDoc[i] = {};
+
+        form.LinhasDoc[i].CodArtigo = carrinho[i].idProdutoPrimavera;
+        form.LinhasDoc[i].DescArtigo = carrinho[i].Description;
+        form.LinhasDoc[i].TotalDescArtigo = '';
+        form.LinhasDoc[i].TotalDescontoCliente = '';
+        form.LinhasDoc[i].IvaTotal = loja[i]['IVA'];
+        form.LinhasDoc[i].IdCabecDoc = '';
+        form.LinhasDoc[i].Quantidade = carrinho[i].quantidade;
+        form.LinhasDoc[i].Unidade = '';
+        form.LinhasDoc[i].Desconto = loja[i]['Discount'];
+        form.LinhasDoc[i].PrecoUnitario = carrinho[i].Price;
+        form.LinhasDoc[i].TotalILiquido = '';
+        form.LinhasDoc[i].TotalLiquido = '';
+        form.LinhasDoc[i].TotalPrecoArtigo = '';
+        form.LinhasDoc[i].Armazem = '';
+    }
+
+    return form;
+}
 
 module.exports = router;
