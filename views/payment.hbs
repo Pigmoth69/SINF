@@ -6,10 +6,10 @@
 </head>
 
 	<ul class="breadcrumb" id="checkoutBreadcrumb">
-		<li><a href="#" onclick="addressBox();return false;" >Address</a></li>
-		<li><a href="#" onclick="shipmentBox();return false;">Shipment</a></li>
-		<li><a href="#" onclick="paymentBox();return false;">Payment</a></li>
-		<li><a href="#" onclick="confirmationBox();return false;">Confirmation</a></li>
+		<li><a href="#" onclick="addressBox();return false;" >Endereço</a></li>
+		<li><a href="#" onclick="shipmentBox();return false;">Entrega</a></li>
+		<li><a href="#" onclick="paymentBox();return false;">Pagamento</a></li>
+		<li><a href="#" onclick="confirmationBox();return false;">Confirmação</a></li>
 	</ul>
 
     <div id="confirmationBox" class="container" hidden>
@@ -20,9 +20,8 @@
                     {{#each cart}}
                       <a href="#" class="list-group-item">{{quantidade}} x {{Description}}: {{Price}}€</a>
                     {{/each}}
-                    <a href="#" class="list-group-item" id="shipmentOptionConfirm">CTT Económico: 0.0$</a>
                     </div>
-                    <p>Final Price is: {{total}}€</p>
+                    <p>Preço total: {{total}}€</p>
                 </div>
             </div>
             <br>
@@ -35,7 +34,7 @@
             <br>
             <div class="row">
                 <div class="col-xs-4 col-xs-offset-4">
-                    <button onclick="confirmPayment(); return false;">Confirm</button>
+                    <button onclick="confirmPayment(); return false;">Confirmar</button>
                 </div>
             </div>
         </form>
@@ -45,8 +44,11 @@
         <form id="shipmentForm">
             <div class="row">
                 <div class="col-xs-12">
-                    <p><col></col> Name: </p>
-                    <input type="radio" name="ship" value="{{expWay}}"> {{expWay}}
+                    <p><col></col> Entrega: </p>
+                    {{#each expWay}}
+                    <input type="radio" name="ship" value="{{ExpeditionCode}}"> <strong>{{ExpeditionDescription}}</strong>
+                    <br>
+                    {{/each}}
                 </div>
             </div>
             <br>
@@ -59,7 +61,7 @@
             <br>
             <div class="row">
                 <div class="col-xs-4 col-xs-offset-4">
-                    <button onclick="paymentBox(); return false;">Next</button>
+                    <button onclick="paymentBox(); return false;">Próximo</button>
                 </div>
             </div>
         </form>
@@ -68,21 +70,24 @@
 	<div id="paymentBox" class="container" hidden>
 		<form id="creditCardForm">
 			<div class="row">
-				<div class="col-xs-12">
-					<p>Payment Type: {{payType}} </p>
+				<div class="col-xs-3 scrollable">
+                    <p><col></col> Tipo de Pagamento: </p>
+                    {{#each payType}}
+					<input type="radio" name="ptype" value="{{PaymentTypeCode}}">  {{PaymentTypeDescription}}
+                    {{/each}}
                 </div>
-			</div>
-			<br>
-			<div class="row">
-				<div class="col-xs-12">
-					<p>Payment way: {{payWay}} </p>
+				<div class="col-xs-9 scrollable">
+                    <p><col></col> Modo de Pagamento: </p>
+                    {{#each payWay}}
+					<input type="radio" name="pway" value="{{PaymentWayCode}}">  {{PaymentWayDescription}}
+                    {{/each}}
 				</div>
 			</div>
 			<br>
 			<br>
 			<div class="row">
 				<div class="col-xs-4 col-xs-offset-4">
-					<button onclick="confirmationBox(); return false;">Next</button>
+					<button onclick="confirmationBox(); return false;">Próximo</button>
 				</div>
 			</div>
 		</form>
@@ -92,7 +97,7 @@
 		<form id="addressForm">
 			<div class="row">
 				<div class="col-xs-12">
-                    <p>Address: </p>
+                    <p>Endereço: </p>
                     <input type="radio" name="address" value="{{userData.Address}}">{{userData.Address}}<br><br>
                     {{#if_not_eq userData.Adress2 ''}}
                     <input type="radio" name="address" value="{{userData.Address2}}">{{userData.Address2}}
@@ -103,7 +108,7 @@
             <br>
 			<div class="row">
 				<div class="col-xs-4 col-xs-offset-4">
-					<button onclick="shipmentBox(); return false;">Next</button>
+					<button onclick="shipmentBox(); return false;">Próximo</button>
 				</div>
 			</div>
 		</form>
