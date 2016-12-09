@@ -41,7 +41,7 @@ router.get('/', function(req, res) {
                                                                     var clientTypes = JSON.parse(body);
                                                                     addCodes(client, paymentTypes, paymentWays, expeditionWay, countries, districts, clientTypes, function(result) {
                                                                         // tratar das merdas para por la
-                                                                        res.render('profile', {
+                                                                        res.render('profile1', {
                                                                             profile: client, countries: countries, districts: districts, expeditionWay: expeditionWay,
                                                                             paymentTypes: paymentTypes, paymentWays: paymentWays, pWay: result.paymentWay, pType: result.paymentType,
                                                                             eWay: result.expeditionWay, country: result.country, district: result.district, clientTypes: clientTypes,
