@@ -10,7 +10,7 @@ function addressBox() {
 }
 
 function shipmentBox() {
-    var isValid = verifyAddress();
+    var isValid = true;//verifyAddress();
 
     if(isValid){
         $('#shipmentBox').show();

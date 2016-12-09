@@ -10,7 +10,7 @@ router.get('/', function (req, res) {
         res.redirect('/login');
     }
     else {
-        db.getCart(req.session.user, function (cart) { //ALTERAR
+        db.getCart(req.session.user , function (cart) { //ALTERAR
             if (cart == 'no carrinho' || cart == 'sem merdas no carrinho') {
                 res.render('cart', { empty: "damn" });
             }
@@ -25,6 +25,7 @@ router.get('/', function (req, res) {
                         request.get({ url: prodURL, proxy: config.PROXY }, function (error, response, body) {
                             if (!error && response.statusCode == 200) {
                                 var prod = JSON.parse(body);
+                                
                                 item.Description = prod.Description;
                                 switch (req.session.typeUser) {
                                     case 1:
@@ -59,10 +60,11 @@ router.get('/', function (req, res) {
                                 item.Price = Math.round(item.Price * 100) / 100;
                                 item.UnitPrice = Math.round(item.UnitPrice * 100) / 100;
                                 total += item.Price;
-                                callback();
+                                callback(null);
                             }
                         });
                     }, function (err) {
+                        console.log("qualquer cena");
                         total = Math.round(total * 100) / 100;
                         addImages(prods, temp, function (pro) {
                             temp = pro;

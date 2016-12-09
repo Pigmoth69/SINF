@@ -87,3 +87,7 @@
 	overflow-x: hidden;
 	height: 400px;
 }
+
+.shop_table {
+	font-family: "Roboto Condensed",sans-serif;
+}

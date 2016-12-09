@@ -13,59 +13,21 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <div class="single-sidebar">
-                        <h2 class="sidebar-title">Search Products</h2>
-                        <form action="">
-                            <input type="text" placeholder="Search products...">
-                            <input type="submit" value="Search">
-                        </form>
-                    </div>
 
                     <div class="single-sidebar">
                         <h2 class="sidebar-title">Products</h2>
-                        <div class="thubmnail-recent">
-                            <img src="/images/product-thumb-1.jpg" class="recent-thumb" alt="">
-                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
-                            <div class="product-sidebar-price">
-                                <ins>$700.00</ins>
-                                <del>$100.00</del>
-                            </div>
-                        </div>
-                        <div class="thubmnail-recent">
-                            <img src="/images/product-thumb-1.jpg" class="recent-thumb" alt="">
-                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
-                            <div class="product-sidebar-price">
-                                <ins>$700.00</ins>
-                                <del>$100.00</del>
-                            </div>
-                        </div>
-                        <div class="thubmnail-recent">
-                            <img src="/images/product-thumb-1.jpg" class="recent-thumb" alt="">
-                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
-                            <div class="product-sidebar-price">
-                                <ins>$700.00</ins>
-                                <del>$100.00</del>
-                            </div>
-                        </div>
-                        <div class="thubmnail-recent">
-                            <img src="/images/product-thumb-1.jpg" class="recent-thumb" alt="">
-                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
-                            <div class="product-sidebar-price">
-                                <ins>$700.00</ins>
-                                <del>$100.00</del>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="single-sidebar">
-                        <h2 class="sidebar-title">Recent Posts</h2>
-                        <ul>
-                            <li><a href="single-product.html">Sony Smart TV - 2015</a></li>
-                            <li><a href="single-product.html">Sony Smart TV - 2015</a></li>
-                            <li><a href="single-product.html">Sony Smart TV - 2015</a></li>
-                            <li><a href="single-product.html">Sony Smart TV - 2015</a></li>
-                            <li><a href="single-product.html">Sony Smart TV - 2015</a></li>
-                        </ul>
+
+                        {{#each cart}}
+                        <div class="thubmnail-recent">
+
+                            <img src="/images/{{Imagem}}" class="recent-thumb" alt="">
+                            <h2><a href="/product/{{idProdutoPrimavera}}"> {{Description}}</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>{{UnitPrice}} € x {{quantidade}} = {{Price}} €</ins>
+                            </div>
+                        </div>
+                        {{/each}}
                     </div>
                 </div>
 
@@ -85,25 +47,37 @@
                                             <div class="woocommerce-billing-fields">
                                                 <h3>Detalhes utilizador</h3>
                                                 <p id="billing_country_field" class="form-row form-row-wide address-field update_totals_on_change validate-required woocommerce-validated">
-                                                    <label class="" for="billing_country">Endereço <abbr title="required" class="required">*</abbr>
+                                                    <!--<label class="" for="billing_country">Endereço <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                    <input type="radio" name="address" value="{{userData.Address}}">{{userData.Address}}</input><br>
-                                                    <p>
-                                                        <label class="">Utilizador </label>{{userData.CodClient}}
-                                                    </p>
-                                                    <p>
-                                                        <label class="">Nome Fiscal </label>{{userData.FiscalName}}
-                                                    </p>
-                                                    <p>
-                                                        <label class="">Local </label>{{userData.Local}}
-                                                    </p>
-                                                    <p>
-                                                        <label class="">Country </label>{{userData.Country}}
-                                                    </p>
-                                                    <p>
-                                                        <label class="">NIF </label>{{userData.TaxpayNumber}}
-                                                    </p>
-                                                    <br> {{#if_not_eq userData.Adress2 ''}}
+                                                    
+                                                    <input type="radio" name="address" value="{{userData.Address}}">{{userData.Address}}</input><br>-->
+                                                    <table class="shop_table">
+                                                        <tr>
+                                                            <th>Endereço</th>
+                                                            <td>{{userData.Address}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Utilizador </th>
+                                                            <td>{{userData.CodClient}} </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Nome Fiscal </th>
+                                                            <td>{{userData.FiscalName}} </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Local </th>
+                                                            <td>{{userData.Local}} </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Country </th>
+                                                            <td>{{userData.Country}} </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>NIF </th>
+                                                            <td>{{userData.TaxpayNumber}} </td>
+                                                        </tr>
+                                                    </table>
+                                                     {{#if_not_eq userData.Adress2 ''}}
                                                     <input type="radio" name="address" value="{{userData.Address2}}">{{userData.Address2}}
                                                     {{/if_not_eq}}
                                                 </p>
@@ -133,10 +107,6 @@
 
                                     <div class="col-2" id="shipmentBox" hidden>
                                         <div class="woocommerce-shipping-fields">
-                                            <h3 id="ship-to-different-address">
-                                                <label class="checkbox" for="ship-to-different-address-checkbox">Ship to a different address?</label>
-                                                <input type="checkbox" value="1" name="ship_to_different_address" checked="checked" class="input-checkbox" id="ship-to-different-address-checkbox">
-                                            </h3>
                                             <div class="shipping_address" style="display: block;">
                                                 <p id="shipping_country_field" class="form-row form-row-wide address-field update_totals_on_change validate-required woocommerce-validated">
                                                     <label class="" for="shipping_country">Expedição <abbr title="required" class="required">*</abbr>
@@ -157,8 +127,8 @@
 
 
                                             <p id="order_comments_field" class="form-row notes">
-                                                <label class="" for="order_comments">Order Notes</label>
-                                                <textarea cols="5" rows="2" placeholder="Notes about your order, e.g. special notes for delivery." id="order_comments" class="input-text "
+                                                <label class="" for="order_comments">Notas</label>
+                                                <textarea cols="5" rows="2" placeholder="Notas sobre a expedição. ex: notas especiais para a entrega" id="order_comments" class="input-text "
                                                     name="order_comments"></textarea>
                                             </p>
 
@@ -187,7 +157,7 @@
                                                 {{#each cart}}
                                                 <tr class="cart_item">
                                                     <td class="product-name">
-                                                        {{Description}} <strong class="product-quantity">× {{quantidade}}</strong> </td>
+                                                        {{Description}} <strong class="product-quantity">× {{quantidade}}</strong>                                                        </td>
                                                     <td class="product-total">
                                                         <span class="amount">{{Price}} €</span> </td>
                                                 </tr>

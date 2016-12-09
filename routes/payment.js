@@ -104,12 +104,15 @@ router.get('/', function (req, res) {
                                             }
                                         });
                                     }, function (err) {
-                                        //console.log(temp);
-                                        //console.log("total: " + total);
-                                        console.log(userD);
-                                        console.log(temp);
-                                        console.log(paymentT);
-                                        res.render('payment', { userData: userD, total: total, cart: temp, payType: paymentT, payWay: paymentW, expWay: expeditionW });
+                                        addImages(prods, temp, function (pro) {
+                                            temp = pro;
+                                            //console.log(temp);
+                                            //console.log("total: " + total);
+                                            //onsole.log(userD);
+                                            console.log(temp);
+                                            //console.log(paymentT);
+                                            res.render('payment', { userData: userD, total: total, cart: temp, payType: paymentT, payWay: paymentW, expWay: expeditionW });
+                                        });
                                     });
                                 });
                             }
@@ -151,52 +154,63 @@ router.post('/confirm', function (req, res) {
                         item.Description = prod.Description;
                         switch (req.session.typeUser) {
                             case 1:
-                                item.Price = prod.Prices.PVP1 * item.quantidade;
+                                item.Price = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                item.UnitPrice = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
                                 break;
                             case 2:
-                                item.Price = prod.Prices.PVP2 * item.quantidade;
+                                item.Price = ((prod.Prices.PVP2 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                item.UnitPrice = ((prod.Prices.PVP2 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
                                 break;
                             case 3:
-                                item.Price = prod.Prices.PVP3 * item.quantidade;
+                                item.Price = ((prod.Prices.PVP3 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                item.UnitPrice = ((prod.Prices.PVP3 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
                                 break;
                             case 4:
-                                item.Price = prod.Prices.PVP4 * item.quantidade;
+                                item.Price = ((prod.Prices.PVP4 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                item.UnitPrice = ((prod.Prices.PVP4 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
                                 break;
                             case 5:
-                                item.Price = prod.Prices.PVP5 * item.quantidade;
+                                item.Price = ((prod.Prices.PVP5 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                item.UnitPrice = ((prod.Prices.PVP5 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
                                 break;
                             case 6:
-                                item.Price = prod.Prices.PVP6 * item.quantidade;
+                                item.Price = ((prod.Prices.PVP6 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                item.UnitPrice = ((prod.Prices.PVP6 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
                                 break;
                             default:
-                                item.Price = prod.Prices.PVP1 * item.quantidade;
+                                item.Price = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                item.UnitPrice = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
                                 break;
                         }
+                        item.Price = Math.round(item.Price * 100) / 100;
+                        item.UnitPrice = Math.round(item.UnitPrice * 100) / 100;
                         total += item.Price;
-                        prodA[j] = prod; j++;
                         callback();
                     }
                 });
             }, function (err) {
-                //temp é o carrinho (bd) 
-                //console.log("temp.length = " + temp.length)
-                //console.log(prodA); prodA são os produtos na loja (bd)
-                var form = fillOrder(total, '2016', temp, prodA)
-                console.log(form);
-                /*
-                request.post({ url: urlQuer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
-                    if (!error && response.statusCode == 201) {
-                        //console.log(error);
-                        //console.log(response.statusCode);
-                        //console.log(body);
-                        res.send('/');
-                    }
+                addImages(prods, temp, function (pro) {
+                    temp = pro;
+                    //temp é o carrinho (bd) 
+                    //console.log("temp.length = " + temp.length)
+                    //console.log(prodA); prodA são os produtos na loja (bd)
+                    var form = fillOrder(total, '2016', temp, prodA)
+                    console.log(form);
+                    /*
+                    request.post({ url: urlQuer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
+                        if (!error && response.statusCode == 201) {
+                            //console.log(error);
+                            //console.log(response.statusCode);
+                            //console.log(body);
+                            res.send('/');
+                        }
+                    });
+                    */
+
+
+                    res.render('404');
+                    //console.log(form);
                 });
-                */
-
-
-                res.render('404');
-                //console.log(form);
             });
         });
     });
@@ -204,6 +218,23 @@ router.post('/confirm', function (req, res) {
 
 });
 
+function addImages(prods, temp, next) {
+    for (var i = 0; i < temp.length; i++) {
+        for (var j = 0; j < prods.length; j++) {
+            if (temp[i].idProdutoPrimavera == prods[j].idProdutoPrimavera) {
+                temp[i].Imagem = prods[j].imagem;
+                j = prods.length;
+            }
+        }
+    }
+
+    for (var i = 0; i < temp.length; i++) {
+        if (temp[i].Imagem == "")
+            temp[i].Imagem = 'product.png';
+    }
+    if (typeof next == 'function')
+        next(temp);
+}
 
 function fillOrder(total, serie, carrinho, loja) {
 
