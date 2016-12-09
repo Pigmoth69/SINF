@@ -7,19 +7,21 @@
             <input id="email" type="email" name="email" placeholder="E-mail">
             <input id="name" type="text" name="name" placeholder="Client Name">
             <input id="fiscal_name" type="text" name="fiscal_name" placeholder="Fiscal Name">
-            <p>Country</p>
-            <select name="country" id="country">
+            <label for="country" >Country</label>
+            <select class="form-control" name="country" id="country">
 					{{#each countries}}
 						<option value="{{Initials}}">{{Name}}</option>
 					{{/each}}
 			</select>
+            <br>
 		    <input id="address" type="text" name="address" placeholder="Address">
-            <p>District</p>
-            <select name="district" id="district">
+            <label for="district">District</label>
+            <select class="form-control" name="district" id="district">
 					{{#each districts}}
 						<option value="{{DistrictCode}}">{{Description}}</option>
 					{{/each}}
             </select>
+            <br>
             <input id="local" type="text" name="local" placeholder="Local">
             <input id="zip-code" type="text" name="zip" placeholder="Zip-Code">
             <input id="phone" type="number" name="phone" placeholder="Phone Number">
