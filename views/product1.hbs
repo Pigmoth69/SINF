@@ -1,0 +1,184 @@
+{{> header}}
+
+<div class="product-big-title-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-bit-title text-center">
+                    <h2>Shop</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="single-product-area">
+    <div class="zigzag-bottom"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-content-right">
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="product-images">
+                                <div class="product-main-img">
+                                    <img src="/images/{{product.Imagem}}" alt="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="product-inner">
+                                <h2 class="product-name">{{product.Description}}</h2>
+                                <div class="product-inner-price">
+                                    {{#if_eq price price_no}}
+                                    <ins>Price: {{price}}€</ins>
+                                    {{/if_eq}} {{#if_diff price price_no}}
+                                    <ins>{{price}}</ins>
+                                    <del>{{price_no}}</del>
+                                    {{/if_diff}}
+                                </div>
+
+                                {{#if id}}
+                                <form action="" class="cart">
+                                    <input type="number" size="4" class="input-text qty text" title="Qty" value="1" id="quantity" name="quantidade" min="1" step="1">
+                                    <button class="add_to_cart_button" onclick="callProduct('{{product.Code}}'); return false;" type="submit">Add to cart</button>
+                                </form>
+                                {{/if}}
+
+                                <div class="product-inner-category">
+                                    <!--<p>A ALTERAR: <a href="">Summer</a>. Tags: <a href="">awesome</a>, <a href="">best</a>, <a href="">sale</a>, <a href="">shoes</a>. </p>-->
+                                    <h2>Warehouses stock</h2>
+                                    <p>
+                                        {{#each product.Warehouses}} {{#if_less Stock 0}} {{Code}}: <i class="fa fa-times"
+                                            aria-hidden="true"></i> {{/if_less}} {{#if_less 0 Stock}} {{Code}}: <i class="fa fa-check"
+                                            aria-hidden="true"></i> {{/if_less}} {{/each}}
+                                    </p>
+                                    <!--<i class="fa fa-check" aria-hidden="true"></i>-->
+                                </div>
+
+                                <div role="tabpanel">
+                                    <ul class="product-tab" role="tablist">
+                                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Description</a>
+                                        </li>
+                                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Specifications</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div role="tabpanel" class="tab-pane fade in active" id="home">
+                                            <h2>Product Description</h2>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tristique, diam
+                                                in consequat iaculis, est purus iaculis mauris, imperdiet facilisis ante
+                                                ligula at nulla. Quisque volutpat nulla risus, id maximus ex aliquet ut.
+                                                Suspendisse potenti. Nulla varius lectus id turpis dignissim porta. Quisque
+                                                magna arcu, blandit quis felis vehicula, feugiat gravida diam. Nullam nec
+                                                turpis ligula. Aliquam quis blandit elit, ac sodales nisl. Aliquam eget dolor
+                                                eget elit malesuada aliquet. In varius lorem lorem, semper bibendum lectus
+                                                lobortis ac.</p>
+
+                                            <p>Mauris placerat vitae lorem gravida viverra. Mauris in fringilla ex. Nulla facilisi.
+                                                Etiam scelerisque tincidunt quam facilisis lobortis. In malesuada pulvinar
+                                                neque a consectetur. Nunc aliquam gravida purus, non malesuada sem accumsan
+                                                in. Morbi vel sodales libero.</p>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane fade" id="profile">
+                                            <h2>Product Specs</h2>
+                                            <p>Family: {{product.Family}}</p>
+                                            <p>Brand: {{product.Brand}}</p>
+                                            <p>Model: {{product.Model}}</p>
+                                            <p>Warranty: {{product.Warranty}}</p>
+                                            <p>IVA : {{product.IVA}}%, {{iva}}€</p>
+                                            <p>Product Discount: {{product.Discount}}%</p>
+                                            <p>Client Discount : {{disc}}%</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h3>User Comments</h3>
+                        </div>
+                        <!-- /col-sm-12 -->
+                    </div>
+                    <!-- /row -->
+                    <div class="row">
+                        {{#each comments}}
+
+                        <div class="col-sm-1">
+                            <div class="thumbnail">
+                                <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                            </div>
+                            <!-- /thumbnail -->
+                        </div>
+
+                        <div class="col-sm-11">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>Rating: <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star-o" aria-hidden="true"></i></strong><br>
+                                    <strong>{{user}}</strong> <span class="text-muted">{{date}}</span>
+                                </div>
+                                <div class="panel-body">
+                                    {{comentario}}
+                                </div>
+                                <!-- /panel-body -->
+                            </div>
+                            <!-- /panel panel-default -->
+                        </div>
+                        {{/each}}
+                    </div>
+
+                    {{#if id}}
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <div class="thumbnail">
+                                <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                            </div>
+                        </div>
+                        <div class="col-sm-11">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <!--<strong>Rating: <i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star-o" aria-hidden="true"></i><i class="fa fa-star-o" aria-hidden="true"></i><i class="fa fa-star-o" aria-hidden="true"></i></strong><br>-->
+                                    <strong>{{id}}</strong>
+                                </div>
+                                <div class="panel-body">
+                                    <form action="/product/{{product.Code}}/newComment" method="POST">
+                                        <textarea name="comentario" id="comentario"></textarea>
+                                        <button type="submit" class="btn btn-success">Submit Comment</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/if}}
+                    <!-- /row -->
+
+
+                    <div class="related-products-wrapper">
+                        <h2 class="related-products-title">Related Products</h2>
+                        <div class="related-products-carousel">
+                            {{#each relatedProducts}}
+                            <div class="single-product">
+                                <div class="product-f-image">
+                                    <img src="/images/{{Imagem}}" alt="">
+                                    <div class="product-hover">
+                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                        <a href="/product/{{Code}}" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                    </div>
+                                </div>
+                                <h2><a href="">{{Description}}</a></h2>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{> footer1}}

@@ -84,19 +84,19 @@ function compareLogin(idUser, password, next) {
     });
 }
 
-function addProductToCart(idP, idU, next) {
+function addProductToCart(idP, idU, qty, next) {
     //check if user has a cart created in the database
     pool.query('SELECT * FROM Carrinho WHERE idUser = ?', idU, function (err, rows, fields) {
         if (rows[0] == undefined) { // criar carrinho
             pool.query('INSERT INTO Carrinho (idUser) VALUES(?)', idU, function (err, rows, fields) {
-                auxAddProductToCart(idP, idU, rows.insertId, function (suc) {
+                auxAddProductToCart(idP, idU, rows.insertId, qty, function (suc) {
                     if (typeof next == 'function')
                         next(suc);
                 });
             });
         }
         else { //tem carrinho
-            auxAddProductToCart(idP, idU, rows[0].idCarrinho, function (suc) {
+            auxAddProductToCart(idP, idU, rows[0].idCarrinho, qty, function (suc) {
                 if (typeof next == 'function')
                     next(suc);
             });
@@ -125,17 +125,17 @@ function getCart(idU, next) {
     });
 }
 
-function auxAddProductToCart(idP, idU, idC, next) {
+function auxAddProductToCart(idP, idU, idC, qty, next) {
     //ver se já lá tem algum produto igual
     pool.query('SELECT * FROM ProdutoCarrinho WHERE idProdutoPrimavera = ? AND idCarrinho = ?', [idP, idC], function (err, rows, fields) {
         if (rows.length > 0) { //adicionar um
-            pool.query('UPDATE ProdutoCarrinho SET quantidade = quantidade + 1 WHERE idProdutoCarrinho = ?', rows[0].idProdutoCarrinho, function (err, rows, fields) {
+            pool.query('UPDATE ProdutoCarrinho SET quantidade = quantidade + ? WHERE idProdutoCarrinho = ?', [qty, rows[0].idProdutoCarrinho], function (err, rows, fields) {
                 if (typeof next == 'function')
                     next('success');
             });
         }
         else { // criar produto no carrinho
-            pool.query('INSERT INTO ProdutoCarrinho(idCarrinho, idProdutoPrimavera, quantidade) VALUES(?,?, 1)', [idC, idP], function (err, rows, fields) {
+            pool.query('INSERT INTO ProdutoCarrinho(idCarrinho, idProdutoPrimavera, quantidade) VALUES(?,?, ?)', [idC, idP, qty], function (err, rows, fields) {
                 if (typeof next == 'function')
                     next('success');
             });
@@ -159,8 +159,6 @@ function removeProductFromCart(idP, idU, quant, next) {
         if (rows.length > 0) {
             pool.query('SELECT * FROM ProdutoCarrinho WHERE idCarrinho = ? AND idProdutoPrimavera = ?', [rows[0].idCarrinho, idP], function (err, prods, fields) {
                 if (prods.length > 0) {
-                    console.log(quant);
-                    console.log(prods);
                     if (prods[0].quantidade > quant) { // retirar quantidade
                         pool.query('UPDATE ProdutoCarrinho SET quantidade = ? WHERE idProdutoCarrinho = ?', [prods[0].quantidade - quant, prods[0].idProdutoCarrinho], function (err, row, fields) {
                             if (typeof next == 'function')
@@ -173,6 +171,29 @@ function removeProductFromCart(idP, idU, quant, next) {
                                 next('sem problema');
                         });
                     }
+                }
+                else {
+                    if (typeof next == 'function')
+                        next('problema');
+                }
+            });
+        }
+        else {
+            if (typeof next == 'function')
+                next('problem');
+        }
+    });
+}
+
+function removeProductFromCartNo(idP, idU, next) {
+    pool.query('SELECT * FROM Carrinho WHERE idUser = ?', idU, function (err, rows, fields) {
+        if (rows.length > 0) {
+            pool.query('SELECT * FROM ProdutoCarrinho WHERE idCarrinho = ? AND idProdutoPrimavera = ?', [rows[0].idCarrinho, idP], function (err, prods, fields) {
+                if (prods.length > 0) {
+                    pool.query('DELETE FROM ProdutoCarrinho WHERE idCarrinho = ? AND idProdutoPrimavera = ?', [rows[0].idCarrinho, idP], function (err, row, fields) {
+                        if (typeof next == 'function')
+                            next('sem problema');
+                    });
                 }
                 else {
                     if (typeof next == 'function')
@@ -246,14 +267,14 @@ function approveUser(idU, next) {
 }
 
 function getProductByID(id, next) {
-    pool.query('SELECT * FROM Produto WHERE idProdutoPrimavera = ? AND approved = TRUE', id, function(err, rows, fields) {
+    pool.query('SELECT * FROM Produto WHERE idProdutoPrimavera = ? AND approved = TRUE', id, function (err, rows, fields) {
         if (typeof next == 'function')
             next(rows);
     });
 }
 
 function getApprovedProducts(next) {
-    pool.query('SELECT * FROM Produto WHERE approved = TRUE', function(err, rows, fields) {
+    pool.query('SELECT * FROM Produto WHERE approved = TRUE', function (err, rows, fields) {
         if (typeof next == 'function')
             next(rows);
     });
@@ -261,5 +282,5 @@ function getApprovedProducts(next) {
 
 module.exports = {
     populateProducts, getProducts, updateTotalSpent, populateClients, compareLogin, addProductToCart, getCart, removeProductFromCart, registerUser, addImageToProduct, getUsers,
-    getCommentsOnProduct, commentOnProduct, requestType, getUsersNotApproved, approveUser, getProductByID, getApprovedProducts
+    getCommentsOnProduct, commentOnProduct, requestType, getUsersNotApproved, approveUser, getProductByID, getApprovedProducts, removeProductFromCartNo
 };

@@ -6,81 +6,153 @@ var db = require('../database/database.js');
 var config = require('../config/config.js');
 
 router.get('/', function (req, res) {
-    console.log("what");
-    if (req.session.user == undefined) {
+    if (req.session.user == undefined) { // ALTERAR
         res.redirect('/login');
     }
     else {
-        db.getCart(req.session.user, function (cart) {
+        db.getCart(req.session.user, function (cart) { //ALTERAR
             if (cart == 'no carrinho' || cart == 'sem merdas no carrinho') {
                 res.render('cart', { empty: "damn" });
             }
             else {
                 db.getProducts(function (prods) {
                     var temp = cart;
-
-                    // adicionar imagens
-                    if (prods != null) {
-                        for (var i = 0; i < temp.length; i++) {
-                            for (var j = 0; j < prods.length; j++) {
-                                if (temp[i].idProdutoPrimavera == prods[j].idProdutoPrimavera) {
-                                    temp[i].Imagem = prods[j].imagem;
-                                    j = prods.length;
-                                }
-                            }
-                        }
-                    }
-                    else {
-                        for (var i = 0; i < temp.length; i++) {
-                            temp[i].Imagem = 'product.png';
-                        }
-                    }
-
                     //adicionar total
                     var total = 0;
                     // adicionar infos de cada produto
                     async.each(temp, function (item, callback) {
-                        var prodURL = "http://localhost:"+ config.PORT + "/api/products/" + item.idProdutoPrimavera;
+                        var prodURL = "http://localhost:" + config.PORT + "/api/products/" + item.idProdutoPrimavera;
                         request.get({ url: prodURL, proxy: config.PROXY }, function (error, response, body) {
                             if (!error && response.statusCode == 200) {
                                 var prod = JSON.parse(body);
                                 item.Description = prod.Description;
                                 switch (req.session.typeUser) {
                                     case 1:
-                                        item.Price = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1))* item.quantidade;
+                                        item.Price = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                        item.UnitPrice = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
                                         break;
                                     case 2:
-                                        item.Price = ((prod.Prices.PVP2 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1))* item.quantidade;
+                                        item.Price = ((prod.Prices.PVP2 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                        item.UnitPrice = ((prod.Prices.PVP2 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
                                         break;
                                     case 3:
-                                        item.Price = ((prod.Prices.PVP3 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1))* item.quantidade;
+                                        item.Price = ((prod.Prices.PVP3 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                        item.UnitPrice = ((prod.Prices.PVP3 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
                                         break;
                                     case 4:
-                                        item.Price = ((prod.Prices.PVP4 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1))* item.quantidade;
+                                        item.Price = ((prod.Prices.PVP4 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                        item.UnitPrice = ((prod.Prices.PVP4 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
                                         break;
                                     case 5:
-                                        item.Price = ((prod.Prices.PVP5 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1))* item.quantidade;
+                                        item.Price = ((prod.Prices.PVP5 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                        item.UnitPrice = ((prod.Prices.PVP5 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
                                         break;
                                     case 6:
-                                        item.Price = ((prod.Prices.PVP6 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1))* item.quantidade;
+                                        item.Price = ((prod.Prices.PVP6 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                        item.UnitPrice = ((prod.Prices.PVP6 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
                                         break;
                                     default:
-                                        item.Price = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1))* item.quantidade;
+                                        item.Price = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                        item.UnitPrice = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
                                         break;
                                 }
-                                item.Price = Math.round(item.Price * 100)/100;
+                                item.Price = Math.round(item.Price * 100) / 100;
+                                item.UnitPrice = Math.round(item.UnitPrice * 100) / 100;
                                 total += item.Price;
                                 callback();
                             }
                         });
                     }, function (err) {
                         total = Math.round(total * 100) / 100;
-                        res.render('cart', {total : total, cart : temp});
+                        addImages(prods, temp, function (pro) {
+                            temp = pro;
+
+                            prodURL = "http://localhost:" + config.PORT + "/api/products/family/" + "Componentes"; //mudar
+                            request.get({ url: prodURL, proxy: config.PROXY }, function (error, response, body) {
+                                if (!error && response.statusCode == 200) {
+                                    var relatedProducts = JSON.parse(body);
+                                    db.getApprovedProducts(function (appr) {
+                                        approvedProducts(relatedProducts, appr, function (rp) {
+                                            relatedProducts = rp;
+                                            if (relatedProducts.length > 10)
+                                                relatedProducts = relatedProducts.slice(0, 10);
+                                            addImagesPri(prods, relatedProducts, function (r) {
+                                                relatedProducts = r;
+                                                console.log(temp);
+                                                res.render('cart1', { total: total, cart: temp, relatedProducts: relatedProducts });
+                                            });
+                                        });
+                                    });
+                                }
+                            });
+                        });
                     });
                 });
             }
         });
     }
 });
+
+router.get('/removeProduct/:idP', function (req, res) {
+    if (req.session.user == undefined) {
+        res.redirect('/login');
+    }
+    else {
+        db.removeProductFromCartNo(req.params.idP, req.session.user, function (suc) {
+            if (suc == 'sem problema') {
+                res.redirect('/cart');
+            }
+            else {
+                res.render('404');
+            }
+        });
+    }
+});
+
+function addImages(prods, temp, next) {
+    for (var i = 0; i < temp.length; i++) {
+        for (var j = 0; j < prods.length; j++) {
+            if (temp[i].idProdutoPrimavera == prods[j].idProdutoPrimavera) {
+                temp[i].Imagem = prods[j].imagem;
+                j = prods.length;
+            }
+        }
+    }
+    
+    for (var i = 0; i < temp.length; i++) {
+        if (temp[i].Imagem == "")
+            temp[i].Imagem = 'product.png';
+    }
+    if (typeof next == 'function')
+        next(temp);
+}
+
+function approvedProducts(prods, appr, next) {
+    var result = [];
+    for (var i = 0; i < prods.length; i++) {
+        for (var j = 0; j < appr.length; j++) {
+            if (prods[i].Code == appr[j].idProdutoPrimavera)
+                result.push(prods[i]);
+        }
+    }
+    if (typeof next == 'function')
+        next(result);
+}
+
+function addImagesPri(prods, pri, next) {
+    for (var i = 0; i < prods.length; i++) {
+        for (var j = 0; j < pri.length; j++) {
+            if (pri[j].Code == prods[i].idProdutoPrimavera) {
+                pri[j].Imagem = prods[i].imagem;
+            }
+        }
+    }
+    for (var i = 0; i < pri.length; i++) {
+        if (pri[i].Imagem == "")
+            pri[i].Imagem = "product.png";
+    }
+    if (typeof next == 'function')
+        next(pri);
+}
 
 module.exports = router;

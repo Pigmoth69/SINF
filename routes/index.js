@@ -229,12 +229,12 @@ function returnApprovedProducts(prods, prodsPri, next) {
         next(result);
 }
 
-router.get('/addProductToCart/:idP', function (req, res) {
+router.get('/addProductToCart/:idP/:quantity', function (req, res) {
     if (req.session.user == undefined) {
         res.redirect('/login');
     }
     else {
-        db.addProductToCart(req.params.idP, req.session.user, function (suc) {
+        db.addProductToCart(req.params.idP, req.session.user, req.params.quantity, function (suc) {
             if (suc == 'success') {
                 res.redirect('/cart');
             }
@@ -244,6 +244,7 @@ router.get('/addProductToCart/:idP', function (req, res) {
         });
     }
 });
+
 
 router.get('/removeProductFromCart/:idP/:quant', function (req, res) {
     if (req.session.user == undefined) {
