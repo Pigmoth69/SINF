@@ -93,3 +93,8 @@ function callProduct(idP) {
 function payment(){
     window.location.href = "/payment";
 }
+
+$('.message a').click(function(){
+   $('#reg').animate({height: "toggle", opacity: "toggle"}, "slow");
+   $('#log').animate({height: "toggle", opacity: "toggle"}, "slow");
+});
