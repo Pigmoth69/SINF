@@ -89,3 +89,7 @@ jQuery(document).ready(function($){
 function callProduct(idP) {
     window.location.href = "/addProductToCart/" + idP + "/" + $("#quantity").val();
 }
+
+function payment(){
+    window.location.href = "/payment";
+}
