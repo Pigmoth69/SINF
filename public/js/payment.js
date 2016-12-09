@@ -18,7 +18,7 @@ function shipmentBox() {
         $('#confirmationBox').hide();
         $('#addressBox').hide();
     }
-    else{
+    else{ 
         alert("Fill all address fields before proceeding!");
     }
 }
@@ -65,7 +65,7 @@ function confirmPayment(){
 }
 
 function verifyAddress(){
-    var isValid = true;
+    var isValid = false;
     var checks = document.getElementsByName("address");
     for(var i = 0; i < checks.length; i++){
         if (checks[i].checked){
@@ -77,15 +77,17 @@ function verifyAddress(){
 }
 
 function verifyShipment(){
-    var isValid = false;
-    var checks = document.getElementsByName("ship");
-    for(var i = 0; i < checks.length; i++){
+    var isValid = true;
+    if($('#shipmentOption').val() === ""){
+        isValid = false;
+    }
+    /*for(var i = 0; i < checks.length; i++){
         if (checks[i].checked){ 
             isValid = true;
             shipmentChosen = checks[i].value;
             //$('#shipmentOptionConfirm').text("Shipment: " + checks[i].value);
         }
-    }
+    }*/
     return isValid;
 }
 

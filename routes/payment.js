@@ -97,6 +97,9 @@ router.get('/', function (req, res) {
                                     }, function (err) {
                                         //console.log(temp);
                                         //console.log("total: " + total);
+                                        console.log(userD);
+                                        console.log(temp);
+                                        console.log(paymentT);
                                         res.render('payment', { userData: userD, total: total, cart: temp, payType: paymentT, payWay: paymentW, expWay: expeditionW });
                                     });
                                 });
@@ -230,7 +233,7 @@ function fillOrder(total, serie, carrinho, loja) {
 
     form.LinhasDoc = [];
 
-    for (var i = 0; i < temp.length; i++) {
+    for (var i = 0; i < carrinho.length; i++) {
         //console.log("temp[" + i + "] = " + temp[i].Description);
         form.LinhasDoc[i] = {};
 
