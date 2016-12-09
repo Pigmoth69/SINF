@@ -58,10 +58,17 @@ function confirmPayment(){
     result.Client.Address = addressChosen;
     result.Client.ExpeditionWay = shipmentChosen;
 
-    $.post( "http://localhost:3000/payment/confirm", { req: result }, function( data ) {
-        console.log( data );
-
-    }, "json");
+    $.post("http://localhost:3000/payment/confirm", result, function (data1) {
+        console.log(data1);
+        if (data1 == 'success') {
+            console.log("wow");
+            //window.location.href = "/";
+        }
+        else {
+            console.log("not wow");
+            //window.location.href = "/erro";
+        }
+    }, 'json');
 }
 
 function verifyAddress(){

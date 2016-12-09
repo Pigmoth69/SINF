@@ -86,3 +86,6 @@ jQuery(document).ready(function($){
     })      
 });
 
+function callProduct(idP) {
+    window.location.href = "/addProductToCart/" + idP + "/" + $("#quantity").val();
+}

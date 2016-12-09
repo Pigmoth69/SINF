@@ -38,6 +38,12 @@ hbs.registerHelper('if_eq', function(a, b, opts) {
     else opts.inverse(this);
 });
 
+hbs.registerHelper('if_diff', function(a, b, opts) {
+    if (a != b) 
+      return opts.fn(this);
+    else opts.inverse(this);
+});
+
 hbs.registerHelper('if_not_eq', function(a, b, opts) {
   console.log(a);
   console.log(b);
@@ -96,6 +102,14 @@ app.use('/product',product);
 app.use('/payment', payment);
 app.use('/order', order);
 app.use('/admin', admin);
+
+var CronJob = require('cron').CronJob;
+new CronJob('*/30 * * * * *', function() {
+  console.log('Updating database every 30 seconds');
+  db.populateProducts(function(resp) {
+
+  });
+}, null, true, 'America/Los_Angeles');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
