@@ -38,6 +38,12 @@ hbs.registerHelper('if_eq', function(a, b, opts) {
     else opts.inverse(this);
 });
 
+hbs.registerHelper('if_diff', function(a, b, opts) {
+    if (a != b) 
+      return opts.fn(this);
+    else opts.inverse(this);
+});
+
 hbs.registerHelper('if_not_eq', function(a, b, opts) {
   console.log(a);
   console.log(b);

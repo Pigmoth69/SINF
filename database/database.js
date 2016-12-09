@@ -84,19 +84,19 @@ function compareLogin(idUser, password, next) {
     });
 }
 
-function addProductToCart(idP, idU, next) {
+function addProductToCart(idP, idU, qty, next) {
     //check if user has a cart created in the database
     pool.query('SELECT * FROM Carrinho WHERE idUser = ?', idU, function (err, rows, fields) {
         if (rows[0] == undefined) { // criar carrinho
             pool.query('INSERT INTO Carrinho (idUser) VALUES(?)', idU, function (err, rows, fields) {
-                auxAddProductToCart(idP, idU, rows.insertId, function (suc) {
+                auxAddProductToCart(idP, idU, rows.insertId, qty, function (suc) {
                     if (typeof next == 'function')
                         next(suc);
                 });
             });
         }
         else { //tem carrinho
-            auxAddProductToCart(idP, idU, rows[0].idCarrinho, function (suc) {
+            auxAddProductToCart(idP, idU, rows[0].idCarrinho, qty, function (suc) {
                 if (typeof next == 'function')
                     next(suc);
             });
@@ -125,17 +125,17 @@ function getCart(idU, next) {
     });
 }
 
-function auxAddProductToCart(idP, idU, idC, next) {
+function auxAddProductToCart(idP, idU, idC, qty, next) {
     //ver se já lá tem algum produto igual
     pool.query('SELECT * FROM ProdutoCarrinho WHERE idProdutoPrimavera = ? AND idCarrinho = ?', [idP, idC], function (err, rows, fields) {
         if (rows.length > 0) { //adicionar um
-            pool.query('UPDATE ProdutoCarrinho SET quantidade = quantidade + 1 WHERE idProdutoCarrinho = ?', rows[0].idProdutoCarrinho, function (err, rows, fields) {
+            pool.query('UPDATE ProdutoCarrinho SET quantidade = quantidade + ? WHERE idProdutoCarrinho = ?', [qty, rows[0].idProdutoCarrinho], function (err, rows, fields) {
                 if (typeof next == 'function')
                     next('success');
             });
         }
         else { // criar produto no carrinho
-            pool.query('INSERT INTO ProdutoCarrinho(idCarrinho, idProdutoPrimavera, quantidade) VALUES(?,?, 1)', [idC, idP], function (err, rows, fields) {
+            pool.query('INSERT INTO ProdutoCarrinho(idCarrinho, idProdutoPrimavera, quantidade) VALUES(?,?, ?)', [idC, idP, qty], function (err, rows, fields) {
                 if (typeof next == 'function')
                     next('success');
             });
