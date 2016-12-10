@@ -100,11 +100,19 @@ router.get('/', function (req, res) {
                                                 item.Price = Math.round(item.Price * 100) / 100;
                                                 item.UnitPrice = Math.round(item.UnitPrice * 100) / 100;
                                                 total += item.Price;
+
+
+                                                item.Price = item.Price.toLocaleString("es-ES", {minimumFractionDigits: 2});
+                                                item.UnitPrice = item.UnitPrice.toLocaleString("es-ES", {minimumFractionDigits: 2});
+                                                
+                                                
                                                 callback();
                                             }
                                         });
                                     }, function (err) {
                                         addImages(prods, temp, function (pro) {
+                                            total = total.toLocaleString("es-ES", {minimumFractionDigits: 2});
+
                                             temp = pro;
                                             //console.log(temp);
                                             //console.log("total: " + total);
