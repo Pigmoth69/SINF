@@ -132,6 +132,10 @@ function addProductsWebPage(products, imgs) {
     $("#products").remove();
     $("#home").append("<div id='products' class='col-xs-10'></div>");
     var temp = "";
+    temp += '<div class="single-product-area">';
+    temp += '<div class="zigzag-bottom">';
+    temp += '</div><div class="container">';
+
 
     products = addImagesToProducts(products, imgs);
     for (var i = 0; i < products.length; i++ , j++) {
@@ -160,35 +164,37 @@ function addProductsWebPage(products, imgs) {
             temp += "<div class='row'>";
         }
 
-        temp += "<div class='product col-xs-3'>";
-        temp += "<div class='clickableProduct'>";
+        temp += "<div class='col-md-3 col-sm-6'>";
+        temp += "<div class='single-shop-product'><div class='product-upper'>";
         temp += "<a href='/product/" + products[i].Code + "'>";
-        temp += "<img src='/images/" + products[i].Imagem + "' alt='product image' class='row'>";
-        temp += "</a>";
-        temp += "<div class='productInfo row'>";
-        temp += "<div>";
-        temp += "<span style='height:60px; overflow:hidden;' class='productName'>" + products[i].Description + "</span>";
-        temp += "</div>"; // tem desconto
+        temp += "<img src='/images/" + products[i].Imagem + "' alt='product image'>";
+        temp += "</a></div>";
+        temp += "<h2><a href='/product/" + products[i].Code + "'>" + products[i].Description + "</a></h2>";
+        temp += '<div class="product-carousel-price">';
 
         if (products[i].Discount > 0) {
-            temp += "<h4 class='row promofield'>Promoção</h4><div class='row'><h5 class='promofield col-xs-7' >" + valor + "€</h5>";
-            temp += "<h4 class='col-xs-5 semdesconto' style='text-decoration: line-through;'>" + valorSemDescontos + "€</h4></div>" //El switches;
+            temp += '<ins>' + valor + '€</ins> <del>' + valorSemDescontos + '</del></div>';
+            //temp += "<h4 class='row promofield'>Promoção</h4><div class='row'><h5 class='promofield col-xs-7' >" + valor + "€</h5>";
+            //temp += "<h4 class='col-xs-5 semdesconto' style='text-decoration: line-through;'>" + valorSemDescontos + "€</h4></div>" //El switches;
         }
         else {
-            temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + valorSemDescontos + " €</h3></div>";
+            temp += '<ins>' + valor + '€</ins></div>';
+            //temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + valorSemDescontos + " €</h3></div>";
         }
 
         temp += "</div>";
+        temp += '<div class="product-option-shop">';
+        if (products[i].StkActual > 0){
+            temp += "<a class='add_to_cart_button' data-quantity='1' data-product_sku='' data-product_id='70' rel='nofollow' onclick=\"callProduct('" + products[i].Code + "');\">Add to cart</a>";
+            //temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
+        }
+        else temp += "<a class='add_to_cart_button' data-quantity='1' data-product_sku='' data-product_id='70' rel='nofollow'>NO STOCK</a>";
         temp += "</div>";
-        if (products[i].StkActual > 0)
-            temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
-        else temp += "<span class='row'>No Stock</span>";
         temp += "</div>";
 
-        
-        if (j == 3) { // fechar a row inicial
+
+        if (j == products.length - 1) { // fechar a row inicial
             temp += "</div>"; //fechar a row
-            j = -1;
         }
     }
     $("#products").append(temp); //viva a trolhiçe #oqueimportaequefuncione
