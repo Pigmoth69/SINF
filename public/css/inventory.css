@@ -17,3 +17,12 @@
 .productName{
 	font-weight: bold;
 }
+
+.familia_bt{
+	border: 1px solid black;
+    background-color: #eee;
+}
+
+.familia_bt:hover{
+	background-color: #17a78b;
+}
