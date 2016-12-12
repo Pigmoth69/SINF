@@ -158,90 +158,37 @@ function addProductsWebPage(products, imgs) {
 
         if (j == 0) { //acrescentar a row inicial
             temp += "<div class='row'>";
-            temp += "<div class='product col-xs-2'>";
-            temp += "<div class='clickableProduct'>";
-            temp += "<a href='/product/" + products[i].Code + "'>";
-            temp += "<img src='/images/" + products[i].Imagem + "' alt='product image' class='row'>";
-            temp += "</a>";
-            temp += "<div class='productInfo row'>";
-            temp += "<div>";
-            temp += "<span style='height:60px; overflow:hidden;' class='productName col-xs-8'>" + products[i].Description + "</span>";
-            temp += "</div>"; // tem desconto
-
-            if (products[i].Discount > 0) {
-                temp += "<div class='col-xs-3'><h5>PROMO: " + valor + "€</h5></div>";
-                temp += "<div class='col-xs-3'><h5 style='text-decoration: line-through;'>" + valorSemDescontos + "€</h5></div>" //El switches;
-            }
-            else {
-                temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + valorSemDescontos + " €</h3></div>";
-            }
-
-            temp += "</div>";
-            temp += "</div>";
-            if (products[i].StkActual > 0)
-                temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
-            else temp += "<span class='row'>No Stock</span>";
-            temp += "</div>";
         }
-        else if (j == 3) { // fechar a row inicial
-            temp += "<div class='product col-xs-2 col-xs-offset-1'>";
-            temp += "<div class='clickableProduct'>";
-            temp += "<a href='/product/" + products[i].Code + "'>";
-            temp += "<img src='/images/";
-            temp += products[i].Imagem;
-            temp += "' alt='product image' class='row'></a>";
-            temp += "<div class='productInfo row'>";
-            temp += "<div>";
-            temp += "<span style='height:60px; overflow:hidden;' class='productName col-xs-8'>" + products[i].Description + "</span>";
-            temp += "</div>";
-            var temp1 = products[i].Prices.PVP1 + "";
 
-            if (products[i].Discount > 0) {
-                temp += "<div class='col-xs-3'><h5>PROMO: " + valor + "€</h5></div>";
-                temp += "<div class='col-xs-3'><h5 style='text-decoration: line-through;'>" + valorSemDescontos + "€</h5></div>" //El switches;
-            }
-            else {
-                temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + valorSemDescontos + " €</h3></div>";
-            }
+        temp += "<div class='product col-xs-3'>";
+        temp += "<div class='clickableProduct'>";
+        temp += "<a href='/product/" + products[i].Code + "'>";
+        temp += "<img src='/images/" + products[i].Imagem + "' alt='product image' class='row'>";
+        temp += "</a>";
+        temp += "<div class='productInfo row'>";
+        temp += "<div>";
+        temp += "<span style='height:60px; overflow:hidden;' class='productName'>" + products[i].Description + "</span>";
+        temp += "</div>"; // tem desconto
 
-            temp += "</div>";
-            temp += "</div>";
-            if (products[i].StkActual > 0)
-                temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
-            else temp += "<span class='row'>No Stock</span>";
-            temp += "</div>";
+        if (products[i].Discount > 0) {
+            temp += "<h4 class='row promofield'>Promoção</h4><div class='row'><h5 class='promofield col-xs-7' >" + valor + "€</h5>";
+            temp += "<h4 class='col-xs-5 semdesconto' style='text-decoration: line-through;'>" + valorSemDescontos + "€</h4></div>" //El switches;
+        }
+        else {
+            temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + valorSemDescontos + " €</h3></div>";
+        }
+
+        temp += "</div>";
+        temp += "</div>";
+        if (products[i].StkActual > 0)
+            temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
+        else temp += "<span class='row'>No Stock</span>";
+        temp += "</div>";
+
+        
+        if (j == 3) { // fechar a row inicial
             temp += "</div>"; //fechar a row
-            temp += "<br>";
-            temp += "<br>";
             j = -1;
-        }
-        else { // caso normal //i'msohigh
-            temp += "<div class='product col-xs-2 col-xs-offset-1'>";
-            temp += "<div class='clickableProduct'>";
-            temp += "<a href='/product/" + products[i].Code + "'>";
-            temp += "<img src='/images/";
-            temp += products[i].Imagem;
-            temp += "' alt='product image' class='row'></a>";
-            temp += "<div class='productInfo row'>";
-            temp += "<div>"
-            temp += "<span style='height:60px; overflow:hidden;'; class='productName col-xs-8'>" + products[i].Description + "</span>";
-            temp += "</div>";
-            var temp1 = products[i].Prices.PVP1 + "";
-
-            if (products[i].Discount > 0) {
-                temp += "<div class='col-xs-3'><h5>PROMO: " + valor + "€</h5></div>";
-                temp += "<div class='col-xs-3'><h5 style='text-decoration: line-through;'>" + valorSemDescontos + "€</h5></div>" //El switches;
-            }
-            else {
-                temp += "<div class='col-xs-3 col-xs-offset-1'><h3>" + valorSemDescontos + " €</h3></div>";
-            }
-
-            temp += "</div>";
-            temp += "</div>";
-            if (products[i].StkActual > 0)
-                temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
-            else temp += "<span class='row'>No Stock</span>";
-            temp += "</div>";
         }
     }
     $("#products").append(temp); //viva a trolhiçe #oqueimportaequefuncione

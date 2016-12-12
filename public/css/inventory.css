@@ -10,8 +10,14 @@
 	width: 25%;
 }
 
-#products .row{
-	margin-top: 10px;
+.promofield{
+	background-color: orange;
+	font-weight: bold;
+}
+
+.product{
+	border:1px solid gray;
+	padding: 15px;
 }
 
 .productName{
