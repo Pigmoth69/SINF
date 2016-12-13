@@ -1,0 +1,43 @@
+{{> header}}
+
+<div class="login-page">
+    <div class="form">
+        <form class="register-form" id="log" action="/register" method="POST">
+           <input id="clientCode" type="text" name="clientCode" placeholder="Client Code">
+            <input id="email" type="email" name="email" placeholder="E-mail">
+            <input id="name" type="text" name="name" placeholder="Client Name">
+            <input id="fiscal_name" type="text" name="fiscal_name" placeholder="Fiscal Name">
+            <label for="country" >Country</label>
+            <select class="form-control" name="country" id="country">
+					{{#each countries}}
+						<option value="{{Initials}}">{{Name}}</option>
+					{{/each}}
+			</select>
+            <br>
+		    <input id="address" type="text" name="address" placeholder="Address">
+            <label for="district">District</label>
+            <select class="form-control" name="district" id="district">
+					{{#each districts}}
+						<option value="{{DistrictCode}}">{{Description}}</option>
+					{{/each}}
+            </select>
+            <br>
+            <input id="local" type="text" name="local" placeholder="Local">
+            <input id="zip-code" type="text" name="zip" placeholder="Zip-Code">
+            <input id="phone" type="number" name="phone" placeholder="Phone Number">
+			<input id="taxpay" type="number" name="taxpay" placeholder="Taxpay Number">
+			<input id="passwordInputR" type="password" name="password" placeholder="Password">
+            <input id="passwordInputR2" name="password2" type="password" placeholder="Password">
+            <button>create</button>
+            <p class="message">Already registered? <a href="#">Sign In</a></p>
+        </form>
+        <form class="login-form" id="reg" action="/login" method="POST">
+            <input id="usernameInput" name="username" type="text" placeholder="Username">
+            <input id="passwordInput" name="password" type="password" placeholder="Password">
+            <button>login</button>
+            <p class="message">Not registered? <a href="#">Create an account</a></p>
+        </form>
+    </div>
+</div>
+
+{{> footer1}}

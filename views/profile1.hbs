@@ -1,0 +1,177 @@
+{{> header}}
+<br>
+<br>
+<br>
+<div class="container">
+    <h1>Edit Profile</h1>
+    <hr>
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-3">
+            <div class="text-center">
+                <img src="/images/user.png" class="avatar img-circle" alt="avatar">
+                <br>
+                <br>
+                <button type="button" data-toggle="modal" data-target="#editProfile" class="btn btn-warning btn-lg center">Edit Profile</button>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="editProfile" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Edit Profile</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/profile/edit/{{profile.Code}}" method="POST">
+                            <label class="control-label" for="nameClient">Client Name: </label>
+                            <input class="form-control" value="{{profile.NameClient}}" id="nameClient" type="text" name="NameClient" placeholder="Client Name">
+                            <br>
+                            <label class="control-label" for="fiscalName">Fiscal Name: </label>
+                            <input class="form-control" value="{{profile.FiscalName}}" id="fiscalName" type="text" name="FiscalName" placeholder="Fiscal Name">
+                            <br>
+                            <label class="control-label" for="clientType">Client Type: </label>
+                            <select class="form-control" name="ClientType" id="clientType">
+                                {{#each clientTypes}}
+                                    <option value="{{Code}}">{{Description}}</option> <!-- ALTERAR -->
+                                {{/each}}
+							</select>
+                            <br>
+                            <label class="control-label" for="email">E-mail: </label>
+                            <input class="form-control" id="email" type="text" name="Email" value="{{profile.Email}}" placeholder="E-mail">
+                            <br>
+                            <label class="control-label" for="password">Password: </label>
+                            <input class="form-control" id="password" type="password" name="password" placeholder="Old Password">
+                            <br>
+                            <label class="control-label" for="newPassword">New Password: </label>
+                            <input class="form-control" id="newPassword" type="password" name="newPassword" placeholder="New Password">
+                            <br>
+                            <label class="control-label" for="newPassword2">Confirm Password: </label>
+                            <input class="form-control" id="newPassword2" type="password" name="newPasswordRep" placeholder="Confirm New Password">
+                            <br>
+                            <label class="control-label" for="country">Country: </label>
+                            <select class="form-control" name="Country" id="country">
+                                {{#each countries}}
+                                    {{#if_eq Initials Selected}}
+                                        <option value="{{Initials}}" selected>{{Name}}</option>
+                                    {{/if_eq}}
+                                    {{#if_eq "" Selected}}
+                                        <option value="{{Initials}}">{{Name}}</option>
+                                    {{/if_eq}}
+                                {{/each}}
+                            </select>
+                            <br>
+                            <label class="control-label" for="address">Address: </label>
+                            <input class="form-control" value="{{profile.Address}}" id="address" type="text" name="Address" placeholder="Address">
+                            <br>
+                            <label class="control-label" for="address2">Address 2: </label>
+                            <input class="form-control" value="{{profile.Address2}}" id="address2" type="text" name="Address2" placeholder="Address 2">
+                            <br>
+                            <label class="control-label" for="district">District: </label>
+                            <select class="form-control" name="District" id="district">
+                                {{#each districts}}
+                                    <option value="{{DistrictCode}}">{{Description}}</option>
+                                {{/each}}
+                            </select>
+                            <br>
+                            <label class="control-label" for="local">Local: </label>
+                            <input class="form-control" value="{{profile.Local}}" id="local" type="text" name="Local" placeholder="Local">
+                            <br>
+                            <label class="control-label" for="postalCode">Postal Code: </label>
+                            <input class="form-control" value="" {{profile.PostCode}} id="postalCode" type="text" name="PostCode" placeholder="Zip Code">
+                            <br>
+                            <label class="control-label" for="paymentType">Payment Type: </label>
+                            <select class="form-control" name="PaymentType" id="paymentType">
+                                {{#each paymentTypes}}
+                                    {{#if_eq PaymentTypeCode Selected}}
+                                        <option value="{{PaymentTypeCode}}" selected>{{PaymentTypeDescription}}</option>
+                                    {{/if_eq}}
+                                    {{#if_eq "" Selected}}
+                                        <option value="{{PaymentTypeCode}}">{{PaymentTypeDescription}}</option>
+                                    {{/if_eq}}
+                                {{/each}}
+                            </select>
+                            <br>
+                            <label class="control-label" for="paymentWay">Payment Way: </label>
+                            <select class="form-control" name="PaymentWay" id="paymentWay">
+                                {{#each paymentWays}}
+                                    {{#if_eq PaymentWayCode Selected}}
+                                        <option value="{{PaymentWayCode}}" selected>{{PaymentWayDescription}}</option>
+                                    {{/if_eq}}
+                                    {{#if_eq "" Selected}}
+                                        <option value="{{PaymentWayCode}}">{{PaymentWayDescription}}</option>
+                                    {{/if_eq}}
+                                {{/each}}
+                            </select>
+                            <br>
+                            <label class="control-label" for="expeditionWay">Expedition Way: </label>
+                            <select class="form-control" name="ExpeditionWay" id="expeditionWay">
+                                {{#each expeditionWay}}
+                                    {{#if_eq ExpeditionCode Selected}}
+                                        <option value="{{ExpeditionCode}}" selected>{{ExpeditionDescription}}</option>
+                                    {{/if_eq}}
+                                    {{#if_eq "" Selected}}
+                                        <option value="{{ExpeditionCode}}">{{ExpeditionDescription}}</option>
+                                    {{/if_eq}}
+                                {{/each}}
+                            </select>
+                            <br>
+                            <label class="control-label" for="phone">Phone: </label>
+                            <input class="form-control" value="{{profile.Phone}}" id="phone" type="text" name="Phone" placeholder="Phone Number">
+                            <br>
+                            <label class="control-label" for="phone2">Phone 2: </label>
+                            <input class="form-control" value="{{profile.Phone2}}" id="phone2" type="text" name="Phone2" placeholder="Phone Number 2">
+                            <br>
+                            <label class="control-label" for="taxpayNumber">Taxpay Number: </label>
+                            <input class="form-control" value="{{profile.TaxpayNumber}}" id="taxpayNumber" type="text" name="TaxpayNumber" placeholder="TaxPay Number">
+                            <input type="hidden" name="CodClient" value="{{profile.CodClient}}">
+                            <br>
+                            <button type="submit" class="btn btn-primary">Edit Profile</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- edit form column -->
+        <div class="col-md-9 personal-info">
+            <h3>Personal info</h3>
+            <table id="user" class="table table-bordered table-striped">
+                <tbody> 
+                    <tr>         
+                        <td width="20%">Client Name</td>
+                        <td width="45%"><a href="#" class="editFields" id="clientName1" data-type="text" data-pk="{{profile.CodClient}}" data-name="clientName" data-original-title="Enter New Name">{{profile.NameClient}}</a></td>
+                    </tr>
+                    <tr>         
+                        <td width="20%">Fiscal Name</td>
+                        <td width="45%"><a href="#" class="editFields" id="fiscalName1" data-type="text" data-pk="{{profile.CodClient}}" data-name="fiscalName" data-original-title="Enter New Fiscal Name">{{profile.FiscalName}}</a></td>
+                    </tr>
+                    <tr>         
+                        <td width="20%">Address</td>
+                        <td width="45%"><a href="#" class="editFields" id="address1" data-type="text" data-pk="{{profile.CodClient}}" data-name="address" data-original-title="Enter New Address">{{profile.Address}}</a></td>
+                    </tr>
+                    <tr>         
+                        <td width="20%">Email</td>
+                        <td width="45%"><a href="#" class="editFields" id="email1" data-type="text" data-pk="{{profile.CodClient}}" data-name="email" data-original-title="Enter New Email">{{profile.Email}}</a></td>
+                    </tr>
+                    <tr>         
+                        <td width="20%">Phone Number</td>
+                        <td width="45%"><a href="#" class="editFields" id="phone1" data-type="text" data-pk="{{profile.CodClient}}" data-name="phone" data-original-title="Enter New Name">{{profile.Phone}}</a></td>
+                    </tr>
+                    <tr>         
+                        <td width="20%">Taxpay Number</td>
+                        <td width="45%"><a href="#" class="editFields" id="taxpayNumber1" data-type="text" data-pk="{{profile.CodClient}}" data-name="taxpay" data-original-title="Enter New Name">{{profile.TaxpayNumber}}</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<hr> {{> footer1}}

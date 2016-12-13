@@ -12,7 +12,7 @@ router.get('/', function (req, res) {
             request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
                     var districts = JSON.parse(body);
-                    res.render('login', { countries: countries, districts: districts });
+                    res.render('login1', { countries: countries, districts: districts });
                 }
                 else {
                     res.render('404');
