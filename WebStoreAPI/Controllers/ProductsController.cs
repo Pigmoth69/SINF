@@ -21,7 +21,7 @@ namespace WebStoreAPI.Controllers
         }
 
 
-        [Route("api/products/{id}")]
+        [Route("api/products")]
         [HttpGet]
         public HttpResponseMessage GetProductId(string id)
         {

@@ -13,7 +13,8 @@ namespace WebStoreAPI.Controllers
     {
         //
         // GET: /Clientes/
-
+        [Route("api/clients")]
+        [HttpGet]
         public IEnumerable<Lib_Primavera.Model.SimpleClient> Get()
         {
                 return Lib_Primavera.PriIntegration.ListaClientes();
