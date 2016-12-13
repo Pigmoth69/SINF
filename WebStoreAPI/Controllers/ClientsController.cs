@@ -45,22 +45,22 @@ namespace WebStoreAPI.Controllers
             }
         }
 
-        [Route("api/clients")]
+        [Route("api/client")]
         [HttpPost]
-        public HttpResponseMessage Post(Lib_Primavera.Model.Client cliente)
+        public HttpResponseMessage Post(Lib_Primavera.Model.Client client)
         {
             System.Diagnostics.Debug.WriteLine("Controller certo!");
             Lib_Primavera.Model.ResponseError erro = new Lib_Primavera.Model.ResponseError();
-            erro = Lib_Primavera.PriIntegration.InsereClienteObj(cliente);
+            erro = Lib_Primavera.PriIntegration.InsereClienteObj(client);
             System.Diagnostics.Debug.WriteLine("Controller certo!2");
             if (erro.Erro == 0)
             {
-                var message = string.Format("Client with id = {0} not found", cliente.CodClient);
+                var message = string.Format("Client with id = {0} not found", client.CodClient);
                 return Request.CreateResponse(HttpStatusCode.Created, message);
             }
             else if (erro.Erro == 2)
             {
-                var message = string.Format("Client with id = {0} already exists!", cliente.CodClient);
+                var message = string.Format("Client with id = {0} already exists!", client.CodClient);
                 return Request.CreateResponse(HttpStatusCode.Conflict, message);
             }
             else
