@@ -71,7 +71,8 @@ namespace WebStoreAPI.Controllers
 
         }
 
-
+        [Route("api/clients")]
+        [HttpPut]
         public HttpResponseMessage Put(string id, Lib_Primavera.Model.Client cliente)
         {
 
