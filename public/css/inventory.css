@@ -10,10 +10,25 @@
 	width: 25%;
 }
 
-#products .row{
-	margin-top: 10px;
+.promofield{
+	background-color: orange;
+	font-weight: bold;
+}
+
+.product{
+	border:1px solid gray;
+	padding: 15px;
 }
 
 .productName{
 	font-weight: bold;
+}
+
+.familia_bt{
+	border: 1px solid black;
+    background-color: #eee;
+}
+
+.familia_bt:hover{
+	background-color: #17a78b;
 }

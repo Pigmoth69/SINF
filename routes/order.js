@@ -16,7 +16,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/:page', function (req, res) {
-    var user = req.session.user;
+    var user = "SOFRIO";// req.session.user;
     var numPerPage = 10;
     console.log(req.session);
     var orderURL = "http://localhost:"+config.PORT+"/api/orders/" + user + "?page=" + req.params.page + "&numperpage=" + numPerPage;
@@ -33,6 +33,12 @@ router.get('/:page', function (req, res) {
                     var page = req.params.page;
                     var pagei = page;
                     var pagel = page;
+
+                    for(var i = 0; i < ordersJ.length; i++){
+                        ordersJ[i].Data = ordersJ[i].Data.replace("T", " ");
+                        ordersJ[i].TotalMerc = ordersJ[i].TotalMerc.toLocaleString("es-ES", {minimumFractionDigits: 2});
+                        //console.log(ordersJ[i]);
+                    }
 
                     if (page > 1)
                         pagei--;

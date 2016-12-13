@@ -87,3 +87,15 @@
 	overflow-x: hidden;
 	height: 400px;
 }
+
+.shop_table {
+	font-family: "Roboto Condensed",sans-serif;
+}
+
+.shop_table .tableAmmount{
+	text-align: right;
+}
+
+.shop_table .tableInfo{
+	text-align: left;
+}

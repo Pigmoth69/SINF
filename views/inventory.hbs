@@ -1,5 +1,22 @@
-{{> topbar}}
-<div id="content" class="container">
+{{> header}}
+
+	<link rel="stylesheet" href="/css/inventory.css">
+
+	<div class="product-big-title-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-bit-title text-center">
+                        <h2>Shop</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Page title area -->
+
+<div id="content" class="container" style="margin: 0;">
+	<!--
 	<div id="tabs" class="row">
 		<ul class="nav nav-tabs col-xs-9 col-xs-offset-2">
 			{{#each warehouses}}
@@ -7,12 +24,13 @@
 			{{/each}}
 		</ul>
 	</div>
+	-->
 	<!-- ver quais estão ativos, e redirecionar nesse sentido -->
 	<div class="row" id="mainPage">
 		<div id="category" class="col-xs-2">
 			<ul class="nav nav-pills nav-stacked">
 				{{#each families}}
-				<li class="familia" id="Family{{Code}}"><a href="#" onclick="changeToActiveFam('{{Code}}');return false;">{{Code}}</a></li>
+				<li class="familia" id="Family{{Code}}"><a href="#" class="familia_bt" onclick="changeToActiveFam('{{Code}}');return false;">{{Code}}</a></li>
 				{{/each}}
 			</ul>
 		</div>
@@ -20,4 +38,4 @@
 		</div>
 	</div>
 </div>
-{{> footer}}
+{{> footer1}}

@@ -1,7 +1,6 @@
-#ordersTable {
-	width: 70%;
-	border: 3px inset;
-	margin: auto;
+
+.shop_table .tableAmmount {
+    text-align: right;
 }
 
 #pdficon {

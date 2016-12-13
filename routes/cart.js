@@ -25,44 +25,33 @@ router.get('/', function (req, res) {
                         request.get({ url: prodURL, proxy: config.PROXY }, function (error, response, body) {
                             if (!error && response.statusCode == 200) {
                                 var prod = JSON.parse(body);
+
+                                var pvps = [
+                                    prod.Prices.PVP1,
+                                    prod.Prices.PVP1,
+                                    prod.Prices.PVP2,
+                                    prod.Prices.PVP3,
+                                    prod.Prices.PVP4,
+                                    prod.Prices.PVP5,
+                                    prod.Prices.PVP6
+                                ]
+
+                                var utype = req.session.typeUser;
+                                if (utype == undefined) utype = 0;
+                                item.Price = ((pvps[ utype ] * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                item.UnitPrice = ((pvps[ utype ] * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
+
+
                                 item.Description = prod.Description;
-                                switch (req.session.typeUser) {
-                                    case 1:
-                                        item.Price = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
-                                        item.UnitPrice = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
-                                        break;
-                                    case 2:
-                                        item.Price = ((prod.Prices.PVP2 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
-                                        item.UnitPrice = ((prod.Prices.PVP2 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
-                                        break;
-                                    case 3:
-                                        item.Price = ((prod.Prices.PVP3 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
-                                        item.UnitPrice = ((prod.Prices.PVP3 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
-                                        break;
-                                    case 4:
-                                        item.Price = ((prod.Prices.PVP4 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
-                                        item.UnitPrice = ((prod.Prices.PVP4 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
-                                        break;
-                                    case 5:
-                                        item.Price = ((prod.Prices.PVP5 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
-                                        item.UnitPrice = ((prod.Prices.PVP5 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
-                                        break;
-                                    case 6:
-                                        item.Price = ((prod.Prices.PVP6 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
-                                        item.UnitPrice = ((prod.Prices.PVP6 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
-                                        break;
-                                    default:
-                                        item.Price = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
-                                        item.UnitPrice = ((prod.Prices.PVP1 * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
-                                        break;
-                                }
+                                
                                 item.Price = Math.round(item.Price * 100) / 100;
                                 item.UnitPrice = Math.round(item.UnitPrice * 100) / 100;
                                 total += item.Price;
-                                callback();
+                                callback(null);
                             }
                         });
                     }, function (err) {
+                        console.log("qualquer cena");
                         total = Math.round(total * 100) / 100;
                         addImages(prods, temp, function (pro) {
                             temp = pro;
@@ -118,7 +107,7 @@ function addImages(prods, temp, next) {
             }
         }
     }
-    
+
     for (var i = 0; i < temp.length; i++) {
         if (temp[i].Imagem == "")
             temp[i].Imagem = 'product.png';

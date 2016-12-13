@@ -57,90 +57,43 @@ router.get('/:idP', function (req, res) {
                                                         if (!error && response.statusCode == 200) {
                                                             var cl = JSON.parse(body);
                                                             addImages(prods, relatedProducts, function (rp1) {
+
+                                                                var pvps = [
+                                                                    tempB.Prices.PVP1,
+                                                                    tempB.Prices.PVP1,
+                                                                    tempB.Prices.PVP2,
+                                                                    tempB.Prices.PVP3,
+                                                                    tempB.Prices.PVP4,
+                                                                    tempB.Prices.PVP5,
+                                                                    tempB.Prices.PVP6
+                                                                ];
                                                                 relatedProducts = rp1;
                                                                 var price_no = Math.round(tempB.Prices.PVP1 * (tempB.IVA * 0.01 + 1) * 100) / 100;
-                                                                switch (req.session.typeUser) {
-                                                                    case 1:
-                                                                        price = tempB.Prices.PVP1 * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01) * (tempB.IVA * 0.01 + 1);
-                                                                        price = Math.round(price * 100) / 100;
-                                                                        iva = (tempB.Prices.PVP1 * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01)) * (tempB.IVA * 0.01);
-                                                                        iva = Math.round(iva * 100) / 100;
-                                                                        res.render('product1', {
-                                                                            product: tempB, iva: iva, typeOne: req.session.typeUser, stk: stk, comments: comments, id: req.session.user, price: price,
-                                                                            price_no: price_no, disc: cl.ClientDiscount, relatedProducts: relatedProducts
-                                                                        });
-                                                                        break;
-                                                                    case 2:
-                                                                        price = tempB.Prices.PVP2 * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01) * (tempB.IVA * 0.01 + 1);
-                                                                        price = Math.round(price * 100) / 100;
-                                                                        iva = (tempB.Prices.PVP2 * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01)) * (tempB.IVA * 0.01);
-                                                                        iva = Math.round(iva * 100) / 100;
-                                                                        res.render('product1', {
-                                                                            product: tempB, iva: iva, typeTwo: req.session.typeUser, stk: stk, comments: comments, id: req.session.user, price: price,
-                                                                            price_no: price_no, disc: cl.ClientDiscount, relatedProducts: relatedProducts
-                                                                        });
-                                                                        break;
-                                                                    case 3:
-                                                                        price = tempB.Prices.PVP3 * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01) * (tempB.IVA * 0.01 + 1);
-                                                                        price = Math.round(price * 100) / 100;
-                                                                        iva = (tempB.Prices.PVP3 * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01)) * (tempB.IVA * 0.01);
-                                                                        iva = Math.round(iva * 100) / 100;
-                                                                        res.render('product1', {
-                                                                            product: tempB, iva: iva, typeThree: req.session.typeUser, stk: stk, comments: comments, id: req.session.user, price: price,
-                                                                            price_no: price_no, disc: cl.ClientDiscount, relatedProducts: relatedProducts
-                                                                        });
-                                                                        break;
-                                                                    case 4:
-                                                                        price = tempB.Prices.PVP4 * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01) * (tempB.IVA * 0.01 + 1);
-                                                                        price = Math.round(price * 100) / 100;
-                                                                        iva = (tempB.Prices.PVP4 * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01)) * (tempB.IVA * 0.01);
-                                                                        iva = Math.round(iva * 100) / 100;
-                                                                        res.render('product1', {
-                                                                            product: tempB, iva: iva, typeFour: req.session.typeUser, stk: stk, comments: comments, id: req.session.user, price: price,
-                                                                            price_no: price_no, disc: cl.ClientDiscount, relatedProducts: relatedProducts
-                                                                        });
-                                                                        break;
-                                                                    case 5:
-                                                                        price = tempB.Prices.PVP5 * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01) * (tempB.IVA * 0.01 + 1);
-                                                                        price = Math.round(price * 100) / 100;
-                                                                        iva = (tempB.Prices.PVP5 * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01)) * (tempB.IVA * 0.01);
-                                                                        iva = Math.round(iva * 100) / 100;
-                                                                        res.render('product1', {
-                                                                            product: tempB, iva: iva, typeFive: req.session.typeUser, stk: stk, comments: comments, id: req.session.user, price: price,
-                                                                            price_no: price_no, disc: cl.ClientDiscount, relatedProducts: relatedProducts
-                                                                        });
-                                                                        break;
-                                                                    case 6:
-                                                                        price = tempB.Prices.PVP6 * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01) * (tempB.IVA * 0.01 + 1);
-                                                                        price = Math.round(price * 100) / 100;
-                                                                        iva = (tempB.Prices.PVP6 * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01)) * (tempB.IVA * 0.01);
-                                                                        iva = Math.round(iva * 100) / 100;
-                                                                        res.render('product1', {
-                                                                            product: tempB, iva: iva, typeSix: req.session.typeUser, stk: stk, comments: comments, id: req.session.user, price: price,
-                                                                            price_no: price_no, disc: cl.ClientDiscount, relatedProducts: relatedProducts
-                                                                        });
-                                                                        break;
-                                                                    default:
-                                                                        if (req.session.user == undefined) {
-                                                                            price = tempB.Prices.PVP1 * (1 - tempB.Discount * 0.01) * (tempB.IVA * 0.01 + 1);
-                                                                            iva = (tempB.Prices.PVP1 * (1 - tempB.Discount * 0.01)) * (tempB.IVA * 0.01);
-                                                                        }
-                                                                        else {
-                                                                            price = tempB.Prices.PVP1 * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01) * (tempB.IVA * 0.01 + 1);
-                                                                            iva = (tempB.Prices.PVP1 * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01)) * (tempB.IVA * 0.01);
-                                                                        }
-                                                                        price = Math.round(price * 100) / 100;
-                                                                        iva = Math.round(iva * 100) / 100;
-                                                                        if (req.session.user != undefined)
-                                                                            res.render('product1', {
-                                                                                product: tempB, iva: iva, typeOne: '1', stk: stk, comments: comments, id: req.session.user, price: price, price_no: price_no,
-                                                                                disc: cl.ClientDiscount, relatedProducts: relatedProducts
-                                                                            });
-                                                                        else res.render('product1', {
-                                                                            product: tempB, iva: iva, typeOne: 'teste', stk: stk, comments: comments, price: price, price_no: price_no, disc: 0, relatedProducts: relatedProducts
-                                                                        });
-                                                                        break;
+
+                                                                if (req.session.user != undefined) {
+                                                                    price = pvps[req.session.typeUser] * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01) * (tempB.IVA * 0.01 + 1);
+                                                                    iva = (pvps[req.session.typeUser] * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01)) * (tempB.IVA * 0.01);
                                                                 }
+                                                                else {
+                                                                    price = pvps[0] * (1 - tempB.Discount * 0.01) * (tempB.IVA * 0.01 + 1);
+                                                                    iva = (pvps[0] * (1 - tempB.Discount * 0.01)) * (tempB.IVA * 0.01);
+                                                                }
+                                                                price = Math.round(price * 100) / 100;
+                                                                iva = Math.round(iva * 100) / 100;
+                                                                res.render('product1', {
+                                                                    product: tempB, iva: iva, typeOne: req.session.typeUser, stk: stk, comments: comments, id: req.session.user, price: price,
+                                                                    price_no: price_no, disc: cl.ClientDiscount, relatedProducts: relatedProducts
+                                                                });
+
+                                                                if (req.session.user != undefined)
+                                                                    res.render('product1', {
+                                                                        product: tempB, iva: iva, typeOne: req.session.typeUser, stk: stk, comments: comments, id: req.session.user, price: price, price_no: price_no,
+                                                                        disc: cl.ClientDiscount, relatedProducts: relatedProducts
+                                                                    });
+                                                                else res.render('product1', {
+                                                                    product: tempB, iva: iva, typeOne: 'teste', stk: stk, comments: comments, price: price, price_no: price_no, disc: 0, relatedProducts: relatedProducts
+                                                                });
+
                                                             });
                                                         }
                                                         else {
