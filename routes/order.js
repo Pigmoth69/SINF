@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var config = require('../config/config.js');
+var utils = require('./utils.js');
 
 var fs = require('fs');
 var request = require('request');
@@ -10,9 +11,7 @@ var mime = require('mime');
 
 
 router.get('/', function (req, res) {
-
     res.redirect('1');
-
 });
 
 router.get('/:page', function (req, res) {
@@ -45,7 +44,10 @@ router.get('/:page', function (req, res) {
 
                     if (page < totalP)
                         pagel = parseInt(page) + 1;
-                    res.render('order', { orders: ordersJ , totalPage: totalP, page: req.params.page, pageA: pagel, pageB:pagei});
+                        utils.getCategoriesPrimavera(function(cats) {
+                            res.render('order', { orders: ordersJ , totalPage: totalP, page: req.params.page, pageA: pagel, pageB:pagei, id : req.session.user, families : cats});
+                        });
+                    
                 }
                 else {
                     res.render('404');

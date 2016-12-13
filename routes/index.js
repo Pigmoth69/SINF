@@ -3,6 +3,7 @@ var router = express.Router();
 var db = require('../database/database.js');
 var config = require('../config/config.js');
 var request = require('request');
+var utils = require('./utils.js');
 
 
 router.get('/', function (req, res) {
@@ -21,8 +22,9 @@ router.get('/', function (req, res) {
                         famsT[i] = {};
                         famsT[i].Code = famsReal[i];
                     }
-                    console.log(famsT);
-                    res.render('inventory', { warehouses: waresReal, families: famsT });
+                    if (req.session.user != undefined)
+                        res.render('inventory', { warehouses: waresReal, families: famsT, id : req.session.user});
+                    else res.render('inventory', {warehouses: waresReal, families: famsT});
                 }
                 else {
                     res.render('404');

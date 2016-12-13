@@ -3,6 +3,7 @@ var router = express.Router();
 var config = require('../config/config.js');
 var request = require('request');
 var db = require('../database/database.js');
+var utils = require('./utils.js');
 
 router.get('/', function (req, res) {
     if (req.session.user == undefined)
@@ -41,11 +42,13 @@ router.get('/', function (req, res) {
                                                                     var clientTypes = JSON.parse(body);
                                                                     addCodes(client, paymentTypes, paymentWays, expeditionWay, countries, districts, clientTypes, function (result) {
                                                                         // tratar das merdas para por la
-                                                                        res.render('profile1', {
-                                                                            profile: client, countries: countries, districts: districts, expeditionWay: expeditionWay,
-                                                                            paymentTypes: paymentTypes, paymentWays: paymentWays, pWay: result.paymentWay, pType: result.paymentType,
-                                                                            eWay: result.expeditionWay, country: result.country, district: result.district, clientTypes: clientTypes,
-                                                                            cType: result.clientType
+                                                                        utils.getCategoriesPrimavera(function(cats) {
+                                                                            res.render('profile1', {
+                                                                                profile: client, countries: countries, districts: districts, expeditionWay: expeditionWay,
+                                                                                paymentTypes: paymentTypes, paymentWays: paymentWays, pWay: result.paymentWay, pType: result.paymentType,
+                                                                                eWay: result.expeditionWay, country: result.country, district: result.district, clientTypes: clientTypes,
+                                                                                cType: result.clientType, id : req.session.user, families : cats
+                                                                            });
                                                                         });
                                                                     });
                                                                 }

@@ -3,6 +3,7 @@ var router = express.Router();
 var request = require('request');
 var db = require('../database/database.js');
 var config = require('../config/config.js');
+var utils = require('./utils.js');
 
 router.get('/', function (req, res) {
     res.render('product');
@@ -56,44 +57,47 @@ router.get('/:idP', function (req, res) {
                                                     request.get({ url: prodURL, proxy: config.PROXY }, function (error, response, body) {
                                                         if (!error && response.statusCode == 200) {
                                                             var cl = JSON.parse(body);
-                                                            addImages(prods, relatedProducts, function (rp1) {
+                                                            utils.getCategoriesPrimavera(function (cats) {
+                                                                addImages(prods, relatedProducts, function (rp1) {
 
-                                                                var pvps = [
-                                                                    tempB.Prices.PVP1,
-                                                                    tempB.Prices.PVP1,
-                                                                    tempB.Prices.PVP2,
-                                                                    tempB.Prices.PVP3,
-                                                                    tempB.Prices.PVP4,
-                                                                    tempB.Prices.PVP5,
-                                                                    tempB.Prices.PVP6
-                                                                ];
-                                                                relatedProducts = rp1;
-                                                                var price_no = Math.round(tempB.Prices.PVP1 * (tempB.IVA * 0.01 + 1) * 100) / 100;
+                                                                    var pvps = [
+                                                                        tempB.Prices.PVP1,
+                                                                        tempB.Prices.PVP1,
+                                                                        tempB.Prices.PVP2,
+                                                                        tempB.Prices.PVP3,
+                                                                        tempB.Prices.PVP4,
+                                                                        tempB.Prices.PVP5,
+                                                                        tempB.Prices.PVP6
+                                                                    ];
+                                                                    relatedProducts = rp1;
+                                                                    var price_no = Math.round(tempB.Prices.PVP1 * (tempB.IVA * 0.01 + 1) * 100) / 100;
 
-                                                                if (req.session.user != undefined) {
-                                                                    price = pvps[req.session.typeUser] * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01) * (tempB.IVA * 0.01 + 1);
-                                                                    iva = (pvps[req.session.typeUser] * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01)) * (tempB.IVA * 0.01);
-                                                                }
-                                                                else {
-                                                                    price = pvps[0] * (1 - tempB.Discount * 0.01) * (tempB.IVA * 0.01 + 1);
-                                                                    iva = (pvps[0] * (1 - tempB.Discount * 0.01)) * (tempB.IVA * 0.01);
-                                                                }
-                                                                price = Math.round(price * 100) / 100;
-                                                                iva = Math.round(iva * 100) / 100;
-                                                                res.render('product1', {
-                                                                    product: tempB, iva: iva, typeOne: req.session.typeUser, stk: stk, comments: comments, id: req.session.user, price: price,
-                                                                    price_no: price_no, disc: cl.ClientDiscount, relatedProducts: relatedProducts
-                                                                });
-
-                                                                if (req.session.user != undefined)
+                                                                    if (req.session.user != undefined) {
+                                                                        price = pvps[req.session.typeUser] * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01) * (tempB.IVA * 0.01 + 1);
+                                                                        iva = (pvps[req.session.typeUser] * (1 - cl.ClientDiscount * 0.01) * (1 - tempB.Discount * 0.01)) * (tempB.IVA * 0.01);
+                                                                    }
+                                                                    else {
+                                                                        price = pvps[0] * (1 - tempB.Discount * 0.01) * (tempB.IVA * 0.01 + 1);
+                                                                        iva = (pvps[0] * (1 - tempB.Discount * 0.01)) * (tempB.IVA * 0.01);
+                                                                    }
+                                                                    price = Math.round(price * 100) / 100;
+                                                                    iva = Math.round(iva * 100) / 100;
                                                                     res.render('product1', {
-                                                                        product: tempB, iva: iva, typeOne: req.session.typeUser, stk: stk, comments: comments, id: req.session.user, price: price, price_no: price_no,
-                                                                        disc: cl.ClientDiscount, relatedProducts: relatedProducts
+                                                                        product: tempB, iva: iva, typeOne: req.session.typeUser, stk: stk, comments: comments, id: req.session.user, price: price,
+                                                                        price_no: price_no, disc: cl.ClientDiscount, relatedProducts: relatedProducts, families : cats
                                                                     });
-                                                                else res.render('product1', {
-                                                                    product: tempB, iva: iva, typeOne: 'teste', stk: stk, comments: comments, price: price, price_no: price_no, disc: 0, relatedProducts: relatedProducts
-                                                                });
 
+                                                                    if (req.session.user != undefined)
+                                                                        res.render('product1', {
+                                                                            product: tempB, iva: iva, typeOne: req.session.typeUser, stk: stk, comments: comments, id: req.session.user, price: price, price_no: price_no,
+                                                                            disc: cl.ClientDiscount, relatedProducts: relatedProducts, id: req.session.user, families : cats
+                                                                        });
+                                                                    else res.render('product1', {
+                                                                        product: tempB, iva: iva, typeOne: 'teste', stk: stk, comments: comments, price: price, price_no: price_no, disc: 0, relatedProducts: relatedProducts,
+                                                                        families : cats
+                                                                    });
+
+                                                                });
                                                             });
                                                         }
                                                         else {

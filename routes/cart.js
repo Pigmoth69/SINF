@@ -4,6 +4,7 @@ var request = require('request');
 var async = require('async');
 var db = require('../database/database.js');
 var config = require('../config/config.js');
+var utils = require('./utils.js');
 
 router.get('/', function (req, res) {
     if (req.session.user == undefined) { // ALTERAR
@@ -47,6 +48,8 @@ router.get('/', function (req, res) {
                                 item.Price = Math.round(item.Price * 100) / 100;
                                 item.UnitPrice = Math.round(item.UnitPrice * 100) / 100;
                                 total += item.Price;
+                                item.Price = item.Price.toLocaleString("es-ES", { minimumFractionDigits: 2 });
+                                item.UnitPrice = item.UnitPrice.toLocaleString("es-ES", { minimumFractionDigits: 2 });
                                 callback(null);
                             }
                         });
@@ -67,8 +70,10 @@ router.get('/', function (req, res) {
                                                 relatedProducts = relatedProducts.slice(0, 10);
                                             addImagesPri(prods, relatedProducts, function (r) {
                                                 relatedProducts = r;
-                                                console.log(temp);
-                                                res.render('cart1', { total: total, cart: temp, relatedProducts: relatedProducts });
+                                                total = total.toLocaleString("es-ES", { minimumFractionDigits: 2 });
+                                                utils.getCategoriesPrimavera(function(cats) {
+                                                    res.render('cart1', { total: total, cart: temp, relatedProducts: relatedProducts, id : req.session.user, families : cats});
+                                                });
                                             });
                                         });
                                     });

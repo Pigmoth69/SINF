@@ -22,7 +22,8 @@
     <link rel="stylesheet" href="/css/owl.carousel.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/responsive.css">
-    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"
+    />
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -48,8 +49,10 @@
                             </li>
                             <li><a href="/payment"><i class="fa fa-user"></i> Checkout</a>
                             </li>
-                            <li><a href="/login"><i class="fa fa-user"></i> Login</a>
-                            </li>
+                            {{#if id}}
+                            <li><a href="/profile"><i class="fa fa-user"></i> {{id}}</a> {{else}}
+                                <li><a href="/login"><i class="fa fa-user"></i> Login</a> {{/if}}
+                                </li>
                         </ul>
                     </div>
                 </div>
@@ -126,17 +129,21 @@
                         </li>
                         <li><a href="./">Shop page</a>
                         </li>
-                        <li><a href="single-product.html">Single product</a>
+                        <li>
+                            <div class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Categories</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">HTML</a></li>
+                                <li><a href="#">CSS</a></li>
+                                <li><a href="#">JavaScript</a></li>
+                            </ul>
+                        </div>
                         </li>
                         <li><a href="/cart">Cart</a>
                         </li>
                         <li><a href="/payment">Checkout</a>
                         </li>
-                        <li><a href="#">Category</a>
-                        </li>
-                        <li><a href="#">Others</a>
-                        </li>
-                        <li><a href="#">Contact</a>
+                        <li><a href="/orders">Orders</a>
                         </li>
                     </ul>
                     <form class="navbar-form navbar-left" role="search">
