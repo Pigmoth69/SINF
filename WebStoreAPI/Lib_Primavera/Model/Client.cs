@@ -22,19 +22,16 @@ namespace WebStoreAPI.Lib_Primavera.Model
             get;
             set;
         }
-
         public string NameClient
         {
             get;
             set;
         }
-
         public string FiscalName
         {
             get;
             set;
         }
-
         public string TaxpayNumber
         {
             get;

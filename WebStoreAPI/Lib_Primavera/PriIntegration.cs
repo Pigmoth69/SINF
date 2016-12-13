@@ -100,18 +100,42 @@ namespace WebStoreAPI.Lib_Primavera
 
                         objCli = PriEngine.Engine.Comercial.Clientes.Edita(cliente.CodClient);
                         objCli.set_EmModoEdicao(true);
-                        //client type | Nome | NomeFIscal | Address | Adress2 | Country | District | email | Expedition way | Loca | Num contri | Payment type | Payment way | phone | phone2 | postcode  menos o client discount
-                        
-                        
-                        
-                        
-                        
-                        
-                        objCli.set_Nome(cliente.NameClient);
-                        objCli.set_NumContribuinte(cliente.TaxpayNumber);
-                        objCli.set_Moeda(cliente.Currency);
-                        objCli.set_Morada(cliente.Address);
 
+                        if (!String.IsNullOrEmpty(cliente.Address))
+                            objCli.set_Morada(cliente.Address);
+                        if (!String.IsNullOrEmpty(cliente.Address2))
+                            objCli.set_Morada2(cliente.Address2);
+                        if (!String.IsNullOrEmpty(cliente.ClientType))
+                            objCli.set_TipoTerceiro(cliente.ClientType);
+                        if (!String.IsNullOrEmpty(cliente.Country))
+                            objCli.set_Pais(cliente.Country);
+                        if (!String.IsNullOrEmpty(cliente.NameClient))
+                            objCli.set_Nome(cliente.NameClient);
+                        if (!String.IsNullOrEmpty(cliente.TaxpayNumber))
+                            objCli.set_NumContribuinte(cliente.TaxpayNumber);
+                        if (!String.IsNullOrEmpty(cliente.Currency))
+                            objCli.set_Moeda(cliente.Currency);
+                        if(!String.IsNullOrEmpty(cliente.Disctrict))
+                            objCli.set_Distrito(cliente.Disctrict);
+                        if(!String.IsNullOrEmpty(cliente.Email))
+                            objCli.set_B2BEnderecoMail(cliente.Email);
+                        if(!String.IsNullOrEmpty(cliente.Phone))
+                            objCli.set_Telefone(cliente.Phone);
+                        if(!String.IsNullOrEmpty(cliente.Phone2))
+                            objCli.set_Telefone2(cliente.Phone2);
+                        if(!String.IsNullOrEmpty(cliente.PostCode))
+                            objCli.set_CodigoPostal(cliente.PostCode);
+                        if(!String.IsNullOrEmpty(cliente.FiscalName))
+                            objCli.set_NomeFiscal(cliente.FiscalName);
+                        if(!String.IsNullOrEmpty(cliente.Local))
+                            objCli.set_Localidade(cliente.Local);
+                        if(!String.IsNullOrEmpty(cliente.ExpeditionWay))
+                            objCli.set_ModoExp(cliente.ExpeditionWay);
+                        if(!String.IsNullOrEmpty(cliente.PaymentWay))
+                            objCli.set_ModoPag(cliente.PaymentWay);
+                        if(!String.IsNullOrEmpty(cliente.PaymentType))
+                            objCli.set_CondPag(cliente.PaymentType);
+                        
                         PriEngine.Engine.Comercial.Clientes.Actualiza(objCli);
 
                         erro.Erro = 0;
@@ -200,9 +224,7 @@ namespace WebStoreAPI.Lib_Primavera
                     //myCli.set_ModoPag(cli.PaymentWay);
                     //myCli.set_CondPag(cli.PaymentType);
 
-                    System.Diagnostics.Debug.WriteLine("merda1");
                     PriEngine.Engine.Comercial.Clientes.Actualiza(myCli);
-                    System.Diagnostics.Debug.WriteLine("merda2") ;
                     erro.Erro = 0;
                     erro.Descricao = "Sucesso";
                     return erro;
@@ -1058,6 +1080,48 @@ namespace WebStoreAPI.Lib_Primavera
                     objList.Seguinte();
                 }
                 return testes;*/
+        }
+
+        public static string makeTest(string cliente)
+        {
+            string res = "peido";
+            Lib_Primavera.Model.ResponseError erro = new Model.ResponseError();
+            GcpBECliente objCli = new GcpBECliente();
+
+            try
+            {
+                if (PriEngine.Engine.Comercial.Clientes.Existe(cliente) == false)
+                {
+                    erro.Erro = 1;
+                    erro.Descricao = "O cliente não existe";
+                    return erro.Descricao;
+                }
+                else
+                {
+
+                    objCli = PriEngine.Engine.Comercial.Clientes.Edita(cliente);
+                    System.Diagnostics.Debug.WriteLine("CARALHO");
+                    System.Diagnostics.Debug.WriteLine("Modo-> "+objCli.get_ModoPag());
+                    objCli.set_EmModoEdicao(true);
+                    objCli.set_ModoPag("MB");
+                    PriEngine.Engine.Comercial.Clientes.Actualiza(objCli);
+
+                    erro.Erro = 0;
+                    erro.Descricao = "Sucesso";
+                    return erro.Descricao;
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                erro.Erro = 1;
+                erro.Descricao = ex.Message;
+                return erro.Descricao;
+            }
+
+
+            return res;
         }
 
         #endregion Tests
