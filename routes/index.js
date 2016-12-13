@@ -146,7 +146,7 @@ router.post('/login', function (req, res, next) {
 });
 
 router.post('/register', function (req, res, next) {
-    var quer = "http://localhost:" + config.PORT + "/api/clients";
+    var quer = "http://localhost:" + config.PORT + "/api/client";
     var form = {};
     form.Address = req.body.address;
     form.Address2 = "";

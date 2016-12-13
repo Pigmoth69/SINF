@@ -98,3 +98,8 @@ $('.message a').click(function(){
    $('#reg').animate({height: "toggle", opacity: "toggle"}, "slow");
    $('#log').animate({height: "toggle", opacity: "toggle"}, "slow");
 });
+
+
+$(".editFields").editable({
+    url : 'http://localhost:3000/profile/editText' 
+});

@@ -249,6 +249,10 @@ function requestType(idU, type, next) {
                 });
             });
         }
+        else {
+            if (typeof next == 'function')
+                next('nope');
+        }
     });
 }
 
