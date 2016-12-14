@@ -22,7 +22,7 @@ router.get('/', function (req, res) {
                     var total = 0;
                     // adicionar infos de cada produto
                     async.each(temp, function (item, callback) {
-                        var prodURL = "http://localhost:" + config.PORT + "/api/products/" + item.idProdutoPrimavera;
+                        var prodURL = "http://localhost:" + config.PORT + "/api/products?id=" + item.idProdutoPrimavera;
                         request.get({ url: prodURL, proxy: config.PROXY }, function (error, response, body) {
                             if (!error && response.statusCode == 200) {
                                 var prod = JSON.parse(body);
@@ -35,7 +35,7 @@ router.get('/', function (req, res) {
                                     prod.Prices.PVP4,
                                     prod.Prices.PVP5,
                                     prod.Prices.PVP6
-                                ]
+                                ];
 
                                 var utype = req.session.typeUser;
                                 if (utype == undefined) utype = 0;

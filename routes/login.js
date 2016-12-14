@@ -13,7 +13,7 @@ router.get('/', function (req, res) {
             request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
                     var districts = JSON.parse(body);
-                    utils.getCategoriesPrimavera(function(cats) {
+                    utils.getCategoriesPrimavera(function(cats) { 
                         res.render('login1', { countries: countries, districts: districts, families : cats});
                     });
                     

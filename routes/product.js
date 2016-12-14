@@ -20,7 +20,7 @@ router.post('/:idP/newComment', function (req, res) {
 router.get('/:idP', function (req, res) {
     db.getProductByID(req.params.idP, function (rows) {
         if (rows.length > 0) { //aprovado
-            var prodURL = "http://localhost:" + config.PORT + "/api/products/" + req.params.idP;
+            var prodURL = "http://localhost:" + config.PORT + "/api/products?id=" + req.params.idP;
 
             request.get({ url: prodURL, proxy: config.PROXY }, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
