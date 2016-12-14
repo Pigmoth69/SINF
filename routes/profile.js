@@ -78,7 +78,7 @@ router.post('/edit', function (req, res) {
         form.Currency = "";
         form.ClientType = "";
 
-        //@TODO ver as passwords
+        //@TODO ver as password
         request.put({ url: quer, proxy: config.PROXY, json: form }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 res.redirect('/profile');
