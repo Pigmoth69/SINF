@@ -4,36 +4,63 @@
   <link rel="stylesheet" type="text/css" href="../css/order.css">
 </head>
 
-<table id="ordersTable" class="shop_table">
+<ul class="nav nav-pills nav-justified nav-stacked" width="70%">
+  <li class="active"><a href="#">All Orders</a></li>
+  <li><a href="#">Orders to pay</a></li>
+  <li class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">per page
+    <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li><a href="#">5</a></li>
+      <li><a href="#">10</a></li>
+      <li><a href="#">20</a></li>
+      <li><a href="#">50</a></li>
+      <li><a href="#">100</a></li>
+    </ul>
+  </li>
+</ul>
+
+<br><br>
+
+<table id="ordersTable" class="table table-striped table-bordered shop_table">
   <thead>
     <tr>
-      <th>Date of Purchase</th>
-      <th>Order</th>
-      <th>Total Value</th>
-      <th>PDF</th>
+      <th width="30%" id="dataHeader" onclick="ordering(0)">
+        <i class="fa fa-arrow-up" id="upData" style="color:red" aria-hidden="true"></i> Date of Purchase
+        <i class="fa fa-arrow-down" id="downData" style="color:black" aria-hidden="true"></i>        
+      </th>
+      <th width="10%" id="numHeader" onclick="ordering(1)">
+        <i class="fa fa-arrow-up" id="upNum" style="color:black" aria-hidden="true"></i> Order
+        <i class="fa fa-arrow-down" id="downNum"style="color:black" aria-hidden="true"></i>
+      </th>
+      <th width="20%" id="totalHeader" onclick="ordering(2)">
+        <i class="fa fa-arrow-up" id="upTotal" style="color:black" aria-hidden="true"></i> Total Value
+        <i class="fa fa-arrow-down" id="downTotal" style="color:black" aria-hidden="true"></i>
+      </th>
+      <th width="10%">PDF</th>
     </tr>
   </thead>
   <tbody>
     {{#each orders}}
     <tr>
-      <th class="tableDate">{{Data}}</td>
-      <td class="tableId">{{id}}</td>
-      <td class="tableAmmount">{{TotalMerc}}€</td>
-      <td>
+      <th width="30%" class="tableDate">{{Data}}</th>
+      <td width="10%" class="tableId">{{NumDoc}}</td>
+      <td width="20%" class="tableAmmount">{{TotalMerc}}€</td>
+      <td width="10%">
         <a href='pdf/{{id}}'><img id="pdficon" src="/images/pdf.png" alt="pdf icon"></a>
       </td>
-      <tr>
-        {{/each}}
+    </tr>
+    {{/each}}
   </tbody>
 </table>
 
 <div id="pagDiv">
   <ul class="pagination">
+    <li><a id="pag0" href="1">1</a></li>
     <li><a id="pag{{pageB}}" href="{{pageB}}">&laquo;</a></li>
     <li><a id="pag{{page}}" class="active">{{page}}</a></li>
-    <li><a id="pag{{pageA}}" href="{{pageA}}" >&raquo;</a></li>
+    <li><a id="pag{{pageA}}" href="{{pageA}}">&raquo;</a></li>
+    <li><a id="pagll" href="{{totalPage}}">{{totalPage}}</a></li>
   </ul>
 </div>
-
-<script src="/js/order.js"></script>
 {{> footer1}}

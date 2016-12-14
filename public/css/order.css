@@ -1,6 +1,15 @@
 
-.shop_table .tableAmmount {
-    text-align: right;
+.shop_table .tableAmmount{
+	text-align: right;
+}
+
+.shop_table .tableInfo{
+	text-align: left;
+}
+
+#ordersTable{
+    width: 70%;
+    margin: auto;
 }
 
 #pdficon {
