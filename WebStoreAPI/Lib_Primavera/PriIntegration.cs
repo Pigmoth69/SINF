@@ -814,7 +814,7 @@ namespace WebStoreAPI.Lib_Primavera
 
                 //PriEngine.Engine.Comercial.Vendas.
 
-                string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and Entidade='" + client + "'";
+                string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and Entidade='" + client + "' ORDER BY Data DESC";
                 objListCab = PriEngine.Engine.Consulta(st);
 
                 while (!objListCab.NoFim())
@@ -877,7 +877,7 @@ namespace WebStoreAPI.Lib_Primavera
 
             //PriEngine.Engine.Comercial.Vendas.
 
-            string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and Entidade='" + client + "' AND id ='"+orderId+"';";
+            string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and Entidade='" + client + "' AND id ='" + orderId + "'ORDER BY Data DESC;";
             objListCab = PriEngine.Engine.Consulta(st);
             double TotalMercReal = 0;
 
@@ -934,7 +934,7 @@ namespace WebStoreAPI.Lib_Primavera
             }
 
 
-            string st = "WITH Orders AS (SELECT ROW_NUMBER() OVER (ORDER BY id) AS RowNum,id,Entidade,Data,NumDoc,TotalMerc,Serie FROM CabecDoc where TipoDoc='ECL' and Entidade='" + client + "') SELECT * FROM Orders WHERE  RowNum >= (" + (page-1) + ") * "+numperpage+"  AND RowNum <= ("+page+") * "+numperpage+";";
+            string st = "WITH Orders AS (SELECT ROW_NUMBER() OVER (ORDER BY Data DESC) AS RowNum,id,Entidade,Data,NumDoc,TotalMerc,Serie FROM CabecDoc where TipoDoc='ECL' and Entidade='" + client + "') SELECT * FROM Orders WHERE  RowNum >= (" + (page-1) + ") * "+numperpage+"  AND RowNum <= ("+page+") * "+numperpage+";";
             objListCab = PriEngine.Engine.Consulta(st);
 
             while (!objListCab.NoFim())
@@ -973,6 +973,13 @@ namespace WebStoreAPI.Lib_Primavera
             return listDocVend;
         }
 
+        public static List<Model.DocVenda> Encomenda_GetClientsOrdersUnpaid(string client)
+        {
+            List<Model.DocVenda> docs = new List<Model.DocVenda>();
+
+            return docs;
+        }
+        
         #endregion DocsVenda
 
         #region Utils
@@ -1126,9 +1133,5 @@ namespace WebStoreAPI.Lib_Primavera
 
         #endregion Tests
 
-
-
-
-        
     }
 }

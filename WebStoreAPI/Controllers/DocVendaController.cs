@@ -85,6 +85,24 @@ namespace WebStoreAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, total);       
             }     
         }
+
+        [Route("api/orders/{client}/unpaid")]
+        [HttpGet]
+        public HttpResponseMessage GetClientOrdersUnpaid(string client)
+        {
+            List<Lib_Primavera.Model.DocVenda> docs = Lib_Primavera.PriIntegration.Encomenda_GetClientsOrdersUnpaid(client);
+            if (docs == null)
+            {
+                var message = string.Format("Client with client = {0} not found", client);
+                HttpError err = new HttpError(message);
+                return Request.CreateResponse(HttpStatusCode.NotFound, err);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, docs);
+            }
+        }
+
         // WITH Orders AS (SELECT ROW_NUMBER() OVER (ORDER BY id) AS RowNum,* FROM CabecDoc where TipoDoc='ECL' and Entidade='SILVA') SELECT * FROM Orders WHERE  RowNum >= (2- 1) * 100  AND RowNum <= (2) * 100;
         [Route("api/orders/{client}")]
         public HttpResponseMessage GetClientOrdersByPage(string client, int page, int numperpage)
