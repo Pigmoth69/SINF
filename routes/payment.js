@@ -54,7 +54,7 @@ router.get('/', function (req, res) {
 
                         db.getCart(req.session.user, function (cart) {
                             if (cart == 'no carrinho' || cart == 'sem merdas no carrinho') {
-                                res.render('cart', { empty: "damn" });
+                                res.render('cart1', { total: 0, cart: {}, relatedProducts: {} });
                             }
                             else {
                                 db.getProducts(function (prods) {
@@ -64,7 +64,7 @@ router.get('/', function (req, res) {
                                     var total = 0;
                                     // adicionar infos de cada produto
                                     async.each(temp, function (item, callback) {
-                                        var prodURL2 = "http://localhost:49822/api/products/" + item.idProdutoPrimavera;
+                                        var prodURL2 = "http://localhost:49822/api/products?id=" + item.idProdutoPrimavera;
                                         request.get({ url: prodURL2, proxy: config.PROXY }, function (error2, response2, body) {
                                             if (!error2 && response2.statusCode == 200) {
                                                 var prod = JSON.parse(body);
@@ -145,7 +145,7 @@ router.post('/confirm', function (req, res) {
             var total = 0;
             // adicionar infos de cada produto
             async.each(temp, function (item, callback) {
-                var prodURL2 = "http://localhost:49822/api/products/" + item.idProdutoPrimavera;
+                var prodURL2 = "http://localhost:49822/api/products?id=" + item.idProdutoPrimavera;
                 request.get({ url: prodURL2, proxy: config.PROXY }, function (error2, response2, body) {
                     if (!error2 && response2.statusCode == 200) {
                         var prod = JSON.parse(body);
@@ -178,18 +178,23 @@ router.post('/confirm', function (req, res) {
                     //temp é o carrinho (bd) 
                     //console.log("temp.length = " + temp.length)
                     //console.log(prodA); prodA são os produtos na loja (bd)
-                    var form = fillOrder(total, '2016', temp, prodA)
+                    var form = fillOrder(total, '2016', temp, prods)
                     console.log(form);
-                    /*
+                    
                     request.post({ url: urlQuer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
                         if (!error && response.statusCode == 201) {
                             //console.log(error);
-                            //console.log(response.statusCode);
+                            console.log(response.statusCode);
+
+                            db.removeCart(req.session.user, function(res){
+                                console.log("cart removed");
+                            });
                             //console.log(body);
-                            res.send('/');
+                            res.render('404');
+
                         }
                     });
-                    */
+                    
 
 
                     res.render('404');
@@ -223,7 +228,7 @@ function addImages(prods, temp, next) {
 function fillOrder(total, serie, carrinho, loja) {
 
     var form = {};
-    form.id = '';
+    //form.id = '';
 
     form.Client = {}
     form.Client.Address = userD.Address;
@@ -239,11 +244,11 @@ function fillOrder(total, serie, carrinho, loja) {
     form.Client.Phone2 = userD.Phone2;
     form.Client.Country = userD.Country;
     form.Client.ClientDiscount = userD.ClientDiscount;
-    form.Client.PaymentType = userD.PaymentType;
-    form.Client.PaymentWay = userD.PaymentWay;
+    form.Client.PaymentType = "1";
+    form.Client.PaymentWay = "TRA";//userD.PaymentWay;
     form.Client.ClientType = userD.ClientType;
     form.Client.District = userD.District;
-    form.Client.ExpeditionWay = userD.ExpeditionWay;
+    form.Client.ExpeditionWay = "1"//userD.ExpeditionWay;
     form.Client.Currency = userD.Currency;
 
     var today = new Date().toJSON().slice(0, 19);
@@ -256,7 +261,11 @@ function fillOrder(total, serie, carrinho, loja) {
     form.TotalRealMerc = 'isto é o total sem IVA?';
 
     form.LinhasDoc = [];
-
+    
+    console.log("carrinho");
+    console.log(carrinho);
+    console.log("loja");
+    console.log(loja);
     for (var i = 0; i < carrinho.length; i++) {
         //console.log("temp[" + i + "] = " + temp[i].Description);
         form.LinhasDoc[i] = {};

@@ -17,9 +17,10 @@ router.post('/:idP/newComment', function (req, res) {
 });
 
 router.get('/:idP', function (req, res) {
+    console.log("ID produto = " + req.params.idP);
     db.getProductByID(req.params.idP, function (rows) {
         if (rows.length > 0) { //aprovado
-            var prodURL = "http://localhost:" + config.PORT + "/api/products/" + req.params.idP;
+            var prodURL = "http://localhost:" + config.PORT + "/api/products?id=" + req.params.idP;
 
             request.get({ url: prodURL, proxy: config.PROXY }, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
@@ -97,7 +98,7 @@ router.get('/:idP', function (req, res) {
                                                             });
                                                         }
                                                         else {
-                                                            console.log(response.statusCode);
+                                                            console.log("/api/clients?id=" + req.session.user + " = " + response.statusCode);
                                                             res.render('404');
                                                         }
                                                     });
@@ -105,7 +106,7 @@ router.get('/:idP', function (req, res) {
                                             });
                                         }
                                         else {
-                                            console.log(response.statusCode);
+                                            console.log("/api/products/family/" + tempB.Family + " = " + response.statusCode);
                                             res.render('404');
                                         }
                                     });
@@ -115,13 +116,13 @@ router.get('/:idP', function (req, res) {
                     });
                 }
                 else {
-                    console.log(response.statusCode);
+                    console.log("/api/products/" + req.params.idP + " = " + response.statusCode);
                     res.render('404');
                 }
             });
         }
         else {
-            console.log(response.statusCode);
+            console.log("Não existe na BD externa   " + response.statusCode);
             res.render('404');
         }
     });

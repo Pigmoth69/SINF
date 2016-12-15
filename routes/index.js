@@ -231,11 +231,14 @@ function returnApprovedProducts(prods, prodsPri, next) {
 }
 
 router.get('/addProductToCart/:idP/:quantity', function (req, res) {
+    console.log("idP" + req.params.idP + " user " +  req.session.user + " qty " + req.params.quantity)
     if (req.session.user == undefined) {
+        console.log("login?");
         res.redirect('/login');
     }
     else {
         db.addProductToCart(req.params.idP, req.session.user, req.params.quantity, function (suc) {
+            console.log("SUC = " + suc);
             if (suc == 'success') {
                 res.redirect('/cart');
             }

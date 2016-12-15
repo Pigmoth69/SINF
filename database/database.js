@@ -185,6 +185,20 @@ function removeProductFromCart(idP, idU, quant, next) {
     });
 }
 
+function removeCart(idU, next) {
+    pool.query('SELECT idCarrinho FROM Carrinho WHERE idUser = ?', idU, function (err, idCar, fields) {
+        console.log("IDCAR: ");
+        idCar = idCar[0].idCarrinho;
+        console.log(idCar);
+        pool.query('DELETE FROM ProdutoCarrinho WHERE idCarrinho = ?', idCar, function(err, row, fields){
+            console.log(row);
+            if (typeof next == 'function')
+                next('sem problema');
+        });
+        
+    });
+}
+
 function removeProductFromCartNo(idP, idU, next) {
     pool.query('SELECT * FROM Carrinho WHERE idUser = ?', idU, function (err, rows, fields) {
         if (rows.length > 0) {
@@ -285,6 +299,6 @@ function getApprovedProducts(next) {
 }
 
 module.exports = {
-    populateProducts, getProducts, updateTotalSpent, populateClients, compareLogin, addProductToCart, getCart, removeProductFromCart, registerUser, addImageToProduct, getUsers,
+    populateProducts, getProducts, updateTotalSpent, populateClients, compareLogin, addProductToCart, getCart, removeCart, removeProductFromCart, registerUser, addImageToProduct, getUsers,
     getCommentsOnProduct, commentOnProduct, requestType, getUsersNotApproved, approveUser, getProductByID, getApprovedProducts, removeProductFromCartNo
 };

@@ -10,19 +10,26 @@ router.get('/', function (req, res) {
         res.redirect('/login');
     }
     else {
+        console.log("else cart");
         db.getCart(req.session.user, function (cart) { //ALTERAR
             if (cart == 'no carrinho' || cart == 'sem merdas no carrinho') {
-                res.render('cart', { empty: "damn" });
+                res.render('cart1', { total: 0, cart: {}, relatedProducts: {} });
+                //res.render('cart', { empty: "damn" });
             }
             else {
                 db.getProducts(function (prods) {
+                    
                     var temp = cart;
                     //adicionar total
                     var total = 0;
+                    console.log("**********************   getProducts");
+                    console.log(temp);
                     // adicionar infos de cada produto
                     async.each(temp, function (item, callback) {
-                        var prodURL = "http://localhost:" + config.PORT + "/api/products/" + item.idProdutoPrimavera;
+                        var prodURL = "http://localhost:" + config.PORT + "/api/products?id=" + item.idProdutoPrimavera;
                         request.get({ url: prodURL, proxy: config.PROXY }, function (error, response, body) {
+                            console.log(error);
+                            console.log(response.statusCode);
                             if (!error && response.statusCode == 200) {
                                 var prod = JSON.parse(body);
 
@@ -47,6 +54,7 @@ router.get('/', function (req, res) {
                                 item.Price = Math.round(item.Price * 100) / 100;
                                 item.UnitPrice = Math.round(item.UnitPrice * 100) / 100;
                                 total += item.Price;
+                                console.log(prod.Description);
                                 callback(null);
                             }
                         });
