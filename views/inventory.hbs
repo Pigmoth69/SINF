@@ -30,7 +30,7 @@
 		<div id="category" class="col-xs-2">
 			<ul class="nav nav-pills nav-stacked">
 				{{#each families}}
-				<li class="familia" id="Family{{Code}}"><a href="#" class="familia_bt" onclick="changeToActiveFam('{{Code}}');return false;">{{Code}}</a></li>
+				<li class="familia" id="Family{{Code}}"><button style="width:100%" class="btn btn-info" class="familia_bt" onclick="changeToActiveFam('{{Code}}');return false;">{{Code}}</button></li>
 				{{/each}}
 			</ul>
 		</div>

@@ -1,0 +1,85 @@
+{{> header}}
+
+	<link rel="stylesheet" href="/css/inventory.css">
+
+	<div class="product-big-title-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-bit-title text-center">
+                        <h2>Shop</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Page title area -->
+
+<div id="content" class="container" style="margin: 0;">
+	<!--
+	<div id="tabs" class="row">
+		<ul class="nav nav-tabs col-xs-9 col-xs-offset-2">
+			{{#each warehouses}}
+			<li class="armazem" id="Warehouse{{Code}}"><a href="#" onclick="changeToActiveWare('{{Code}}');return false;">Warehouse {{Code}}</a></li>
+			{{/each}}
+		</ul>
+	</div>
+	-->
+	<!-- ver quais estão ativos, e redirecionar nesse sentido -->
+	<div class="row" id="mainPage">
+		<div id="category" class="col-xs-2">
+			<ul class="nav nav-pills nav-stacked">
+				{{#each families}}
+				<li class="familia" id="Family{{Code}}"><a href="#" class="familia_bt" onclick="changeToActiveFam('{{Code}}');return false;">{{Code}}</a></li>
+				{{/each}}
+			</ul>
+		</div>
+		<div id="home">
+            <div id="products" class="col-xs-10">
+                <div class="single-product-area">
+                    <div class="zigzag-bottom">
+                    </div>
+                    <div class="container">
+                        
+                        <div class="row">
+                        {{#each items}}
+                            <div class="col-md-3 col-sm-6">
+                                <div class="single-shop-product" style="width:265px;height:285px;">
+                                    <div class="product-upper">
+                                        <a href="/product/{{Code}}">
+                                            <img src="/images/{{Imagem}}" alt="product image">
+                                        </a>
+                                    </div>
+                                    <h2>
+                                        <a href="/product/{{Code}}">{{Description}}
+                                        </a>
+                                    </h2>
+                                    <div class="product-carousel-price">
+                                        {{#if_eq Price PriceNo}}
+                                        <ins>{{Price}}€</ins>
+                                        {{/if_eq}} {{#if_diff Price price_no}}
+                                        <ins>Price: {{Price}}€</ins>
+                                        <del>{{PriceNo}}€</del>
+                                        {{/if_diff}}
+                                    </div>
+                                </div>
+                            <div class="product-option-shop">
+                                {{#if_less StkActual 0}}
+                                    <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow" onclick="callProduct({{Code}});">Add To Cart
+                                    </a>
+                                {{/if_less}}
+                                {{#if_less 0 StkActual}}
+                                    <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow">NO STOCK
+                                    </a>
+                                {{/if_less}}
+                            </div>
+                        </div>
+                        {{/each}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+{{> footer1}}

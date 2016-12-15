@@ -153,7 +153,7 @@ function addProductsWebPage(products, imgs) {
         var utype = products[i].typeUser || 1;
         utype = parseInt(utype);
         console.log("desconto? " + products[i].Discount);
-        var valor = calculaValor(pvpsQueTavamNumSwitchDoKengas[utype], products[i].disc, products[i].Discount, products[i].IVA);
+        var valor = calculaValor(pvpsQueTavamNumSwitchDoKengas[utype], products[i].disc, products[i].Discount, products[i].IVA);    
         var valorSemDescontos = calculaValor(pvpsQueTavamNumSwitchDoKengas[utype], 0, 0, products[i].IVA);
 
         console.log("tipo de user = " + utype + " --- " + utype);
@@ -165,7 +165,7 @@ function addProductsWebPage(products, imgs) {
         }
 
         temp += "<div class='col-md-3 col-sm-6'>";
-        temp += "<div class='single-shop-product'><div class='product-upper'>";
+        temp += "<div style='width:265px;height:285px;' class='single-shop-product'><div class='product-upper'>";
         temp += "<a href='/product/" + products[i].Code + "'>";
         temp += "<img src='/images/" + products[i].Imagem + "' alt='product image'>";
         temp += "</a></div>";
@@ -184,9 +184,10 @@ function addProductsWebPage(products, imgs) {
 
         temp += "</div>";
         temp += '<div class="product-option-shop">';
-        if (products[i].StkActual > 0){
-            temp += "<a class='add_to_cart_button' data-quantity='1' data-product_sku='' data-product_id='70' rel='nofollow' onclick=\"callProduct('" + products[i].Code + "', " + 1 + ");\">Add to cart</a>";
-            //temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
+
+        if (products[i].StkActual > 0) {
+            temp += "<a class='add_to_cart_button' data-quantity='1' data-product_sku='' data-product_id='70' rel='nofollow' onclick=\"callProduct('" + products[i].Code + "');\">Add to cart</a>";
+           //temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
         }
         else temp += "<a class='add_to_cart_button' data-quantity='1' data-product_sku='' data-product_id='70' rel='nofollow'>NO STOCK</a>";
         temp += "</div>";
@@ -202,6 +203,7 @@ function addProductsWebPage(products, imgs) {
 
 function calculaValor(pvp, desc, discount, iva) {
     var res = 0;
+    iva = iva + 0;
 
     var desc = (1 - desc * 0.01);
     var disc = (1 - discount * 0.01);
@@ -210,7 +212,10 @@ function calculaValor(pvp, desc, discount, iva) {
         res = Math.round(pvp * desc * disc * iVA * 100) / 100;
     }
     else {
-        res = Math.round(pvp * desc * iVA * 100) / 100;
+        console.log(desc);
+        if (typeof desc == 'NaN')
+            res = Math.round(pvp * desc * iVA * 100) / 100;
+        else res = Math.round(pvp * iVA * 100) / 100;
     }
     return res;
 }
@@ -237,13 +242,19 @@ function addImagesToProducts(products, images) {
 
 function searchProduct() {
     url = "http://localhost:3000/search/" + $("#search").val();
-    console.log(url);
+    console.log(window.location.href);
 
-    $.blockUI();
-    $.get(url, function (data) {
-        addProductsWebPage(data);
-        $.unblockUI();
-    });
+    if (window.location.href != 'http://localhost:3000/')
+        window.location.href = 'http://localhost:3000/searchOnOtherPage/' + $("#search").val();
+    else {
+        $.blockUI();
+        $.get(url, function (data) {
+            console.log(data);
+
+            addProductsWebPage(data);
+            $.unblockUI();
+        });
+    }
 }
 
 function callProduct(idP, num) {
