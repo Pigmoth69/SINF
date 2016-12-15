@@ -190,17 +190,20 @@ router.post('/confirm', function (req, res) {
                                 console.log("cart removed");
                             });
                             //console.log(body);
-                            res.render('404');
 
                         }
                     });
                     
 
 
-                    res.render('404');
+                    
                     //console.log(form);
                 });
+
+                res.render('404');
             });
+
+            //res.render('404');
         });
     });
 

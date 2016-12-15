@@ -190,12 +190,12 @@ function removeCart(idU, next) {
         console.log("IDCAR: ");
         idCar = idCar[0].idCarrinho;
         console.log(idCar);
-        pool.query('DELETE FROM ProdutoCarrinho WHERE idCarrinho = ?', idCar, function(err, row, fields){
+        pool.query('DELETE FROM ProdutoCarrinho WHERE idCarrinho = ?', idCar, function (err, row, fields) {
             console.log(row);
             if (typeof next == 'function')
                 next('sem problema');
         });
-        
+
     });
 }
 
