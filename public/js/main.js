@@ -112,3 +112,7 @@ $('.message a').click(function(){
 $(".editFields").editable({
     url : 'http://localhost:3000/profile/editText' 
 });
+
+$(document).ready(function() {
+    $(".dropdown-toggle").dropdown();
+});

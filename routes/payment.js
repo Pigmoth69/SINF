@@ -5,7 +5,7 @@ var request = require('request');
 var async = require('async');
 var db = require('../database/database.js');
 var config = require('../config/config.js');
-
+var utils = require('./utils.js');
 var userD;
 
 
@@ -95,7 +95,7 @@ router.get('/', function (req, res) {
                                                 item.Price = item.Price.toLocaleString("es-ES", { minimumFractionDigits: 2 });
                                                 item.UnitPrice = item.UnitPrice.toLocaleString("es-ES", { minimumFractionDigits: 2 });
 
-
+                                                console.log("WTF");
                                                 callback();
                                             }
                                         });
@@ -104,12 +104,11 @@ router.get('/', function (req, res) {
                                             total = total.toLocaleString("es-ES", { minimumFractionDigits: 2 });
 
                                             temp = pro;
-                                            //console.log(temp);
-                                            //console.log("total: " + total);
-                                            //onsole.log(userD);
                                             console.log(temp);
-                                            //console.log(paymentT);
-                                            res.render('payment', { userData: userD, total: total, cart: temp, payType: paymentT, payWay: paymentW, expWay: expeditionW });
+                                            utils.getCategoriesPrimavera(function(cats) {
+                                                res.render('payment', { userData: userD, total: total, cart: temp, payType: paymentT, payWay: paymentW, expWay: expeditionW, id: req.session.user, families : cats});
+                                            });
+                                            
                                         });
                                     });
                                 });
@@ -169,6 +168,7 @@ router.post('/confirm', function (req, res) {
                         item.Price = Math.round(item.Price * 100) / 100;
                         item.UnitPrice = Math.round(item.UnitPrice * 100) / 100;
                         total += item.Price;
+                        console.log("WTF1");
                         callback();
                     }
                 });
