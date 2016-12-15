@@ -117,7 +117,7 @@
                                                     <select class="country_to_state country_select" id="shipmentOption" name="billing_country">
                                                         <option value="">Escolha um modo de expedição</option>
                                                         {{#each expWay}}
-                                                        <option value="{{ExpeditionCode}}">{{ExpeditionDescription}}</option>
+                                                        <option name="shipmentOpt" value="{{ExpeditionCode}}">{{ExpeditionDescription}}</option>
                                                         {{/each}}
                                                         </select>
                                                 </p>

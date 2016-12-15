@@ -129,10 +129,9 @@ router.get('/', function (req, res) {
 router.post('/confirm', function (req, res) {
     var urlQuer = "http://localhost:" + config.PORT + "/api/DocVenda";
     //console.log("req ----------------------");
-    //console.log(req.params.Client.Address);
-
-
-
+    //console.log(req.body);
+    userD.ExpeditionWay = req.body[0].ExpeditionWay;
+    console.log(exp);
 
     db.getCart(req.session.user, function (cart) {
         db.getProducts(function (prods) {
@@ -168,7 +167,6 @@ router.post('/confirm', function (req, res) {
                         item.Price = Math.round(item.Price * 100) / 100;
                         item.UnitPrice = Math.round(item.UnitPrice * 100) / 100;
                         total += item.Price;
-                        console.log("WTF1");
                         callback();
                     }
                 });
@@ -248,7 +246,7 @@ function fillOrder(total, serie, carrinho, loja) {
     form.Client.PaymentWay = "TRA";//userD.PaymentWay;
     form.Client.ClientType = userD.ClientType;
     form.Client.District = userD.District;
-    form.Client.ExpeditionWay = "1"//userD.ExpeditionWay;
+    form.Client.ExpeditionWay = userD.ExpeditionWay;//userD.ExpeditionWay;
     form.Client.Currency = userD.Currency;
 
     var today = new Date().toJSON().slice(0, 19);
@@ -262,10 +260,10 @@ function fillOrder(total, serie, carrinho, loja) {
 
     form.LinhasDoc = [];
     
-    console.log("carrinho");
-    console.log(carrinho);
-    console.log("loja");
-    console.log(loja);
+    //console.log("carrinho");
+    //console.log(carrinho);
+    //console.log("loja");
+    //console.log(loja);
     for (var i = 0; i < carrinho.length; i++) {
         //console.log("temp[" + i + "] = " + temp[i].Description);
         form.LinhasDoc[i] = {};
