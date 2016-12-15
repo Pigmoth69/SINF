@@ -4,12 +4,13 @@ var db = require('../database/database.js');
 var config = require('../config/config.js');
 var request = require('request');
 var jimp = require('jimp');
+var async = require('async');
 
 router.get('/', function (req, res) {
     res.render('admin');
 });
 
-router.get('/payments', function(req, res) {
+router.get('/payments', function (req, res) {
     res.render('adminPayment');
 });
 
@@ -42,18 +43,35 @@ router.get('/users', function (req, res) {
         request.get({ url: url, proxy: config.PROXY }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 var types = JSON.parse(body);
-                for (var i = 0; i < rows.length; i++) {
-                    for (var j = 0; j < types.length; j++) {
-                        if (rows[i].typeClient == types[j].Code)
-                            rows[i].clientType = types[j].Description;
+                url = "http://localhost:" + config.PORT + "/api/clients/types";
+
+                async.each(rows, function (item, callback) {
+                    db.getUser(item.idUser, function (user) {
+                        var url = "http://localhost:" + config.PORT + "/api/clients?id=" + item.idUser;
+                        request.get({ url: url, proxy: config.PROXY }, function (error, response, body) {
+                            if (!error && response.statusCode == 200) {
+                                var userPri = JSON.parse(body);
+                                for (var i = 0; i < types.length; i++) {
+                                    if (types[i].Code == userPri.ClientType)
+                                        item.clientTypeOld = types[i].Description;
+                                }
+                                callback();
+                            }
+                            
+                        });
+                    });
+                }, function (err) {
+                    for (var i = 0; i < rows.length; i++) {
+                        for (var j = 0; j < types.length; j++) {
+                            if (rows[i].typeClient == types[j].Code)
+                                rows[i].clientType = types[j].Description;
+                        }
                     }
-                }
-                res.render('adminUsers', {
-                    users: rows
+                    console.log(rows);
+                    res.render('adminUsers', {
+                        users: rows
+                    });
                 });
-            }
-            else {
-                res.render('404');
             }
         });
     });
@@ -70,10 +88,10 @@ router.get('/updatePrimavera', function (req, res) {
     });
 });
 
-router.post('/acceptUser/:idU', function (req, res) {
+router.post('/acceptUser/:idU/:type', function (req, res) {
     db.approveUser(req.params.idU, function (rows) {
-        /*
-        var url = "http://localhost:" + config.PORT + "/api/clients/types"; //MUDAR ESTA LINHA
+        
+        var quer = "http://localhost:" + config.PORT + "/api/clients?id=" + req.params.idU; //MUDAR ESTA LINHA
         var form = {};
         form.Address = "";
         form.Address2 = "";
@@ -90,20 +108,20 @@ router.post('/acceptUser/:idU', function (req, res) {
         form.ClientDiscount = "";
         form.PaymentType = "";
         form.PaymentWay = "";
-        form.ClientType = req.body.typeClient;
+        form.ClientType = req.params.type;
         form.District = "";
         form.ExpeditionWay = "";
         form.Currency = "";
-
-        request.post({ url: quer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
-            if (!error && response.statusCode == 201) {
-                //res.redirect('/admin/users');
+ 
+        request.put({ url: quer, proxy: config.PROXY, json: form }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                res.redirect('/admin/users');
             }
             else {
                 //
             }
         });
-        */
+        
     });
 });
 

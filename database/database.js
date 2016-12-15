@@ -239,9 +239,10 @@ function commentOnProduct(comment, idP, idU, next) {
 
 function requestType(idU, type, next) {
     var temp = type + "";
-
+    console.log("idU:" + idU);
+    console.log("type:" + type);
     pool.query('SELECT * FROM User WHERE idUser = ? AND typeClient = ?', [idU, type], function (err, rows, fields) {
-        if (rows.length == 0) {
+        if (rows.length > 0) {
             pool.query('UPDATE User SET typeClient = ? WHERE idUser = ?', [type, idU], function (err, rows, fields) {
                 pool.query('UPDATE User SET approved = ? WHERE idUser = ?', [false, idU], function (err, rows, fields) {
                     if (typeof next == 'function')
@@ -250,6 +251,7 @@ function requestType(idU, type, next) {
             });
         }
         else {
+            console.log("ENTRAR");
             if (typeof next == 'function')
                 next('nope');
         }
@@ -277,6 +279,13 @@ function getProductByID(id, next) {
     });
 }
 
+function getUser(id, next) {
+    pool.query('SELECT * FROM User WHERE idUser = ?', id, function (err, rows, fields) {
+        if (typeof next == 'function')
+            next(rows);
+    });
+}
+
 function getApprovedProducts(next) {
     pool.query('SELECT * FROM Produto WHERE approved = TRUE', function (err, rows, fields) {
         if (typeof next == 'function')
@@ -286,5 +295,5 @@ function getApprovedProducts(next) {
 
 module.exports = {
     populateProducts, getProducts, updateTotalSpent, populateClients, compareLogin, addProductToCart, getCart, removeProductFromCart, registerUser, addImageToProduct, getUsers,
-    getCommentsOnProduct, commentOnProduct, requestType, getUsersNotApproved, approveUser, getProductByID, getApprovedProducts, removeProductFromCartNo
+    getCommentsOnProduct, commentOnProduct, requestType, getUsersNotApproved, approveUser, getProductByID, getApprovedProducts, removeProductFromCartNo, getUser
 };
