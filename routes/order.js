@@ -11,12 +11,12 @@ var mime = require('mime');
 
 
 router.get('/', function (req, res) {
-    res.redirect('1');
+    res.redirect('1/10');
 });
 
-router.get('/:page', function (req, res) {
-    var user = "SOFRIO";//req.session.user;
-    var numPerPage = 10;
+router.get('/:page/:perpage', function (req, res) {
+    var user = req.session.user;
+    var numPerPage = req.params.perpage;
     //console.log(req.session);
     var orderURL = "http://localhost:" + config.PORT + "/api/orders/" + user + "?page=" + req.params.page + "&numperpage=" + numPerPage;
     var orderURL2 = "http://localhost:" + config.PORT + "/api/orders/" + user + "/total";
@@ -28,7 +28,7 @@ router.get('/:page', function (req, res) {
                 if (!error && response.statusCode == 200) {
                     var ordersJ = JSON.parse(orders);
                     var totalJ = JSON.parse(total);
-                    var totalP = Math.ceil(totalJ / 10);
+                    var totalP = Math.ceil(totalJ / numPerPage);
                     var page = req.params.page;
                     var pagei = page;
                     var pagel = page;
@@ -46,7 +46,7 @@ router.get('/:page', function (req, res) {
                         pagel = parseInt(page) + 1;
 
                         utils.getCategoriesPrimavera(function(cats) {
-                            res.render('order', { orders: ordersJ , totalPage: totalP, page: req.params.page, pageA: pagel, pageB:pagei, id : req.session.user, families : cats});
+                            res.render('order', { orders: ordersJ , totalPage: totalP, page: req.params.page, pageA: pagel, pageB:pagei, id : req.session.user, families : cats, perPage : numPerPage});
                         });
                 }
                 else {

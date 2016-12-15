@@ -70,6 +70,10 @@ function selectArrow(id){
     }
 }
 
+$('.orderRow').click(function(){
+    $(this).next().toggle();
+});
+
 function changePage(newPage) {
 
 

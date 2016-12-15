@@ -101,6 +101,17 @@ router.post('/login', function (req, res, next) {
     }
 });
 
+router.get('/logout', function (req, res, next) {
+    console.log(req.session.user);
+    if (req.session.user !== undefined) {
+        req.session.user = undefined;
+        res.redirect('/');
+    } else {
+        console.log("already logged out");
+        res.redirect('/login');
+    }
+});
+
 router.post('/register', function (req, res, next) {
     var quer = "http://localhost:" + config.PORT + "/api/client";
     var form = {};
