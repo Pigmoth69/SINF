@@ -184,9 +184,10 @@ function addProductsWebPage(products, imgs) {
 
         temp += "</div>";
         temp += '<div class="product-option-shop">';
+
         if (products[i].StkActual > 0) {
             temp += "<a class='add_to_cart_button' data-quantity='1' data-product_sku='' data-product_id='70' rel='nofollow' onclick=\"callProduct('" + products[i].Code + "');\">Add to cart</a>";
-            //temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
+           //temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
         }
         else temp += "<a class='add_to_cart_button' data-quantity='1' data-product_sku='' data-product_id='70' rel='nofollow'>NO STOCK</a>";
         temp += "</div>";
@@ -256,8 +257,16 @@ function searchProduct() {
     }
 }
 
-function callProduct(idP) {
-    window.location.href = "/addProductToCart/" + idP;
+function callProduct(idP, num) {
+    console.log("NUM -------> " + num);
+    
+    if (num == "#quantity"){
+        var quantity = $('#quantity').val();
+        console.log("QUANTIDADE: " + quantity);
+    }
+    else{
+        window.location.href = "/addProductToCart/" + idP + "/" + num;
+    }
 }
 
 function removeProduct(idP) {
