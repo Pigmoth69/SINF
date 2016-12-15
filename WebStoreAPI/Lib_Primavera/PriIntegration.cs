@@ -633,6 +633,9 @@ namespace WebStoreAPI.Lib_Primavera
 
                     myEnc.set_DataDoc(dv.Data);
                     myEnc.set_Entidade(dv.Client.CodClient);
+                    myEnc.set_CondPag(dv.Client.PaymentType);
+                    myEnc.set_ModoPag(dv.Client.PaymentWay);
+                    myEnc.set_ModoExp(dv.Client.ExpeditionWay);
                     myEnc.set_Serie(dv.Serie);
                     myEnc.set_Tipodoc("ECL");
                     myEnc.set_TipoEntidade("C");
@@ -646,9 +649,7 @@ namespace WebStoreAPI.Lib_Primavera
                     {
                         PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, lin.Armazem, "", lin.PrecoUnitario, lin.Desconto, "", 0, 0, 0, dv.Client.ClientDiscount);
                     }
-
-
-
+                    
                     PriEngine.Engine.IniciaTransaccao();
                     //PriEngine.Engine.Comercial.Vendas.Edita Actualiza(myEnc, "Teste");
                     PriEngine.Engine.Comercial.Vendas.Actualiza(myEnc, "Teste");
@@ -973,65 +974,12 @@ namespace WebStoreAPI.Lib_Primavera
             return listDocVend;
         }
 
-        public static List<Model.DocVenda> Encomenda_GetClientsOrdersUnpaid(string client)
+        public static string getOrderStatus(string numdoc)
         {
-            StdBELista objListCab;
-            StdBELista objListLin;
-            Model.DocVenda dv = new Model.DocVenda();
-            Model.LinhaDocVenda lindv = new Model.LinhaDocVenda();
-            List<Model.LinhaDocVenda> listlindv = new List<Model.LinhaDocVenda>();
-            List<Model.DocVenda> listDocVend = new List<Model.DocVenda>();
 
-            if (!PriEngine.Engine.Comercial.Clientes.Existe(client))
-            {
-                System.Diagnostics.Debug.WriteLine("ERROR!");
-                return null;
-            }
-
-            int page, numperpage;
-            page = 1;
-            numperpage = 10;
-
-
-            string st = "WITH Orders AS (SELECT ROW_NUMBER() OVER (ORDER BY Data DESC) AS RowNum,id,Entidade,Data,NumDoc,TotalMerc,Serie FROM CabecDoc where TipoDoc='ECL' and Entidade='" + client + "') SELECT * FROM Orders WHERE  RowNum >= (" + (page - 1) + ") * " + numperpage + "  AND RowNum <= (" + page + ") * " + numperpage + ";";
-            objListCab = PriEngine.Engine.Consulta(st);
-
-            while (!objListCab.NoFim())
-            {
-                dv = new Model.DocVenda();
-
-                dv.id = objListCab.Valor("id");
-                dv.Client = GetCliente(objListCab.Valor("Entidade"));
-                dv.NumDoc = objListCab.Valor("NumDoc");
-                dv.Data = objListCab.Valor("Data");
-                dv.TotalMerc = objListCab.Valor("TotalMerc");
-                dv.Serie = objListCab.Valor("Serie");
-                objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido,Data from LinhasDoc where IdCabecDoc='" + dv.id + "' order By Data");
-                listlindv = new List<Model.LinhaDocVenda>();
-
-                while (!objListLin.NoFim())
-                {
-                    lindv = new Model.LinhaDocVenda();
-                    lindv.IdCabecDoc = objListLin.Valor("idCabecDoc");
-                    lindv.CodArtigo = objListLin.Valor("Artigo");
-                    lindv.DescArtigo = objListLin.Valor("Descricao");
-                    lindv.Quantidade = objListLin.Valor("Quantidade");
-                    lindv.Unidade = objListLin.Valor("Unidade");
-                    lindv.Desconto = objListLin.Valor("Desconto1");
-                    lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
-                    lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
-                    lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
-                    listlindv.Add(lindv);
-                    objListLin.Seguinte();
-                }
-
-                dv.LinhasDoc = listlindv;
-                listDocVend.Add(dv);
-                objListCab.Seguinte();
-            }
-            return listDocVend;
+            return "";
         }
-        
+
         #endregion DocsVenda
 
         #region Utils

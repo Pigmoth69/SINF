@@ -86,20 +86,20 @@ namespace WebStoreAPI.Controllers
             }     
         }
 
-        [Route("api/orders/{client}/unpaid")]
+        [Route("api/orders/test/test")]
         [HttpGet]
-        public HttpResponseMessage GetClientOrdersUnpaid(string client)
+        public HttpResponseMessage makeLittleTest()
         {
-            List<Lib_Primavera.Model.DocVenda> docs = Lib_Primavera.PriIntegration.Encomenda_GetClientsOrdersUnpaid(client);
-            if (docs == null)
+            string res = Lib_Primavera.PriIntegration.getOrderStatus("1126");
+            if (res == null)
             {
-                var message = string.Format("Client with client = {0} not found", client);
+                var message = string.Format("Client with client = {0} not found", res);
                 HttpError err = new HttpError(message);
                 return Request.CreateResponse(HttpStatusCode.NotFound, err);
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.OK, docs);
+                return Request.CreateResponse(HttpStatusCode.OK, res);
             }
         }
 
