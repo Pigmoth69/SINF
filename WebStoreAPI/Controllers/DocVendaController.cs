@@ -23,18 +23,17 @@ namespace WebStoreAPI.Controllers
 
         // GET api/DocVenda/{id}-> id do doc
         [Route("api/orders")]
-        public Lib_Primavera.Model.DocVenda Get(string orderId)
+        public HttpResponseMessage Get(string orderId)
         {
             Lib_Primavera.Model.DocVenda docvenda = Lib_Primavera.PriIntegration.Encomenda_Get(orderId);
             if (docvenda == null)
             {
-                throw new HttpResponseException(
-                        Request.CreateResponse(HttpStatusCode.NotFound));
+                return Request.CreateResponse(HttpStatusCode.NotFound,orderId);
 
             }
             else
             {
-                return docvenda;
+                return Request.CreateResponse(HttpStatusCode.OK, docvenda);
             }
         }
 
