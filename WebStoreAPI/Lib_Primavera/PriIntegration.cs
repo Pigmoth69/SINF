@@ -747,17 +747,17 @@ namespace WebStoreAPI.Lib_Primavera
             List<Model.LinhaDocVenda> listlindv = new List<Model.LinhaDocVenda>();
 
                 double TotalMercReal = 0;
-                string st;
+                string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and id='" + numdoc + "'";
                 try
                 {
-                    st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and id='" + numdoc + "'";
+                    objListCab = PriEngine.Engine.Consulta(st);
                 }
                 catch
                 {
                     return null;
                 }
                 
-                objListCab = PriEngine.Engine.Consulta(st);
+                
                 dv = new Model.DocVenda();
                 dv.id = objListCab.Valor("id");
                 dv.Client = GetCliente(objListCab.Valor("Entidade"));
