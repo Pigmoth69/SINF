@@ -137,6 +137,25 @@ namespace WebStoreAPI.Controllers
             }
         }
 
+        [Route("api/orders/unprocessed")]
+        public HttpResponseMessage GetOrderUnprocessed()
+        {
+
+
+            List<Lib_Primavera.Model.DocVenda> orders = Lib_Primavera.PriIntegration.Encomenda_GetUnprocessed();
+            if (orders == null)
+            {
+                var message = string.Format("Something went wrong... ");
+                HttpError err = new HttpError(message);
+                return Request.CreateResponse(HttpStatusCode.NotFound, err);
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, orders);
+            }
+        }
+
+
         public HttpResponseMessage Post(Lib_Primavera.Model.DocVenda dv)
         {
             Lib_Primavera.Model.ResponseError erro = new Lib_Primavera.Model.ResponseError();

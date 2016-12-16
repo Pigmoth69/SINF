@@ -1081,6 +1081,13 @@ namespace WebStoreAPI.Lib_Primavera
             return "OK";
         }
 
+        public static List<Model.DocVenda> Encomenda_GetUnprocessed()
+        {
+            List<Model.DocVenda> orders = Encomendas_List();
+            orders.RemoveAll(item => item.Status != 0 && item.Serie != "2016");
+            return orders;
+        }
+
         #endregion DocsVenda
 
         #region Utils
@@ -1237,9 +1244,6 @@ namespace WebStoreAPI.Lib_Primavera
             return res;
         }
 
-        #endregion Tests
-
-
-        
+        #endregion Tests 
     }
 }
