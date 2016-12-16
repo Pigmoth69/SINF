@@ -1131,12 +1131,6 @@ namespace WebStoreAPI.Lib_Primavera
 
         public static List<Model.PaymentWay> Utils_GetPaymentWays()
         {
-            //ModoPag
-            bool cenas = PriEngine.Engine.Comercial.Vendas.ImprimeDocumento("FA", "2016", 685, "000", 1, "GcpVls02", false, "C:\\SINF\\Ficheiro.pdf");
-            if (cenas)
-            {
-                System.Diagnostics.Debug.WriteLine("CIROU!");
-            }
             List<Model.PaymentWay> payments = new List<Model.PaymentWay>();
             StdBELista list = PriEngine.Engine.Consulta("SELECT Movim,Descricao FROM DocumentosBancos;");
             while (!list.NoFim())
