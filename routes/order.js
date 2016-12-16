@@ -11,7 +11,7 @@ var mime = require('mime');
 
 
 router.get('/', function (req, res) {
-    res.redirect('1');
+    res.redirect('/order/1');
 });
 
 router.get('/:page', function (req, res) {
@@ -45,9 +45,11 @@ router.get('/:page', function (req, res) {
                     if (page < totalP)
                         pagel = parseInt(page) + 1;
 
-                        utils.getCategoriesPrimavera(function(cats) {
-                            res.render('order', { orders: ordersJ , totalPage: totalP, page: req.params.page, pageA: pagel, pageB:pagei, id : req.session.user, families : cats});
-                        });
+                    utils.getCategoriesPrimavera(function (cats) {
+
+                        var total = req.session.totalCart.toLocaleString("es-ES", { minimumFractionDigits: 2 });
+                        res.render('order', { orders: ordersJ, totalPage: totalP, page: req.params.page, pageA: pagel, pageB: pagei, id: req.session.name, families: cats, total: total});
+                    });
                 }
                 else {
                     res.render('404');
@@ -67,7 +69,7 @@ router.get('/:page', function (req, res) {
 router.get('/pdf/:idOrder', function (req, res) {
     var order = req.params.idOrder;
     var user = req.session.user;
-console.log("******** ORDER INFO *********");
+    console.log("******** ORDER INFO *********");
     var orderURL = "http://localhost:" + config.PORT + "/api/orders/" + user + "?orderId=" + order;
     request.get({ url: orderURL, proxy: config.PROXY }, function (error, response, body) {
         console.log("******** ORDER INFO *********");

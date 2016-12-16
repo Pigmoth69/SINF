@@ -55,9 +55,9 @@
 
                                         <td class="product-quantity">
                                             <div class="quantity buttons_added">
-                                                <input type="button" class="minus" value="-">
-                                                <input type="number" size="4" class="input-text qty text" title="Qty" value="{{quantidade}}" min="0" step="1">
-                                                <input type="button" class="plus" value="+">
+                                                <input type="button" class="minus" onclick="removeProductHTML('{{idProdutoPrimavera}}'); return false;" value="-">
+                                                <input type="number" id="{{idProdutoPrimavera}}" size="4" class="input-text qty text" title="Qty" value="{{quantidade}}" min="0" step="1">
+                                                <input type="button" class="plus" onclick="addProductHTML('{{idProdutoPrimavera}}'); return false;" value="+">
                                             </div>
                                         </td>
 

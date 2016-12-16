@@ -190,12 +190,12 @@ function removeCart(idU, next) {
         console.log("IDCAR: ");
         idCar = idCar[0].idCarrinho;
         console.log(idCar);
-        pool.query('DELETE FROM ProdutoCarrinho WHERE idCarrinho = ?', idCar, function(err, row, fields){
+        pool.query('DELETE FROM ProdutoCarrinho WHERE idCarrinho = ?', idCar, function (err, row, fields) {
             console.log(row);
             if (typeof next == 'function')
                 next('sem problema');
         });
-        
+
     });
 }
 
@@ -307,8 +307,30 @@ function getApprovedProducts(next) {
     });
 }
 
+function getOrdersNotPayed(next) {
+    pool.query('SELECT * FROM Encomenda WHERE pago = FALSE', function (err, rows, fields) {
+        if (typeof next == 'function')
+            next(rows);
+    });
+}
+
+function getOrdersPayed(next) {
+    pool.query('SELECT * FROM Encomenda WHERE pago = TRUE', function (err, rows, fields) {
+        if (typeof next == 'function')
+            next(rows);
+    });
+}
+
+function payOrder(id, next) {
+    pool.query('UPDATE Encomenda SET pago = TRUE WHERE idEncomenda = ?', id, function (err, rows, fields) {
+        if (typeof next == 'function')
+            next(rows);
+    });
+}
+
 module.exports = {
     populateProducts, getProducts, updateTotalSpent, populateClients, compareLogin, addProductToCart, getCart, removeCart, removeProductFromCart, registerUser, addImageToProduct, getUsers,
-    getCommentsOnProduct, commentOnProduct, requestType, getUsersNotApproved, approveUser, getProductByID, getApprovedProducts, removeProductFromCartNo, getUser
+    getCommentsOnProduct, commentOnProduct, requestType, getUsersNotApproved, approveUser, getProductByID, getApprovedProducts, removeProductFromCartNo, getUser, getOrdersNotPayed, payOrder,
+    getOrdersPayed
 
 };

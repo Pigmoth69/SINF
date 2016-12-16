@@ -42,12 +42,14 @@ router.get('/', function (req, res) {
                                                                     var clientTypes = JSON.parse(body);
                                                                     addCodes(client, paymentTypes, paymentWays, expeditionWay, countries, districts, clientTypes, function (result) {
                                                                         // tratar das merdas para por la
-                                                                        utils.getCategoriesPrimavera(function(cats) {
+                                                                        utils.getCategoriesPrimavera(function (cats) {
+
+                                                                            var total = req.session.totalCart.toLocaleString("es-ES", { minimumFractionDigits: 2 });
                                                                             res.render('profile1', {
                                                                                 profile: client, countries: countries, districts: districts, expeditionWay: expeditionWay,
                                                                                 paymentTypes: paymentTypes, paymentWays: paymentWays, pWay: result.paymentWay, pType: result.paymentType,
                                                                                 eWay: result.expeditionWay, country: result.country, district: result.district, clientTypes: clientTypes,
-                                                                                cType: result.clientType, id : req.session.user, families : cats
+                                                                                cType: result.clientType, id: req.session.name, families: cats, total: total
                                                                             });
                                                                         });
                                                                     });

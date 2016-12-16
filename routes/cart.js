@@ -19,12 +19,9 @@ router.get('/', function (req, res) {
             }
             else {
                 db.getProducts(function (prods) {
-                    
                     var temp = cart;
                     //adicionar total
                     var total = 0;
-                    console.log("**********************   getProducts");
-                    console.log(temp);
                     // adicionar infos de cada produto
                     async.each(temp, function (item, callback) {
                         var prodURL = "http://localhost:" + config.PORT + "/api/products?id=" + item.idProdutoPrimavera;
@@ -62,7 +59,6 @@ router.get('/', function (req, res) {
                             }
                         });
                     }, function (err) {
-                        console.log("qualquer cena");
                         total = Math.round(total * 100) / 100;
                         addImages(prods, temp, function (pro) {
                             temp = pro;
@@ -80,7 +76,7 @@ router.get('/', function (req, res) {
                                                 relatedProducts = r;
                                                 total = total.toLocaleString("es-ES", { minimumFractionDigits: 2 });
                                                 utils.getCategoriesPrimavera(function(cats) {
-                                                    res.render('cart1', { total: total, cart: temp, relatedProducts: relatedProducts, id : req.session.user, families : cats});
+                                                    res.render('cart1', { total: total, cart: temp, relatedProducts: relatedProducts, id : req.session.name, families : cats});
                                                 });
                                             });
                                         });
