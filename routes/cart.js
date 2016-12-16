@@ -25,6 +25,7 @@ router.get('/', function (req, res) {
                     // adicionar infos de cada produto
                     async.each(temp, function (item, callback) {
                         var prodURL = "http://localhost:" + config.PORT + "/api/products?id=" + item.idProdutoPrimavera;
+                        console.log(prodURL);
                         request.get({ url: prodURL, proxy: config.PROXY }, function (error, response, body) {
                             console.log(error);
                             console.log(response.statusCode);

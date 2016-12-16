@@ -35,9 +35,12 @@ function paymentBox() {
     }
     else
         alert("choose a shipment option");
+
 }
 
 function confirmationBox() {
+    //console.log(shipmentChosen);
+    
     var isValid = verifyAddress();
     isValid = verifyShipment();
 
@@ -53,20 +56,21 @@ function confirmationBox() {
 }
  
 function confirmPayment(){
-    //console.log("********************confirmaPayment");
+    console.log("********************confirmaPayment");
     result.Client = {};
     result.Client.Address = addressChosen;
     result.Client.ExpeditionWay = shipmentChosen;
-
+    console.log(result);
     $.post("http://localhost:3000/payment/confirm", result, function (data1) {
+        
         console.log(data1);
         if (data1 == 'success') {
             console.log("wow");
-            //window.location.href = "/";
+            window.location.href = "/";
         }
         else {
             console.log("not wow");
-            //window.location.href = "/erro";
+            window.location.href = "/404";
         }
     }, 'json');
 }
@@ -85,22 +89,18 @@ function verifyAddress(){
 
 function verifyShipment(){
     var isValid = true;
-    if($('#shipmentOption').val() === ""){
+    var check = $("#shipmentOption option:selected").val();
+    shipmentChosen = check;
+    if (check === '' || check == undefined)
         isValid = false;
-    }
-    /*for(var i = 0; i < checks.length; i++){
-        if (checks[i].checked){ 
-            isValid = true;
-            shipmentChosen = checks[i].value;
-            //$('#shipmentOptionConfirm').text("Shipment: " + checks[i].value);
-        }
-    }*/
+    
+    //alert(check);
     return isValid;
 }
 
 function verifyPayment(){
-    var isValid = true;
-    /*$('#paymentBox input').each(function(){
+    var isValid = true;/*
+    $('#paymentBox input').each(function(){
         if ($(this).val() === ''){
             isValid = false;
         }

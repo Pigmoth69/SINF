@@ -186,7 +186,7 @@ function addProductsWebPage(products, imgs) {
         temp += '<div class="product-option-shop">';
 
         if (products[i].StkActual > 0) {
-            temp += "<a class='add_to_cart_button' data-quantity='1' data-product_sku='' data-product_id='70' rel='nofollow' onclick=\"callProduct('" + products[i].Code + "');\">Add to cart</a>";
+            temp += "<a class='add_to_cart_button' data-quantity='1' data-product_sku='' data-product_id='70' rel='nofollow' onclick=\"callProduct('" + products[i].Code + "', 1);\">Add to cart</a>";
            //temp += "<button class='row carrinho' onclick=\"callProduct('" + products[i].Code + "');\">Add To Cart</button>";
         }
         else temp += "<a class='add_to_cart_button' data-quantity='1' data-product_sku='' data-product_id='70' rel='nofollow'>NO STOCK</a>";

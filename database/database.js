@@ -195,7 +195,6 @@ function removeCart(idU, next) {
             if (typeof next == 'function')
                 next('sem problema');
         });
-
     });
 }
 
@@ -307,6 +306,12 @@ function getApprovedProducts(next) {
     });
 }
 
+function insertOrder(idO, idU, next){
+    pool.query('INSERT INTO Encomenda VALUES (?, 0, ?)', [idO, idU], function(err, rows, fields){
+
+    });
+}
+
 function getOrdersNotPayed(next) {
     pool.query('SELECT * FROM Encomenda WHERE pago = FALSE', function (err, rows, fields) {
         if (typeof next == 'function')
@@ -331,6 +336,6 @@ function payOrder(id, next) {
 module.exports = {
     populateProducts, getProducts, updateTotalSpent, populateClients, compareLogin, addProductToCart, getCart, removeCart, removeProductFromCart, registerUser, addImageToProduct, getUsers,
     getCommentsOnProduct, commentOnProduct, requestType, getUsersNotApproved, approveUser, getProductByID, getApprovedProducts, removeProductFromCartNo, getUser, getOrdersNotPayed, payOrder,
-    getOrdersPayed
+    getOrdersPayed, insertOrder
 
 };
