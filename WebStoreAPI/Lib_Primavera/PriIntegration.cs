@@ -928,7 +928,7 @@ namespace WebStoreAPI.Lib_Primavera
                     objListLin.Seguinte();
                 }
 
-                dv.LinhasDoc = listlindv;
+                dv.TotalRealMerc = TotalMercReal;
 
             return dv;
         }
