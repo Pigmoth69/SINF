@@ -299,6 +299,7 @@
     <Compile Include="Lib_Primavera\Model\ClientType.cs" />
     <Compile Include="Lib_Primavera\Model\Country.cs" />
     <Compile Include="Lib_Primavera\Model\ExpeditionWay.cs" />
+    <Compile Include="Lib_Primavera\Model\FAdata.cs" />
     <Compile Include="Lib_Primavera\Model\PaymentType.cs" />
     <Compile Include="Lib_Primavera\Model\PaymentWay.cs" />
     <Compile Include="Lib_Primavera\Model\Prices.cs" />

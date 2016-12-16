@@ -117,7 +117,7 @@ namespace WebStoreAPI.Lib_Primavera
                             objCli.set_Moeda(cliente.Currency);
                         if(!String.IsNullOrEmpty(cliente.Disctrict))
                             objCli.set_Distrito(cliente.Disctrict);
-                        if(!String.IsNullOrEmpty(cliente.Email))
+                        if (!String.IsNullOrEmpty(cliente.Email))
                             objCli.set_B2BEnderecoMail(cliente.Email);
                         if(!String.IsNullOrEmpty(cliente.Phone))
                             objCli.set_Telefone(cliente.Phone);
@@ -932,7 +932,7 @@ namespace WebStoreAPI.Lib_Primavera
 
             return dv;
         }
-
+       
         public static List<Model.DocVenda> Encomenda_GetClientsOrdersByPage(string client, int page, int numperpage)
         {
             StdBELista objListCab;
@@ -1081,14 +1081,110 @@ namespace WebStoreAPI.Lib_Primavera
             }    
         }
 
-        public static string GeneratePDF(string client, string orderId)//NEEDS TO BE IMPLEMENTED!
+        public static Model.FAdata getFA_through_ECL(string idDoc)
         {
-            bool cenas = PriEngine.Engine.Comercial.Vendas.ImprimeDocumento("FA", "2016", 685, "000", 1, "GcpVls02", false, "C:\\SINF\\Ficheiro.pdf");
-            if (cenas)
+            StdBELista ECL = PriEngine.Engine.Consulta("SELECT id AS idECL FROM CabecDoc WHERE id='" + idDoc + "';");//IR BUSCAR O DOCUMENTO ELC
+            if (ECL.NumLinhas() != 0)
             {
-                System.Diagnostics.Debug.WriteLine("CIROU!");
+                StdBELista LinhasArtigos = PriEngine.Engine.Consulta("SELECT  id AS IdCabecDocArtigo FROM LinhasDoc WHERE IdCabecDoc='" + ECL.Valor("idECL") + "';"); //ARTIGOS DA ECL
+                if (LinhasArtigos.NumLinhas() != 0)
+                {
+                    StdBELista transfDocs = PriEngine.Engine.Consulta("SELECT IdLinhasDoc FROM LinhasDocTrans WHERE IdLinhasDocOrigem='" + LinhasArtigos.Valor("IdCabecDocArtigo") + "';");//Transformação da ECL para GR
+                    if (transfDocs.NumLinhas() != 0)
+                    {
+                        StdBELista Art = PriEngine.Engine.Consulta("SELECT IdCabecDoc FROM LinhasDoc WHERE id='" + transfDocs.Valor("IdLinhasDoc") + "' AND Artigo is not null;"); // OBTER O ARTIGO DA GR
+                        if (Art.NumLinhas() != 0)
+                        {
+                            StdBELista GR = PriEngine.Engine.Consulta("SELECT id,TipoDoc FROM CabecDoc WHERE id='" + Art.Valor("IdCabecDoc") + "';"); // OBTER A GR
+                            if (GR.Valor("TipoDoc") == "FR" || GR.Valor("TipoDoc") == "FS")
+                                return null;
+                            if (GR.NumLinhas() != 0)
+                            {
+                                StdBELista ArtGR = PriEngine.Engine.Consulta("SELECT  id AS IdCabecDocArtigo FROM LinhasDoc WHERE IdCabecDoc='" + GR.Valor("id") + "' AND LinhasDoc.Artigo is not null;"); //GR articles to the FA
+                                if (ArtGR.NumLinhas() != 0)
+                                {
+                                    StdBELista GR_FA = PriEngine.Engine.Consulta("SELECT IdLinhasDoc FROM LinhasDocTrans WHERE IdLinhasDocOrigem='" + ArtGR.Valor("IdCabecDocArtigo") + "';"); //Transform GR to FA
+                                    if (GR_FA.NumLinhas() != 0)
+                                    {
+                                        StdBELista FA_Art = PriEngine.Engine.Consulta("SELECT IdCabecDoc FROM LinhasDoc where id='" + GR_FA.Valor("IdLinhasDoc") + "';"); // Get FA articles transformed
+                                        if (FA_Art.NumLinhas() != 0)
+                                        {
+                                            StdBELista FA = PriEngine.Engine.Consulta("SELECT Entidade,TipoDoc,NumDoc,CondPag,ModoPag,Serie FROM CabecDoc where id='" + FA_Art.Valor("IdCabecDoc") + "';"); // Get the FA
+                                            if (FA.NumLinhas() != 0)
+                                            {
+                                                Model.FAdata res = new Model.FAdata();
+                                                res.NumDoc = FA.Valor("NumDoc");
+                                                res.Serie = FA.Valor("Serie");
+                                                res.TipoDoc = FA.Valor("TipoDoc");
+                                                
+                                                return res;
+                                            }
+                                            else
+                                            {
+                                                return null; //There is no FA
+                                            }
+                                        }
+                                        else
+                                        {
+                                            return null; // No articles associated with FA
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        return null; //SE APENAS EXISTE UMA GR
+                                    }
+                                }
+                                else
+                                {
+                                    return null; //No articles on GR
+                                }
+                            }
+                            else
+                            {
+                                return null; // There is no GR
+                            }
+                        }
+                        else
+                        {
+                            return null; //GR with no articles
+                        }
+                    }
+                    else
+                    {
+                        return null;// "No Articles associated with transf GR!";
+                    }
+                }
+                else
+                {
+                    return null;//"Null order! Order without articles!";
+                }
+
             }
-            return "OK";
+            else
+            {
+                return null;//"Order does not exists!";
+            }
+        }
+
+        public static int GeneratePDF(string orderId)//NEEDS TO BE IMPLEMENTED!
+        {
+            try
+            {
+                Model.FAdata res = getFA_through_ECL(orderId);
+                if (res == null)
+                    return 0;
+                if (PriEngine.Engine.Comercial.Vendas.ImprimeDocumento(res.TipoDoc, res.Serie, res.NumDoc, "000", 1, "GcpVls02", false, "C:\\SINF\\" + orderId + ".pdf")){
+                    return 1;
+                }
+                   
+                return 0;
+            }
+            catch
+            {
+                return -1;
+            }
+            
         }
 
         #endregion DocsVenda

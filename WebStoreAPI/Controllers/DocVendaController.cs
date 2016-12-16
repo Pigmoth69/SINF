@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using WebStoreAPI.Lib_Primavera.Model;
+using System.Net.Http.Headers;
 
 
 namespace WebStoreAPI.Controllers
@@ -72,22 +73,24 @@ namespace WebStoreAPI.Controllers
 
         [Route("api/orders/pdf")]
         [HttpGet]
-        public HttpResponseMessage GetClientOrderPDF(string client, string orderId)
+        public HttpResponseMessage GetClientOrderPDF(string orderId)
         {
-            string path = Lib_Primavera.PriIntegration.GeneratePDF(client, orderId);
-            /*byte[] _pdfbytes = CreatePDF();
-            Response.ContentType = "application/pdf";
-            Response.AppendHeader("Content-Length", _pdfbytes.Length.ToString());
-            Response.BinaryWrite(_pdfbytes);*/
-            if (path == null)
+            int error = -2;
+            if (!System.IO.File.Exists("C:\\SINF\\" + orderId + ".pdf"))
             {
-                return Request.CreateResponse(HttpStatusCode.OK, "OK");
+                error = Lib_Primavera.PriIntegration.GeneratePDF(orderId); //this generates the file
             }
-            else
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, "FALTA O PDF");  
-            }
+            if(error == -1)
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "ERROR");
 
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, "OK");
+
+            byte[] fileBytes = System.IO.File.ReadAllBytes("C:\\SINF\\"+orderId+".pdf");
+            response.Content = new ByteArrayContent(fileBytes);
+            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+            response.Content.Headers.ContentDisposition.FileName = orderId+".pdf";
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+            return response;
         }
 
         [Route("api/orders/total")]
