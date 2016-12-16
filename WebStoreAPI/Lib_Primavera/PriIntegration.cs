@@ -992,7 +992,9 @@ namespace WebStoreAPI.Lib_Primavera
                         StdBELista Art = PriEngine.Engine.Consulta("SELECT IdCabecDoc FROM LinhasDoc WHERE id='" + transfDocs.Valor("IdLinhasDoc") + "' AND Artigo is not null;"); // OBTER O ARTIGO DA GR
                         if (Art.NumLinhas() != 0)
                         {
-                            StdBELista GR = PriEngine.Engine.Consulta("SELECT id FROM CabecDoc WHERE id='" + Art.Valor("IdCabecDoc") + "';"); // OBTER A GR
+                            StdBELista GR = PriEngine.Engine.Consulta("SELECT id,TipoDoc FROM CabecDoc WHERE id='" + Art.Valor("IdCabecDoc") + "';"); // OBTER A GR
+                            if(GR.Valor("TipoDoc") == "FR" || GR.Valor("TipoDoc") == "FS")
+                                return 4;
                             if (GR.NumLinhas() != 0)
                             {
                                 StdBELista ArtGR = PriEngine.Engine.Consulta("SELECT  id AS IdCabecDocArtigo FROM LinhasDoc WHERE IdCabecDoc='"+GR.Valor("id")+"' AND LinhasDoc.Artigo is not null;"); //GR articles to the FA
@@ -1028,9 +1030,7 @@ namespace WebStoreAPI.Lib_Primavera
                                     }
                                     else
                                     {
-                                        StdBELista c = PriEngine.Engine.Consulta
                                         return 1; //SE APENAS EXISTE UMA GR
-                                        return 4; // No articles of GR transformed to FA because a FR was generated!
                                     }
                                 }
                                 else
