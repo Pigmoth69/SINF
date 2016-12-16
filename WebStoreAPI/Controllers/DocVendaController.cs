@@ -144,10 +144,7 @@ namespace WebStoreAPI.Controllers
 
             if (erro.Erro == 0)
             {
-                var response = Request.CreateResponse(
-                   HttpStatusCode.Created, dv.id);
-                string uri = Url.Link("DefaultApi", new {DocId = dv.id });
-                response.Headers.Location = new Uri(uri);
+                var response = Request.CreateResponse(HttpStatusCode.Created, dv.id);
                 return response;
             }
             else
