@@ -75,6 +75,10 @@ namespace WebStoreAPI.Controllers
         public HttpResponseMessage GetClientOrderPDF(string client, string orderId)
         {
             string path = Lib_Primavera.PriIntegration.GeneratePDF(client, orderId);
+            /*byte[] _pdfbytes = CreatePDF();
+            Response.ContentType = "application/pdf";
+            Response.AppendHeader("Content-Length", _pdfbytes.Length.ToString());
+            Response.BinaryWrite(_pdfbytes);*/
             if (path == null)
             {
                 return Request.CreateResponse(HttpStatusCode.OK, "OK");

@@ -739,7 +739,8 @@ namespace WebStoreAPI.Lib_Primavera
 
         public static Model.DocVenda Encomenda_Get(string numdoc)
         {
-
+            try
+            {
             StdBELista objListCab;
             StdBELista objListLin;
             Model.DocVenda dv = new Model.DocVenda();
@@ -748,14 +749,8 @@ namespace WebStoreAPI.Lib_Primavera
 
                 double TotalMercReal = 0;
                 string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and id='" + numdoc + "'";
-                try
-                {
+               
                     objListCab = PriEngine.Engine.Consulta(st);
-                }
-                catch
-                {
-                    return null;
-                }
                 
                 
                 dv = new Model.DocVenda();
@@ -793,6 +788,12 @@ namespace WebStoreAPI.Lib_Primavera
                 dv.TotalRealMerc = TotalMercReal;
                 dv.LinhasDoc = listlindv;
                 return dv;
+            }
+            catch
+            {
+                return null;
+            }
+                
             
         }
 
