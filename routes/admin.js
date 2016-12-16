@@ -23,6 +23,7 @@ router.get('/ordersProcessing', function (req, res) {
                     }
                     item.NameClient = order.Client.NameClient;
                     item.NumDoc = order.NumDoc;
+                    item.Serie = order.Serie;
                     callback();
                 }
                 else {
@@ -30,7 +31,7 @@ router.get('/ordersProcessing', function (req, res) {
                 }
             });
         }, function (err) {
-            res.render('adminProcessing', { orders: ords});
+            res.render('adminProcessing', { orders: ords });
         });
     });
 });
@@ -38,7 +39,24 @@ router.get('/ordersProcessing', function (req, res) {
 router.get('/ordersNotPayed', function (req, res) {
     db.getOrdersNotPayed(function (ords) {
         // fazer async com as ords para pedir merdas ao primavera
-        res.render('adminOrders', { orders: ords });
+        async.each(ords, function (item, callback) {
+            var url = "http://localhost:" + config.PORT + "/api/orders?orderId=" + item.idEncomenda;
+            request.get({ url: url, proxy: config.PROXY }, function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    var order = JSON.parse(body);
+                    item.NumDoc = order.NumDoc;
+                    item.CodClient = order.Client.CodClient;
+                    item.Serie = order.Serie;
+                    callback();
+                }
+                else {
+                    callback();
+                }
+            });
+
+        }, function (err) {
+            res.render('adminOrders', { orders: ords });
+        });
     });
 });
 
