@@ -67,13 +67,15 @@ router.get('/family/:idF', function(req, res) {
 
 router.get('/search/:query', function(req, res) {
     db.getApprovedProducts(function(apprs) {
-        console.log(req.params);
         var quer = "http://localhost:" + config.PORT + "/api/products/search/" + req.params.query;
         request.get({ url: quer, proxy: config.PROXY }, function(error, response, body) {
             if (!error && response.statusCode == 200) {
                 var temp = JSON.parse(body);
                 for (var i = 0; i < temp.length; i++) {
                     temp[i].typeUser = req.session.typeUser;
+                    if (req.session.user != undefined)
+                        temp[i].disc = req.session.discount;
+                    else temp[i].disc = 0;
                 }
                 returnApprovedProducts(apprs, temp, function(re) {
                     console.log(temp);
@@ -111,12 +113,13 @@ router.post('/login', function(req, res, next) {
                             req.session.typeUser = rows[0].tipo;
                             req.session.discount = cl.ClientDiscount;
                             var total = 0;
+                            console.log(cart);
                             async.each(cart, function(item, callback) {
                                 var prodURL = "http://localhost:" + config.PORT + "/api/products?id=" + item.idProdutoPrimavera;
                                 request.get({ url: prodURL, proxy: config.PROXY }, function(error, response, body) {
                                     if (!error && response.statusCode == 200) {
                                         var prod = JSON.parse(body);
-
+                                        console.log(prod);
                                         var pvps = [
                                             prod.Prices.PVP1,
                                             prod.Prices.PVP1,

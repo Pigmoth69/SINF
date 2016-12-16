@@ -81,6 +81,9 @@
                         {{else}}
                         <li><a href="/login">Login</a></li>
                         {{/if}}
+                        {{#if id}}
+                        <li><a href="/logout">Logout</a></li>
+                        {{/if}}
                     </ul>
                     <form class="navbar-form navbar-left" role="search" action="" onsubmit="searchProduct(); return false;" method="GET">
                         <div class="form-group">

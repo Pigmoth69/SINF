@@ -7,20 +7,22 @@
         <!-- /.col-lg-12 -->
     </div>
     {{#each orders}}
-    <div class="row">
-        <div class="col-xs-12">
-            <form id="acceptPayment{{idEncomenda}}" action="/admin/acceptPayment/{{idEncomenda}}" method="POST">
-                <div class="row">
-                    <div class="col-xs-6">
-                        <h5 style="overflow:hidden;">id: {{idEncomenda}}</h5>
+        {{#if display}}
+        <div class="row">
+            <div class="col-xs-12">
+                <form>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <h5 style="overflow:hidden;">id: {{NumDoc}}, by: {{NameClient}}</h5>
+                        </div>
+                        <div class="col-xs-1">
+                            <button class="btn btn-warning" value="Approve Payment">This Order Needs Processing</button>
+                        </div>
                     </div>
-                    <div class="col-xs-1">
-                        <button class="btn btn-default" type="submit" value="Approve Payment">Approve Payment</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+        {{/if}}
     {{/each}}
 </div>
 

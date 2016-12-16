@@ -118,7 +118,7 @@ function getCart(idU, next) {
                 }
                 else {
                     if (typeof next == 'function')
-                        next('sem merdas no carrinho');
+                        next(null);
                 }
             });
         }

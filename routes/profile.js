@@ -119,6 +119,7 @@ router.post('/editText', function (req, res) {
             });
             break;
         case 'email':
+            console.log(req.body.value);
             editField(req.body.pk, "", "", "", req.body.value, "", "", function (resp) {
                 redirectAfterEdit(resp, res);
             });
