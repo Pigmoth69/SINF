@@ -70,7 +70,23 @@ namespace WebStoreAPI.Controllers
             }
         }
 
-        [Route("api/orders/{client}/total")]
+        [Route("api/orders")]
+        [HttpGet]
+        public HttpResponseMessage GetClientOrderPDF(string client, string orderId)
+        {
+            string path = Lib_Primavera.PriIntegration.GeneratePDF(client, orderId);
+            if (path == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, "OK");
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "FALTA O PDF");  
+            }
+
+        }
+
+        [Route("api/orders/total")]
         public HttpResponseMessage GetClientOrdersTotal(string client)
         {
             int total = Lib_Primavera.PriIntegration.Encomenda_GetClientsOrdersTotal(client);
@@ -88,9 +104,9 @@ namespace WebStoreAPI.Controllers
 
         [Route("api/orders/test/test")]
         [HttpGet]
-        public HttpResponseMessage makeLittleTest()
+        public HttpResponseMessage makeLittleTest(string idDoc)
         {
-            string res = Lib_Primavera.PriIntegration.getOrderStatus("1126");
+            int res = Lib_Primavera.PriIntegration.getOrderStatus("1126");
             if (res == null)
             {
                 var message = string.Format("Client with client = {0} not found", res);

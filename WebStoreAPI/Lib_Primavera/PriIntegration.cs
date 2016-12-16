@@ -709,6 +709,7 @@ namespace WebStoreAPI.Lib_Primavera
                     dv.Data = objListCab.Valor("Data");
                     dv.TotalMerc = objListCab.Valor("TotalMerc");
                     dv.Serie = objListCab.Valor("Serie");
+                    dv.Status = getOrderStatus(dv.id);
                     objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido from LinhasDoc where IdCabecDoc='" + dv.id + "' order By NumLinha");
                     listlindv = new List<Model.LinhaDocVenda>();
 
@@ -737,8 +738,7 @@ namespace WebStoreAPI.Lib_Primavera
 
         public static Model.DocVenda Encomenda_Get(string numdoc)
         {
-            
-            
+
             StdBELista objListCab;
             StdBELista objListLin;
             Model.DocVenda dv = new Model.DocVenda();
@@ -755,6 +755,7 @@ namespace WebStoreAPI.Lib_Primavera
                 dv.Data = objListCab.Valor("Data");
                 dv.TotalMerc = objListCab.Valor("TotalMerc");
                 dv.Serie = objListCab.Valor("Serie");
+                dv.Status = getOrderStatus(dv.id);
                 objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, TotalDC, TotalDA, TotalIva from LinhasDoc where IdCabecDoc='" + dv.id + "' order By NumLinha");
                 listlindv = new List<Model.LinhaDocVenda>();
 
@@ -828,6 +829,7 @@ namespace WebStoreAPI.Lib_Primavera
                     dv.Data = objListCab.Valor("Data");
                     dv.TotalMerc = objListCab.Valor("TotalMerc");
                     dv.Serie = objListCab.Valor("Serie");
+                    dv.Status = getOrderStatus(dv.id);
                     objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, TotalDC, TotalDA, TotalIva from LinhasDoc where IdCabecDoc='" + dv.id + "' order By NumLinha");
                     listlindv = new List<Model.LinhaDocVenda>();
 
@@ -890,6 +892,7 @@ namespace WebStoreAPI.Lib_Primavera
                 dv.Data = objListCab.Valor("Data");
                 dv.TotalMerc = objListCab.Valor("TotalMerc");
                 dv.Serie = objListCab.Valor("Serie");
+                dv.Status = getOrderStatus(dv.id);
                 objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido, TotalDC, TotalDA, TotalIva from LinhasDoc where IdCabecDoc='" + dv.id + "' order By NumLinha");
                 listlindv = new List<Model.LinhaDocVenda>();
 
@@ -948,6 +951,7 @@ namespace WebStoreAPI.Lib_Primavera
                 dv.Data = objListCab.Valor("Data");
                 dv.TotalMerc = objListCab.Valor("TotalMerc");
                 dv.Serie = objListCab.Valor("Serie");
+                dv.Status = getOrderStatus(dv.id);
                 objListLin = PriEngine.Engine.Consulta("SELECT idCabecDoc, Artigo, Descricao, Quantidade, Unidade, PrecUnit, Desconto1, TotalILiquido, PrecoLiquido,Data from LinhasDoc where IdCabecDoc='" + dv.id + "' order By Data");
                 listlindv = new List<Model.LinhaDocVenda>();
 
@@ -974,10 +978,101 @@ namespace WebStoreAPI.Lib_Primavera
             return listDocVend;
         }
 
-        public static string getOrderStatus(string numdoc)
+        public static int getOrderStatus(string idDoc)
         {
+            StdBELista ECL = PriEngine.Engine.Consulta("SELECT id AS idECL FROM CabecDoc WHERE id='" + idDoc + "';");//IR BUSCAR O DOCUMENTO ELC
+            if (ECL.NumLinhas() != 0)
+            {
+                StdBELista LinhasArtigos = PriEngine.Engine.Consulta("SELECT  id AS IdCabecDocArtigo FROM LinhasDoc WHERE IdCabecDoc='"+ECL.Valor("idECL")+"';"); //ARTIGOS DA ECL
+                if (LinhasArtigos.NumLinhas() != 0)
+                {
+                    StdBELista transfDocs = PriEngine.Engine.Consulta("SELECT IdLinhasDoc FROM LinhasDocTrans WHERE IdLinhasDocOrigem='" + LinhasArtigos.Valor("IdCabecDocArtigo") + "';");//Transformação da ECL para GR
+                    if (transfDocs.NumLinhas() != 0)
+                    {
+                        StdBELista Art = PriEngine.Engine.Consulta("SELECT IdCabecDoc FROM LinhasDoc WHERE id='" + transfDocs.Valor("IdLinhasDoc") + "' AND Artigo is not null;"); // OBTER O ARTIGO DA GR
+                        if (Art.NumLinhas() != 0)
+                        {
+                            StdBELista GR = PriEngine.Engine.Consulta("SELECT id FROM CabecDoc WHERE id='" + Art.Valor("IdCabecDoc") + "';"); // OBTER A GR
+                            if (GR.NumLinhas() != 0)
+                            {
+                                StdBELista ArtGR = PriEngine.Engine.Consulta("SELECT  id AS IdCabecDocArtigo FROM LinhasDoc WHERE IdCabecDoc='"+GR.Valor("id")+"' AND LinhasDoc.Artigo is not null;"); //GR articles to the FA
+                                if (ArtGR.NumLinhas() != 0)
+                                {
+                                    StdBELista GR_FA = PriEngine.Engine.Consulta("SELECT IdLinhasDoc FROM LinhasDocTrans WHERE IdLinhasDocOrigem='" + ArtGR.Valor("IdCabecDocArtigo") + "';"); //Transform GR to FA
+                                    if (GR_FA.NumLinhas() != 0)
+                                    {
+                                        StdBELista FA_Art = PriEngine.Engine.Consulta("SELECT IdCabecDoc FROM LinhasDoc where id='" + GR_FA.Valor("IdLinhasDoc") + "';"); // Get FA articles transformed
+                                        if (FA_Art.NumLinhas() != 0)
+                                        {
+                                            StdBELista FA = PriEngine.Engine.Consulta("SELECT Entidade,TipoDoc,NumDoc,CondPag,ModoPag,Serie FROM CabecDoc where id='" + FA_Art.Valor("IdCabecDoc") + "';"); // Get the FA
+                                            if (FA.NumLinhas() != 0)
+                                            {
+                                                StdBELista FA_PEND = PriEngine.Engine.Consulta("SELECT * from Pendentes where Entidade='" + FA.Valor("Entidade") + "' AND NumDoc='" + FA.Valor("NumDoc") + "' AND TipoDoc='" + FA.Valor("TipoDoc") + "' AND CondPag='" + FA.Valor("CondPag") + "' AND Serie='" + FA.Valor("Serie") + "' AND ModoPag='" + FA.Valor("ModoPag") + "';");
+                                                if (FA_PEND.NumLinhas() != 0)
+                                                {
+                                                    return 2;
+                                                }else{
+                                                    return 3; // IS PAYED!
+                                                }
+                                            }
+                                            else
+                                            {
+                                                return 1; //There is no FA
+                                            }
+                                        }
+                                        else
+                                        {
+                                            return -2; // No articles associated with FA
+                                        }
 
-            return "";
+                                    }
+                                    else
+                                    {
+                                        StdBELista c = PriEngine.Engine.Consulta
+                                        return 1; //SE APENAS EXISTE UMA GR
+                                        return 4; // No articles of GR transformed to FA because a FR was generated!
+                                    }
+                                }
+                                else
+                                {
+                                    return -4; //No articles on GR
+                                }
+                            }
+                            else
+                            {
+                                return 0; // There is no GR
+                            }
+                        }
+                        else
+                        {
+                            return -5; //GR with no articles
+                        }
+                    }
+                    else
+                    {
+                        return 0;// "No Articles associated with transf GR!";
+                    }
+                }
+                else
+                {
+                    return -7;//"Null order! Order without articles!";
+                }
+
+            }
+            else
+            {
+                return -8;//"Order does not exists!";
+            }    
+        }
+
+        public static string GeneratePDF(string client, string orderId)//NEEDS TO BE IMPLEMENTED!
+        {
+            bool cenas = PriEngine.Engine.Comercial.Vendas.ImprimeDocumento("FA", "2016", 685, "000", 1, "GcpVls02", false, "C:\\SINF\\Ficheiro.pdf");
+            if (cenas)
+            {
+                System.Diagnostics.Debug.WriteLine("CIROU!");
+            }
+            return "OK";
         }
 
         #endregion DocsVenda
@@ -1032,6 +1127,11 @@ namespace WebStoreAPI.Lib_Primavera
         public static List<Model.PaymentWay> Utils_GetPaymentWays()
         {
             //ModoPag
+            bool cenas = PriEngine.Engine.Comercial.Vendas.ImprimeDocumento("FA", "2016", 685, "000", 1, "GcpVls02", false, "C:\\SINF\\Ficheiro.pdf");
+            if (cenas)
+            {
+                System.Diagnostics.Debug.WriteLine("CIROU!");
+            }
             List<Model.PaymentWay> payments = new List<Model.PaymentWay>();
             StdBELista list = PriEngine.Engine.Consulta("SELECT Movim,Descricao FROM DocumentosBancos;");
             while (!list.NoFim())
@@ -1079,6 +1179,12 @@ namespace WebStoreAPI.Lib_Primavera
                 }
 
                 return testes;
+
+                bool cenas = PriEngine.Engine.Comercial.Vendas.ImprimeDocumento("FA", "2016", 685, "000", 1, "GcpVls02", false, "C:\\SINF\\Ficheiro.pdf");
+                if (cenas)
+                {
+                    System.Diagnostics.Debug.WriteLine("CIROU!");
+                }
                 /*objList.
                 objList = PriEngine.Engine.Comercial.ArtigosArmazens.ListaInventario(true, false, false, id);
                 while (!objList.NoFim())
@@ -1133,5 +1239,7 @@ namespace WebStoreAPI.Lib_Primavera
 
         #endregion Tests
 
+
+        
     }
 }

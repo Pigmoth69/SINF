@@ -44,7 +44,7 @@ namespace WebStoreAPI.Lib_Primavera.Model
             set;
         }
 
-        public string Status
+        public int Status
         {
             get;
             set;
