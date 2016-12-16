@@ -10,8 +10,25 @@ router.get('/', function (req, res) {
     res.render('admin');
 });
 
+router.get('/ordersProcessing', function(req, res) {
+    db.getOrdersPayed(function(ords) {
+        // fazer async com as ords para pedir merdas ao primavera
+        res.render('adminProcessing', {orders : ords});
+    });
+});
+
 router.get('/ordersNotPayed', function(req, res) {
-    res.render('adminOrders');
+    db.getOrdersNotPayed(function(ords) {
+        // fazer async com as ords para pedir merdas ao primavera
+        res.render('adminOrders', {orders : ords});
+    });
+});
+
+router.post('/acceptPayment/:idE', function(req, res) {
+    db.payOrder(req.params.idE, function(r) {
+        // fazer pedido ao primavera a dizer que foi pago
+        res.redirect('/admin');
+    });
 });
 
 router.get('/products', function (req, res) {
