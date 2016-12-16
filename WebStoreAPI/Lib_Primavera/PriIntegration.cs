@@ -929,6 +929,7 @@ namespace WebStoreAPI.Lib_Primavera
                 }
 
                 dv.TotalRealMerc = TotalMercReal;
+                dv.LinhasDoc = listlindv;
 
             return dv;
         }
