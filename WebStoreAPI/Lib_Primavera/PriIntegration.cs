@@ -980,6 +980,11 @@ namespace WebStoreAPI.Lib_Primavera
 
         public static int getOrderStatus(string idDoc)
         {
+            //Apenas existe ECL   -> 0
+            //Apenas existe GR    -> 1
+            //Apenas existe FA    -> 2
+            //Apenas existe RE    -> 3
+            //Apenas existe FR|FS -> 4
             StdBELista ECL = PriEngine.Engine.Consulta("SELECT id AS idECL FROM CabecDoc WHERE id='" + idDoc + "';");//IR BUSCAR O DOCUMENTO ELC
             if (ECL.NumLinhas() != 0)
             {
