@@ -955,7 +955,7 @@ namespace WebStoreAPI.Lib_Primavera
             while (!objListCab.NoFim())
             {
                 dv = new Model.DocVenda();
-
+                double TotalMercReal = 0;
                 dv.id = objListCab.Valor("id");
                 dv.Client = GetCliente(objListCab.Valor("Entidade"));
                 dv.NumDoc = objListCab.Valor("NumDoc");
@@ -978,10 +978,12 @@ namespace WebStoreAPI.Lib_Primavera
                     lindv.PrecoUnitario = objListLin.Valor("PrecUnit");
                     lindv.TotalILiquido = objListLin.Valor("TotalILiquido");
                     lindv.TotalLiquido = objListLin.Valor("PrecoLiquido");
+                    lindv.TotalPrecoArtigo = lindv.TotalLiquido + lindv.IvaTotal;
+                    TotalMercReal += lindv.TotalLiquido + lindv.IvaTotal;
                     listlindv.Add(lindv);
                     objListLin.Seguinte();
                 }
-
+                dv.TotalRealMerc = TotalMercReal;
                 dv.LinhasDoc = listlindv;
                 listDocVend.Add(dv);
                 objListCab.Seguinte();
