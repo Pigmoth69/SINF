@@ -44,16 +44,16 @@ router.get('/', function (req, res) {
 
                                 var utype = req.session.typeUser;
                                 if (utype == undefined) utype = 0;
-                                item.Price = ((pvps[ utype ] * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
-                                item.UnitPrice = ((pvps[ utype ] * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
+                                item.Price = ((pvps[utype] * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                item.UnitPrice = ((pvps[utype] * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
 
 
                                 item.Description = prod.Description;
-                                
+
                                 item.Price = Math.round(item.Price * 100) / 100;
                                 item.UnitPrice = Math.round(item.UnitPrice * 100) / 100;
                                 total += item.Price;
-                              
+
                                 item.Price = item.Price.toLocaleString("es-ES", { minimumFractionDigits: 2 });
                                 item.UnitPrice = item.UnitPrice.toLocaleString("es-ES", { minimumFractionDigits: 2 });
                                 callback(null);
@@ -76,8 +76,8 @@ router.get('/', function (req, res) {
                                             addImagesPri(prods, relatedProducts, function (r) {
                                                 relatedProducts = r;
                                                 total = total.toLocaleString("es-ES", { minimumFractionDigits: 2 });
-                                                utils.getCategoriesPrimavera(function(cats) {
-                                                    res.render('cart1', { total: total, cart: temp, relatedProducts: relatedProducts, id : req.session.name, families : cats});
+                                                utils.getCategoriesPrimavera(function (cats) {
+                                                    res.render('cart1', { total: total, cart: temp, relatedProducts: relatedProducts, id: req.session.name, families: cats });
                                                 });
                                             });
                                         });
@@ -109,21 +109,24 @@ router.get('/removeProduct/:idP', function (req, res) {
 });
 
 function addImages(prods, temp, next) {
-    for (var i = 0; i < temp.length; i++) {
-        for (var j = 0; j < prods.length; j++) {
-            if (temp[i].idProdutoPrimavera == prods[j].idProdutoPrimavera) {
-                temp[i].Imagem = prods[j].imagem;
-                j = prods.length;
+    if (temp != null) {
+        for (var i = 0; i < temp.length; i++) {
+            for (var j = 0; j < prods.length; j++) {
+                if (temp[i].idProdutoPrimavera == prods[j].idProdutoPrimavera) {
+                    temp[i].Imagem = prods[j].imagem;
+                    j = prods.length;
+                }
             }
         }
-    }
 
-    for (var i = 0; i < temp.length; i++) {
-        if (temp[i].Imagem == "")
-            temp[i].Imagem = 'product.png';
+        for (var i = 0; i < temp.length; i++) {
+            if (temp[i].Imagem == "")
+                temp[i].Imagem = 'product.png';
+        }
+        if (typeof next == 'function')
+            next(temp);
     }
-    if (typeof next == 'function')
-        next(temp);
+    else next(null);
 }
 
 function approvedProducts(prods, appr, next) {

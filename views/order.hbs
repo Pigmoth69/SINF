@@ -4,7 +4,6 @@
 
 <ul class="nav nav-pills nav-justified nav-stacked" width="70%">
   <li class="active"><a href="#">All Orders</a></li>
-  <li><a href="#">Orders to pay</a></li>
   <li class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#">per page
     <span class="caret"></span></a>
@@ -37,6 +36,7 @@
       </th>
       <th>Status</th>
       <th width="10%">PDF</th>
+      <th>Invoice</th>
     </tr>
   </thead>
   <tbody>
@@ -44,11 +44,16 @@
     <tr class="orderRow">
       <th width="30%" class="tableDate">{{Data}}</th>
       <td width="15%" class="tableId">{{NumDoc}}</td>
-      <td width="20%" class="tableAmmount">{{TotalMerc}}€</td>
+      <td width="20%" class="tableAmmount">{{TotalRealMerc}}€</td>
       <td width="15%">{{Status}}</td>
       <td width="10%">
         <a href='/order/pdf/{{id}}'><img class="pdficon" src="/images/pdf.png" alt="pdf icon"></a>
       </td>
+      {{#if hasFact}}
+      <td>
+        <button class="btn btn-success" onclick="window.location.href= '/order/invoice/{{id}}'">Invoice</button>
+      </td>
+      {{/if}}
     </tr>
     <!-- <tr class="orderOthers" hidden><td>{{id}}</td></tr> -->
     {{/each}}

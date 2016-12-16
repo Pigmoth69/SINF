@@ -118,6 +118,29 @@ function changeToActiveFam(code) {
         $.blockUI();
         $.get(url, function (data) {
             $.get(url_db, function (data1) {
+                console.log(data);
+                if (data1 == 'fuck')
+                    addProductsWebPage(data, null);
+                else addProductsWebPage(data, data1);
+                $.unblockUI();
+            });
+        });
+    }
+}
+
+
+function searchProduct() {
+    var url = "http://localhost:3000/search/" + $("#search").val();
+    var url_db = "http://localhost:3000/database/products";
+    console.log(window.location.href);
+
+    if (window.location.href != 'http://localhost:3000/')
+        window.location.href = 'http://localhost:3000/searchOnOtherPage/' + $("#search").val();
+    else {
+        $.blockUI();
+        $.get(url, function (data) {
+            $.get(url_db, function (data1) {
+                console.log(data);
                 if (data1 == 'fuck')
                     addProductsWebPage(data, null);
                 else addProductsWebPage(data, data1);
@@ -152,15 +175,8 @@ function addProductsWebPage(products, imgs) {
 
         var utype = products[i].typeUser || 1;
         utype = parseInt(utype);
-        console.log("desconto? " + products[i].Discount);
-        console.log("jeebus: !" + products[i].IVA);
-        console.log("WTF: " + products[i].disc);
         var valor = calculaValor(pvpsQueTavamNumSwitchDoKengas[utype], products[i].disc, products[i].Discount, products[i].IVA);
         var valorSemDescontos = calculaValor(pvpsQueTavamNumSwitchDoKengas[utype], 0, 0, products[i].IVA);
-
-        console.log("tipo de user = " + utype + " --- " + utype);
-        console.log("PVP = " + pvpsQueTavamNumSwitchDoKengas[utype]);
-        console.log("com Desconto = " + valor + " <---> Sem desconto = " + valorSemDescontos);
 
         if (j == 0) { //acrescentar a row inicial
             temp += "<div class='row'>";
@@ -212,17 +228,12 @@ function calculaValor(pvp, desc, discount, iva) {
     var iVA = (1 + iva * 0.01);
     if (discount > 0) {
         res = Math.round(pvp * desc * disc * iVA * 100) / 100;
-        console.log("res2:" + res);
     }
     else {
-
-        console.log("desc: " + desc);
         if (typeof desc === 'NaN') {
             res = Math.round(pvp * iVA * 100) / 100;
         }
         else res = Math.round(pvp * desc * iVA * 100) / 100;
-
-        console.log("res1:" + res);
     }
     return res;
 }
@@ -245,26 +256,6 @@ function addImagesToProducts(products, images) {
         }
     }
     return temp;
-}
-
-function searchProduct() {
-    var url = "http://localhost:3000/search/" + $("#search").val();
-    var url_db = "http://localhost:3000/database/products";
-    console.log(window.location.href);
-
-    if (window.location.href != 'http://localhost:3000/')
-        window.location.href = 'http://localhost:3000/searchOnOtherPage/' + $("#search").val();
-    else {
-        $.blockUI();
-        $.get(url, function (data) {
-            $.get(url_db, function (data1) {
-                if (data1 == 'fuck')
-                    addProductsWebPage(data, null);
-                else addProductsWebPage(data, data1);
-                $.unblockUI();
-            });
-        });
-    }
 }
 
 function removeProduct(idP) {

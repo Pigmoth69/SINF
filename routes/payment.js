@@ -10,7 +10,7 @@ var userD;
 
 
 
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
 
     if (req.session.user == undefined) { // ALTERAR
         res.redirect('/login');
@@ -19,7 +19,7 @@ router.get('/', function(req, res) {
         var user = req.session.user;
         var userURL = "http://localhost:" + config.PORT + "/api/clients?id=" + user;
 
-        request.get({ url: userURL, proxy: config.PROXY }, function(error, response, userJ) {
+        request.get({ url: userURL, proxy: config.PROXY }, function (error, response, userJ) {
 
             if (!error && response.statusCode == 200) {
                 userD = JSON.parse(userJ);
@@ -27,9 +27,9 @@ router.get('/', function(req, res) {
                 var paymentsURL = "http://localhost:49822/api/utils/paymenttypes";
                 var paymentsWURL = "http://localhost:49822/api/utils/paymentways";
                 var expeditionURL = "http://localhost:49822/api/utils/expeditionway";
-                request.get({ url: paymentsURL, proxy: config.PROXY }, function(error3, response3, paymenttypesB) {
-                    request.get({ url: paymentsWURL, proxy: config.PROXY }, function(error4, response4, paymentwaysB) {
-                        request.get({ url: expeditionURL, proxy: config.PROXY }, function(error5, response5, expeditionB) {
+                request.get({ url: paymentsURL, proxy: config.PROXY }, function (error3, response3, paymenttypesB) {
+                    request.get({ url: paymentsWURL, proxy: config.PROXY }, function (error4, response4, paymentwaysB) {
+                        request.get({ url: expeditionURL, proxy: config.PROXY }, function (error5, response5, expeditionB) {
                             var paymentT = JSON.parse(paymenttypesB);
                             var paymentW = JSON.parse(paymentwaysB);
                             var expeditionW = JSON.parse(expeditionB);
@@ -57,20 +57,20 @@ router.get('/', function(req, res) {
                             //console.log(p2);
                             //console.log(e1);
 
-                            db.getCart(req.session.user, function(cart) {
-                                if (cart == 'no carrinho' || cart == 'sem merdas no carrinho') {
+                            db.getCart(req.session.user, function (cart) {
+                                if (cart == null || cart == null) {
                                     res.render('cart1', { total: 0, cart: {}, relatedProducts: {} });
                                 }
                                 else {
-                                    db.getProducts(function(prods) {
+                                    db.getProducts(function (prods) {
                                         var temp = cart;
 
                                         //adicionar total
                                         var total = 0;
                                         // adicionar infos de cada produto
-                                        async.each(temp, function(item, callback) {
+                                        async.each(temp, function (item, callback) {
                                             var prodURL2 = "http://localhost:49822/api/products?id=" + item.idProdutoPrimavera;
-                                            request.get({ url: prodURL2, proxy: config.PROXY }, function(error2, response2, body) {
+                                            request.get({ url: prodURL2, proxy: config.PROXY }, function (error2, response2, body) {
                                                 if (!error2 && response2.statusCode == 200) {
                                                     var prod = JSON.parse(body);
 
@@ -104,12 +104,12 @@ router.get('/', function(req, res) {
                                                     callback();
                                                 }
                                             });
-                                        }, function(err) {
-                                            addImages(prods, temp, function(pro) {
+                                        }, function (err) {
+                                            addImages(prods, temp, function (pro) {
                                                 total = total.toLocaleString("es-ES", { minimumFractionDigits: 2 });
 
                                                 temp = pro;
-                                                utils.getCategoriesPrimavera(function(cats) {
+                                                utils.getCategoriesPrimavera(function (cats) {
                                                     res.render('payment', { userData: userD, total: total, cart: temp, payType: paymentT, payWay: paymentW, expWay: expeditionW, id: req.session.name, families: cats });
                                                 });
 
@@ -130,7 +130,7 @@ router.get('/', function(req, res) {
 
 });
 
-router.post('/confirm', function(req, res) {
+router.post('/confirm', function (req, res) {
     if (req.session.user == undefined) { // ALTERAR
         res.redirect('/login');
     }
@@ -144,8 +144,8 @@ router.post('/confirm', function(req, res) {
         userD.ExpeditionWay = req.body.Client.ExpeditionWay;
         console.log(userD.ExpeditionWay);
 
-        db.getCart(req.session.user, function(cart) {
-            db.getProducts(function(prods) {
+        db.getCart(req.session.user, function (cart) {
+            db.getProducts(function (prods) {
                 var temp = cart;
 
                 //adicionar total
@@ -153,9 +153,9 @@ router.post('/confirm', function(req, res) {
                 var j = 0;
                 var total = 0;
                 // adicionar infos de cada produto
-                async.each(temp, function(item, callback) {
+                async.each(temp, function (item, callback) {
                     var prodURL2 = "http://localhost:49822/api/products?id=" + item.idProdutoPrimavera;
-                    request.get({ url: prodURL2, proxy: config.PROXY }, function(error2, response2, body) {
+                    request.get({ url: prodURL2, proxy: config.PROXY }, function (error2, response2, body) {
                         if (!error2 && response2.statusCode == 200) {
                             var prod = JSON.parse(body);
                             item.Description = prod.Description;
@@ -174,15 +174,15 @@ router.post('/confirm', function(req, res) {
                             if (utype == undefined) utype = 0;
                             item.Price = ((pvps[utype] * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
                             item.UnitPrice = ((pvps[utype] * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
-
+                            item.PVP = pvps[utype];
                             item.Price = Math.round(item.Price * 100) / 100;
                             item.UnitPrice = Math.round(item.UnitPrice * 100) / 100;
                             total += item.Price;
                             callback();
                         }
                     });
-                }, function(err) {
-                    addImages(prods, temp, function(pro) {
+                }, function (err) {
+                    addImages(prods, temp, function (pro) {
                         temp = pro;
                         //temp é o carrinho (bd) 
                         //console.log("temp.length = " + temp.length)
@@ -192,19 +192,20 @@ router.post('/confirm', function(req, res) {
                         var form = fillOrder(total, '2016', temp, prods)
                         console.log(form);
 
-                        request.post({ url: urlQuer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function(error, response, body) {
+                        request.post({ url: urlQuer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
                             if (!error && response.statusCode == 201) {
                                 //console.log(error);
                                 console.log(response.statusCode);
                                 console.log(body);
 
-                                db.removeCart(req.session.user, function(res) {
+                                db.removeCart(req.session.user, function (res) {
                                     console.log("cart removed");
+                                    req.session.totalCart = 0;
                                 });
 
                                 console.log(req.session.user);
 
-                                db.insertOrder(body, req.session.user, function(n) {
+                                db.insertOrder(body, req.session.user, function (n) {
                                     console.log("encomenda adicionada à BD externa");
                                     console.log(n);
                                 });
@@ -307,7 +308,8 @@ function fillOrder(total, serie, carrinho, loja) {
         form.LinhasDoc[i].Quantidade = carrinho[i].quantidade;
         form.LinhasDoc[i].Unidade = '';
         form.LinhasDoc[i].Desconto = loja[i]['Discount'];
-        form.LinhasDoc[i].PrecoUnitario = carrinho[i].UnitPrice;
+
+        form.LinhasDoc[i].PrecoUnitario = carrinho[i].PVP;
         form.LinhasDoc[i].TotalILiquido = '';
         form.LinhasDoc[i].TotalLiquido = '';
         form.LinhasDoc[i].TotalPrecoArtigo = '';

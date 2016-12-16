@@ -212,7 +212,7 @@ router.post('/register', function (req, res, next) {
 
                 }
                 else {
-                    console.log(response.statusCode);
+                    console.log("entrar:"  +response.statusCode);
                     res.render('404');
                 }
             });

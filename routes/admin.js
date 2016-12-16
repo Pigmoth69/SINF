@@ -56,7 +56,7 @@ router.get('/products', function (req, res) {
         if (!error && response.statusCode == 200) {
             var productsPrimavera = JSON.parse(products);
             // ir buscar todos os produtos existentes na base de dados
-            db.getProducts(function (prods) {
+            db.getProductsApproved(function (prods) {
                 var productsDatabase = prods;
                 // deixar só aqueles que não têm row imagem preenchida
                 getProductsWithoutImage(productsPrimavera, productsDatabase, function (prods) {

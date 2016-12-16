@@ -108,7 +108,7 @@ function getCart(idU, next) {
     pool.query('SELECT * FROM Carrinho WHERE idUser = ?', idU, function (err, rows, fields) {
         if (rows[0] == undefined) {
             if (typeof next == 'function')
-                next('no carrinho');
+                next(null);
         }
         else {
             pool.query('SELECT * FROM ProdutoCarrinho WHERE idCarrinho = ?', rows[0].idCarrinho, function (err, rows, fields) {
@@ -306,8 +306,8 @@ function getApprovedProducts(next) {
     });
 }
 
-function insertOrder(idO, idU, next){
-    pool.query('INSERT INTO Encomenda VALUES (?, 0, ?)', [idO, idU], function(err, rows, fields){
+function insertOrder(idO, idU, next) {
+    pool.query('INSERT INTO Encomenda VALUES (?, 0, ?)', [idO, idU], function (err, rows, fields) {
 
     });
 }
@@ -326,8 +326,22 @@ function getOrdersPayed(next) {
     });
 }
 
+function getOrder(idO, next){
+    pool.query('SELECT * FROM Encomenda WHERE idEncomenda = ?', idO, function(err, rows, fields){
+        if (typeof next == 'function')
+            next(rows);
+    });
+}
+
 function payOrder(id, next) {
     pool.query('UPDATE Encomenda SET pago = TRUE WHERE idEncomenda = ?', id, function (err, rows, fields) {
+        if (typeof next == 'function')
+            next(rows);
+    });
+}
+
+function getProductsApproved(next) {
+    pool.query('SELECT * FROM Produto WHERE approved = TRUE', function (err, rows, fields) {
         if (typeof next == 'function')
             next(rows);
     });
@@ -336,6 +350,6 @@ function payOrder(id, next) {
 module.exports = {
     populateProducts, getProducts, updateTotalSpent, populateClients, compareLogin, addProductToCart, getCart, removeCart, removeProductFromCart, registerUser, addImageToProduct, getUsers,
     getCommentsOnProduct, commentOnProduct, requestType, getUsersNotApproved, approveUser, getProductByID, getApprovedProducts, removeProductFromCartNo, getUser, getOrdersNotPayed, payOrder,
-    getOrdersPayed, insertOrder
+    getOrdersPayed, insertOrder, getProductsApproved, getOrder
 
 };

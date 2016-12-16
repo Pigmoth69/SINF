@@ -8,12 +8,28 @@ var request = require('request');
 var pdf = require('html-pdf');
 var path = require('path');
 var mime = require('mime');
+var db = require('../database/database.js');
+var async = require('async');
 
 
 router.get('/', function (req, res) {
     res.redirect('/order/1/10');
 });
 
+router.get('/invoice/:id', function (req, res, next) {
+    var orderURL = "http://localhost:" + config.PORT + "/api/orders/pdf?orderId=" + req.params.id;
+    res.redirect(orderURL);
+    /*
+    request.get({ url: orderURL, proxy: config.PROXY }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            fs.readFile('C:\SINF' +  req.params.id', [encoding], [callback]);
+        }
+        else {
+            res.render('404');
+        }
+    });
+    */
+});
 
 router.get('/pdf/:idO', function (req, res) {
 
@@ -84,12 +100,12 @@ router.get('/pdf/:idO', function (req, res) {
                     doc.text(orderInfo['LinhasDoc'][i]['CodArtigo'], 50, yindex + jump);
                     doc.text(orderInfo['LinhasDoc'][i]['DescArtigo'], 100, yindex + jump);
                     doc.text(orderInfo['LinhasDoc'][i]['Quantidade'], 340, yindex + jump);
-                    doc.text(orderInfo['LinhasDoc'][i]['PrecoUnitario'], 405, yindex + jump);
-                    doc.text(orderInfo['LinhasDoc'][i]['TotalILiquido'], 470, yindex + jump);
-                    valorTotal += orderInfo['LinhasDoc'][i]['TotalILiquido'];
+                    doc.text(orderInfo['LinhasDoc'][i]['TotalPrecoArtigo'] / orderInfo['LinhasDoc'][i]['Quantidade'], 405, yindex + jump);
+                    doc.text(orderInfo['LinhasDoc'][i]['TotalPrecoArtigo'], 470, yindex + jump);
+                    valorTotal += orderInfo['LinhasDoc'][i]['TotalPrecoArtigo'];
                 }
                 doc.text("Total: ", 405, yindex + jump + 40);
-                doc.text(orderInfo['TotalMerc'], 470, yindex + jump + 40);
+                doc.text(orderInfo['TotalRealMerc'], 470, yindex + jump + 40);
 
                 doc.end();
 
@@ -128,30 +144,55 @@ router.get('/:page/:perpage', function (req, res) {
 
                         var statusEnc = [
                             "Order Placed, waiting payment acceptance",
+                            "Order Accepted, waiting for processing",
                             "Processing order",
                             "Order Processed",
-                            "Order Shiped",
-                            "Order Shiped2"
+                            "Order Shipped",
+                            "Order Shipped"
                         ];
-
-                        for (var i = 0; i < ordersJ.length; i++) {
-                            ordersJ[i].Data = ordersJ[i].Data.replace("T", " ");
-                            ordersJ[i].TotalMerc = ordersJ[i].TotalMerc.toLocaleString("es-ES", { minimumFractionDigits: 2 });
+                        async.each(ordersJ, function (item, callback) {
+                            item.Data = item.Data.replace("T", " ");
+                            item.TotalMerc = item.TotalMerc.toLocaleString("es-ES", { minimumFractionDigits: 2 });
+                            item.TotalRealMerc = item.TotalRealMerc.toLocaleString("es-ES", { minimumFractionDigits: 2 });
                             //console.log(ordersJ[i]);
-                            var stat = ordersJ[i].Status;
-                            ordersJ[i].Status = statusEnc[stat];
+                            var stat = item.Status;
+                            if (stat > 2) {
+                                stat++;
+                                item.Status = statusEnc[stat];
+                                item.hasFact = true;
 
-                        }
+                                callback();
+                            }
+                            else if (stat == 0) {
+                                db.getOrder(item.id, function (pago) {
+                                    if (pago[0].pago == 0) {
+                                        stat = 0;
+                                    }
+                                    else {
+                                        stat = 1;
+                                    }
+                                    item.Status = statusEnc[stat];
+                                    console.log(item.Status);
+                                    if (page > 1)
+                                        pagei--;
 
-                        if (page > 1)
-                            pagei--;
+                                    if (page < totalP)
+                                        pagel = parseInt(page) + 1;
 
-                        if (page < totalP)
-                            pagel = parseInt(page) + 1;
-
-                        utils.getCategoriesPrimavera(function (cats) {
-                            var total = req.session.totalCart.toLocaleString("es-ES", { minimumFractionDigits: 2 });
-                            res.render('order', { orders: ordersJ, totalPage: totalP, page: req.params.page, pageA: pagel, pageB: pagei, id: req.session.user, families: cats, perPage: numPerPage, total : total});
+                                    callback();
+                                });
+                            }
+                            else {
+                                stat++;
+                                item.Status = statusEnc[stat];
+                                callback();
+                            }
+                        }, function (err) {
+                            utils.getCategoriesPrimavera(function (cats) {
+                                var total = req.session.totalCart.toLocaleString("es-ES", { minimumFractionDigits: 2 });
+                                console.log(ordersJ);
+                                res.render('order', { orders: ordersJ, totalPage: totalP, page: req.params.page, pageA: pagel, pageB: pagei, id: req.session.user, families: cats, perPage: numPerPage, total: total });
+                            });
                         });
                     }
                     else {
