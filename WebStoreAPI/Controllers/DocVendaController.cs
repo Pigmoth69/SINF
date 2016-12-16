@@ -21,10 +21,11 @@ namespace WebStoreAPI.Controllers
         }
 
 
-        // GET api/DocVenda/{id}-> id do doc   
-        public Lib_Primavera.Model.DocVenda Get(string id)
+        // GET api/DocVenda/{id}-> id do doc
+        [Route("api/orders")]
+        public Lib_Primavera.Model.DocVenda Get(string orderId)
         {
-            Lib_Primavera.Model.DocVenda docvenda = Lib_Primavera.PriIntegration.Encomenda_Get(id);
+            Lib_Primavera.Model.DocVenda docvenda = Lib_Primavera.PriIntegration.Encomenda_Get(orderId);
             if (docvenda == null)
             {
                 throw new HttpResponseException(
@@ -128,24 +129,6 @@ namespace WebStoreAPI.Controllers
             if (orders == null)
             {
                 var message = string.Format("Query with client = {0} and page = {0} and numperpage = {0} not found", client,page,numperpage);
-                HttpError err = new HttpError(message);
-                return Request.CreateResponse(HttpStatusCode.NotFound, err);
-            }
-            else
-            {
-                return Request.CreateResponse(HttpStatusCode.OK, orders);
-            }
-        }
-
-        [Route("api/orders/unprocessed")]
-        public HttpResponseMessage GetOrderUnprocessed()
-        {
-
-
-            List<Lib_Primavera.Model.DocVenda> orders = Lib_Primavera.PriIntegration.Encomenda_GetUnprocessed();
-            if (orders == null)
-            {
-                var message = string.Format("Something went wrong... ");
                 HttpError err = new HttpError(message);
                 return Request.CreateResponse(HttpStatusCode.NotFound, err);
             }

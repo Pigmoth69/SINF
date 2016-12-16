@@ -747,7 +747,7 @@ namespace WebStoreAPI.Lib_Primavera
             List<Model.LinhaDocVenda> listlindv = new List<Model.LinhaDocVenda>();
 
                 double TotalMercReal = 0;
-                string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and NumDoc='" + numdoc + "'";
+                string st = "SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie From CabecDoc where TipoDoc='ECL' and id='" + numdoc + "'";
                 objListCab = PriEngine.Engine.Consulta(st);
                 dv = new Model.DocVenda();
                 dv.id = objListCab.Valor("id");
@@ -1079,13 +1079,6 @@ namespace WebStoreAPI.Lib_Primavera
                 System.Diagnostics.Debug.WriteLine("CIROU!");
             }
             return "OK";
-        }
-
-        public static List<Model.DocVenda> Encomenda_GetUnprocessed()
-        {
-            List<Model.DocVenda> orders = Encomendas_List();
-            orders.RemoveAll(item => item.Status != 0 && item.Serie != "2016");
-            return orders;
         }
 
         #endregion DocsVenda
