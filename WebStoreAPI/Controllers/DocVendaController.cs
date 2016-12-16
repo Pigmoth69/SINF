@@ -71,7 +71,7 @@ namespace WebStoreAPI.Controllers
             }
         }
 
-        [Route("api/orders")]
+        [Route("api/orders/pdf")]
         [HttpGet]
         public HttpResponseMessage GetClientOrderPDF(string client, string orderId)
         {
