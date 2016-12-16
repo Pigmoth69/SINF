@@ -83,19 +83,18 @@ router.get('/:idP', function (req, res) {
                                                                     }
                                                                     price = Math.round(price * 100) / 100;
                                                                     iva = Math.round(iva * 100) / 100;
-                                                                    res.render('product1', {
-                                                                        product: tempB, iva: iva, typeOne: req.session.typeUser, stk: stk, comments: comments, id: req.session.user, price: price,
-                                                                        price_no: price_no, disc: cl.ClientDiscount, relatedProducts: relatedProducts, families : cats
-                                                                    });
 
-                                                                    if (req.session.user != undefined)
+                                                                    if (req.session.user != undefined) {
+                                                                        console.log("TOTA:" + req.session.totalCart);
+                                                                        var total = req.session.totalCart.toLocaleString("es-ES", { minimumFractionDigits: 2 });
                                                                         res.render('product1', {
-                                                                            product: tempB, iva: iva, typeOne: req.session.typeUser, stk: stk, comments: comments, id: req.session.user, price: price, price_no: price_no,
-                                                                            disc: cl.ClientDiscount, relatedProducts: relatedProducts, id: req.session.user, families : cats
+                                                                            product: tempB, iva: iva, typeOne: req.session.typeUser, stk: stk, comments: comments, id: req.session.name, price: price, price_no: price_no,
+                                                                            disc: cl.ClientDiscount, relatedProducts: relatedProducts, id: req.session.user, families: cats, total: total
                                                                         });
+                                                                    }
                                                                     else res.render('product1', {
                                                                         product: tempB, iva: iva, typeOne: 'teste', stk: stk, comments: comments, price: price, price_no: price_no, disc: 0, relatedProducts: relatedProducts,
-                                                                        families : cats
+                                                                        families: cats
                                                                     });
 
                                                                 });

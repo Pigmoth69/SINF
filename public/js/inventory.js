@@ -241,7 +241,8 @@ function addImagesToProducts(products, images) {
 }
 
 function searchProduct() {
-    url = "http://localhost:3000/search/" + $("#search").val();
+    var url = "http://localhost:3000/search/" + $("#search").val();
+    var url_db = "http://localhost:3000/database/products";
     console.log(window.location.href);
 
     if (window.location.href != 'http://localhost:3000/')
@@ -249,23 +250,13 @@ function searchProduct() {
     else {
         $.blockUI();
         $.get(url, function (data) {
-            console.log(data);
-
-            addProductsWebPage(data);
-            $.unblockUI();
+            $.get(url_db, function (data1) {
+                if (data1 == 'fuck')
+                    addProductsWebPage(data, null);
+                else addProductsWebPage(data, data1);
+                $.unblockUI();
+            });
         });
-    }
-}
-
-function callProduct(idP, num) {
-    console.log("NUM -------> " + num);
-    
-    if (num == "#quantity"){
-        var quantity = $('#quantity').val();
-        console.log("QUANTIDADE: " + quantity);
-    }
-    else{
-        window.location.href = "/addProductToCart/" + idP + "/" + num;
     }
 }
 

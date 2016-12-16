@@ -104,9 +104,8 @@ router.get('/', function (req, res) {
                                             total = total.toLocaleString("es-ES", { minimumFractionDigits: 2 });
 
                                             temp = pro;
-                                            console.log(temp);
                                             utils.getCategoriesPrimavera(function(cats) {
-                                                res.render('payment', { userData: userD, total: total, cart: temp, payType: paymentT, payWay: paymentW, expWay: expeditionW, id: req.session.user, families : cats});
+                                                res.render('payment', { userData: userD, total: total, cart: temp, payType: paymentT, payWay: paymentW, expWay: expeditionW, id: req.session.name, families : cats});
                                             });
                                             
                                         });

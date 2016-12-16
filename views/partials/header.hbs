@@ -35,32 +35,6 @@
 </head>
 
 <body>
-
-    <div class="header-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="user-menu">
-                        <ul>
-                            <li><a href="/profile"><i class="fa fa-user"></i> My Account</a>
-                            </li>
-                            <li><a href="/cart"><i class="fa fa-user"></i> My Cart</a>
-                            </li>
-                            <li><a href="/payment"><i class="fa fa-user"></i> Checkout</a>
-                            </li>
-                            {{#if id}}
-                            <li><a href="/profile"><i class="fa fa-user"></i> {{id}}</a><li>
-                            {{else}}
-                            <a href="/login"><i class="fa fa-user"></i> Login</a></li>
-                            {{/if}}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End header area -->
-
     <div class="site-branding-area">
         <div class="container">
             <div class="row">
@@ -74,7 +48,7 @@
 
                 <div class="col-sm-6">
                     <div class="shopping-item">
-                        <a href="'/cart'">Cart - <span class="cart-amunt">$100</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">5</span></a>
+                        <a href="/cart">Cart - <span class="cart-amunt">{{total}}€</span> <i class="fa fa-shopping-cart"></i></a>
                     </div>
                 </div>
             </div>
@@ -102,7 +76,11 @@
                         <li><a href="/payment">Checkout</a>
                         </li>
                         <li><a href="/order/">Orders</a>
-                        </li>
+                        {{#if id}}
+                        <li><a href="/profile">{{id}}</a><li>
+                        {{else}}
+                        <li><a href="/login">Login</a></li>
+                        {{/if}}
                     </ul>
                     <form class="navbar-form navbar-left" role="search" action="" onsubmit="searchProduct(); return false;" method="GET">
                         <div class="form-group">

@@ -17,9 +17,7 @@ router.get('/', function (req, res) {
 
         if (!error && response.statusCode == 200) {
             var ordersJ = JSON.parse(orders);
-            console.log(ordersJ);
-
-            res.render('order', { orders: ordersJ, totalPage: totalP, page: req.params.page, pageA: pagel, pageB: pagei });
+            res.render('order', { orders: ordersJ, totalPage: totalP, page: req.params.page, pageA: pagel, pageB: pagei, total : req.session.totalCart});
         }
         else {
 

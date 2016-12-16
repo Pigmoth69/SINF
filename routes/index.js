@@ -6,14 +6,14 @@ var request = require('request');
 var utils = require('./utils.js');
 var async = require('async');
 
-router.get('/', function (req, res) {
+router.get('/', function(req, res) {
     if (req.session.discount == undefined)
         req.session.discount = 0;
     var url = "http://localhost:" + config.PORT + "/api/warehouse";
-    request.get({ url: url, proxy: config.PROXY }, function (error, response, wares) {
+    request.get({ url: url, proxy: config.PROXY }, function(error, response, wares) {
         if (!error && response.statusCode == 200) {
             url = "http://localhost:" + config.PORT + "/api/products/family";
-            request.get({ url: url, proxy: config.PROXY }, function (error, response, fams) {
+            request.get({ url: url, proxy: config.PROXY }, function(error, response, fams) {
                 if (!error && response.statusCode == 200) {
                     var waresReal = JSON.parse(wares);
                     var famsReal = JSON.parse(fams);
@@ -22,8 +22,10 @@ router.get('/', function (req, res) {
                         famsT[i] = {};
                         famsT[i].Code = famsReal[i];
                     }
-                    if (req.session.user != undefined)
-                        res.render('inventory', { warehouses: waresReal, families: famsT, id: req.session.user });
+                    if (req.session.user != undefined) {
+                        var total = req.session.totalCart.toLocaleString("es-ES", { minimumFractionDigits: 2 });
+                        res.render('inventory', { warehouses: waresReal, families: famsT, id: req.session.name, total: total });
+                    }
                     else res.render('inventory', { warehouses: waresReal, families: famsT });
                 }
                 else {
@@ -38,10 +40,10 @@ router.get('/', function (req, res) {
     });
 });
 
-router.get('/family/:idF', function (req, res) {
-    db.getApprovedProducts(function (apprs) {
+router.get('/family/:idF', function(req, res) {
+    db.getApprovedProducts(function(apprs) {
         var ware = "http://localhost:" + config.PORT + "/api/products/family/" + req.params.idF;
-        request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
+        request.get({ url: ware, proxy: config.PROXY }, function(error, response, body) {
             if (!error && response.statusCode == 200) {
                 var temp = JSON.parse(body);
                 for (var i = 0; i < temp.length; i++) {
@@ -50,7 +52,7 @@ router.get('/family/:idF', function (req, res) {
                         temp[i].disc = req.session.discount;
                     else temp[i].disc = 0;
                 }
-                returnApprovedProducts(apprs, temp, function (re) {
+                returnApprovedProducts(apprs, temp, function(re) {
                     temp = re;
                     console.log(temp);
                     res.json(temp);
@@ -63,31 +65,85 @@ router.get('/family/:idF', function (req, res) {
     });
 });
 
-router.get('/database/products', function (req, res) {
-    db.getProducts(function (prods) {
+router.get('/search/:query', function(req, res) {
+    db.getApprovedProducts(function(apprs) {
+        console.log(req.params);
+        var quer = "http://localhost:" + config.PORT + "/api/products/search/" + req.params.query;
+        request.get({ url: quer, proxy: config.PROXY }, function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var temp = JSON.parse(body);
+                for (var i = 0; i < temp.length; i++) {
+                    temp[i].typeUser = req.session.typeUser;
+                }
+                returnApprovedProducts(apprs, temp, function(re) {
+                    console.log(temp);
+                    temp = re;
+                    res.json(temp);
+                });
+            }
+            else {
+                res.render('404');
+            }
+        });
+    });
+});
+
+
+router.get('/database/products', function(req, res) {
+    db.getProducts(function(prods) {
         if (prods.length > 0)
             res.json(prods);
         else res.json('fuck');
     });
 });
 
-router.post('/login', function (req, res, next) {
+router.post('/login', function(req, res, next) {
     if (req.session.user === undefined) {
-        db.compareLogin(req.body.username, req.body.password, function (rows) {
+        db.compareLogin(req.body.username, req.body.password, function(rows) {
             if (rows[0] != undefined) {
                 var quer = "http://localhost:" + config.PORT + "/api/clients?id=" + rows[0].idUser;
-                request.get({ url: quer, proxy: config.PROXY }, function (error, response, body) {
+                request.get({ url: quer, proxy: config.PROXY }, function(error, response, body) {
                     if (!error && response.statusCode == 200) {
-                        var cl = JSON.parse(body);
-                        req.session.user = rows[0].idUser;
-                        req.session.name = rows[0].username;
-                        req.session.typeUser = rows[0].tipo;
-                        req.session.discount = cl.ClientDiscount;
-                        if (req.body.username == 'admin')
-                            req.session.admin = 'admin';
+                        db.getCart(rows[0].idUser, function(cart) {
+                            var cl = JSON.parse(body);
+                            req.session.user = rows[0].idUser;
+                            req.session.name = rows[0].username;
+                            req.session.typeUser = rows[0].tipo;
+                            req.session.discount = cl.ClientDiscount;
+                            var total = 0;
+                            async.each(cart, function(item, callback) {
+                                var prodURL = "http://localhost:" + config.PORT + "/api/products?id=" + item.idProdutoPrimavera;
+                                request.get({ url: prodURL, proxy: config.PROXY }, function(error, response, body) {
+                                    if (!error && response.statusCode == 200) {
+                                        var prod = JSON.parse(body);
 
-                        console.log("login correto");
-                        res.redirect('/');
+                                        var pvps = [
+                                            prod.Prices.PVP1,
+                                            prod.Prices.PVP1,
+                                            prod.Prices.PVP2,
+                                            prod.Prices.PVP3,
+                                            prod.Prices.PVP4,
+                                            prod.Prices.PVP5,
+                                            prod.Prices.PVP6
+                                        ];
+
+                                        var utype = req.session.typeUser;
+                                        if (utype == undefined) utype = 0;
+                                        item.Price = ((pvps[utype] * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * item.quantidade;
+                                        item.Price = Math.round(item.Price * 100) / 100;
+                                        total += item.Price;
+                                        callback(null);
+                                    }
+                                });
+                            }, function(err) {
+                                req.session.totalCart = total;
+                                if (req.body.username == 'admin')
+                                    req.session.admin = 'admin';
+
+                                console.log("login correto");
+                                res.redirect('/');
+                            });
+                        });
                     }
                 });
             } else {
@@ -101,7 +157,7 @@ router.post('/login', function (req, res, next) {
     }
 });
 
-router.post('/register', function (req, res, next) {
+router.post('/register', function(req, res, next) {
     var quer = "http://localhost:" + config.PORT + "/api/client";
     var form = {};
     form.Address = req.body.address;
@@ -129,8 +185,8 @@ router.post('/register', function (req, res, next) {
         res.redirect('/login');
     }
     else {
-        db.registerUser(req.body.clientCode, req.body.name, req.body.password, "001", function (rows) {
-            request.post({ url: quer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function (error, response, body) {
+        db.registerUser(req.body.clientCode, req.body.name, req.body.password, "001", function(rows) {
+            request.post({ url: quer, proxy: config.PROXY, headers: [{ 'Content-Type': 'application/json' }], json: form }, function(error, response, body) {
                 if (!error && response.statusCode == 201) {
                     console.log(response.statusCode);
                     res.redirect('/');
@@ -152,14 +208,14 @@ router.post('/register', function (req, res, next) {
 
 });
 
-router.get('/searchOnOtherPage/:query', function (req, res) {
+router.get('/searchOnOtherPage/:query', function(req, res) {
     if (req.session.discount == undefined)
         req.session.discount = 0;
     var url = "http://localhost:" + config.PORT + "/api/warehouse";
-    request.get({ url: url, proxy: config.PROXY }, function (error, response, wares) {
+    request.get({ url: url, proxy: config.PROXY }, function(error, response, wares) {
         if (!error && response.statusCode == 200) {
             url = "http://localhost:" + config.PORT + "/api/products/family";
-            request.get({ url: url, proxy: config.PROXY }, function (error, response, fams) {
+            request.get({ url: url, proxy: config.PROXY }, function(error, response, fams) {
                 if (!error && response.statusCode == 200) {
                     var waresReal = JSON.parse(wares);
                     var famsReal = JSON.parse(fams);
@@ -168,10 +224,10 @@ router.get('/searchOnOtherPage/:query', function (req, res) {
                         famsT[i] = {};
                         famsT[i].Code = famsReal[i];
                     }
-                    db.getApprovedProducts(function (apprs) {
-                        db.getProducts(function (prods) {
+                    db.getApprovedProducts(function(apprs) {
+                        db.getProducts(function(prods) {
                             var quer = "http://localhost:" + config.PORT + "/api/products/search/" + req.params.query;
-                            request.get({ url: quer, proxy: config.PROXY }, function (error, response, body) {
+                            request.get({ url: quer, proxy: config.PROXY }, function(error, response, body) {
                                 if (!error && response.statusCode == 200) {
                                     var temp = JSON.parse(body);
                                     for (var i = 0; i < temp.length; i++) {
@@ -179,16 +235,16 @@ router.get('/searchOnOtherPage/:query', function (req, res) {
                                     }
                                     var total = 0;
                                     var prodA = {};
-                                    
+
                                     var utype = req.session.typeUser;
                                     if (utype == undefined) utype = 0;
                                     var j = 0;
-                                    returnApprovedProducts(apprs, temp, function (re) {
+                                    returnApprovedProducts(apprs, temp, function(re) {
                                         // tem de se usar o re
                                         temp = re;
-                                        async.each(temp, function (item, callback) { 
+                                        async.each(temp, function(item, callback) {
                                             var prodURL2 = "http://localhost:49822/api/products?id=" + item.Code;
-                                            request.get({ url: prodURL2, proxy: config.PROXY }, function (error2, response2, body) {
+                                            request.get({ url: prodURL2, proxy: config.PROXY }, function(error2, response2, body) {
                                                 if (!error2 && response2.statusCode == 200) {
                                                     var prod = JSON.parse(body);
                                                     var pvps = [
@@ -203,7 +259,7 @@ router.get('/searchOnOtherPage/:query', function (req, res) {
 
                                                     item.Price = ((pvps[utype] * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1));
                                                     item.Description = prod.Description;
-                                                    item.PriceNo = Math.round((pvps[1] * (prod.IVA * 0.01 + 1) * 100))/ 100;
+                                                    item.PriceNo = Math.round((pvps[1] * (prod.IVA * 0.01 + 1) * 100)) / 100;
                                                     item.Price = item.Price.toLocaleString("es-ES", { minimumFractionDigits: 2 });
                                                     item.PriceNo = item.PriceNo.toLocaleString("es-ES", { minimumFractionDigits: 2 });
                                                     callback();
@@ -212,20 +268,20 @@ router.get('/searchOnOtherPage/:query', function (req, res) {
                                                     console.log(response2.statusCode);
                                                 }
                                             });
-                                        }, function (err) {
-                                            addImagesV2(apprs, temp, function (pro) {
+                                        }, function(err) {
+                                            addImagesV2(apprs, temp, function(pro) {
                                                 temp = pro;
-                                                utils.getCategoriesPrimavera(function (cats) {
-                                                    console.log(famsT);
-                                                    if (req.session.user != undefined)
-                                                        res.render('searchOtherPage', { warehouses: waresReal, families: famsT, id: req.session.user, items: temp});
-                                                    else res.render('searchOtherPage', { warehouses: waresReal, families: famsT, items: temp});
+                                                utils.getCategoriesPrimavera(function(cats) {
+                                                    if (req.session.user != undefined) {
+                                                        var total = req.session.totalCart.toLocaleString("es-ES", { minimumFractionDigits: 2 });
+                                                        res.render('searchOtherPage', { warehouses: waresReal, families: famsT, id: req.session.name, items: temp, total: total });
+                                                    }
+                                                    else res.render('searchOtherPage', { warehouses: waresReal, families: famsT, items: temp, total: 0 });
 
                                                 });
                                             });
                                         });
                                     });
-
                                 }
                                 else {
                                     res.render('404');
@@ -267,29 +323,6 @@ function addImagesV2(prods, temp, next) {
         next(temp);
 }
 
-router.get('/search/:query', function (req, res) {
-    db.getApprovedProducts(function (apprs) {
-        console.log(req.params);
-        var quer = "http://localhost:" + config.PORT + "/api/products/search/" + req.params.query;
-        request.get({ url: quer, proxy: config.PROXY }, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                var temp = JSON.parse(body);
-                for (var i = 0; i < temp.length; i++) {
-                    temp[i].typeUser = req.session.typeUser;
-                }
-                returnApprovedProducts(apprs, temp, function (re) {
-                    console.log(temp);
-                    temp = re;
-                    res.json(temp);
-                });
-            }
-            else {
-                res.render('404');
-            }
-        });
-    });
-});
-
 function returnApprovedProducts(prods, prodsPri, next) {
     var result = [];
     for (var i = 0; i < prodsPri.length; i++) {
@@ -303,17 +336,38 @@ function returnApprovedProducts(prods, prodsPri, next) {
         next(result);
 }
 
-router.get('/addProductToCart/:idP/:quantity', function (req, res) {
-    console.log("idP" + req.params.idP + " user " +  req.session.user + " qty " + req.params.quantity)
-    if (req.session.user == undefined) {
-        console.log("login?");
+router.get('/addProductToCart/:idP/:quantity', function(req, res) {
+    if (req.session.user == 'undefined') {
         res.redirect('/login');
     }
     else {
-        db.addProductToCart(req.params.idP, req.session.user, req.params.quantity, function (suc) {
-            console.log("SUC = " + suc);
+        var qty = req.params.quantity;
+        if (req.params.quantity == 'undefined') {
+            qty = 1;
+        }
+        db.addProductToCart(req.params.idP, req.session.user, qty, function(suc) {
             if (suc == 'success') {
-                res.redirect('/cart');
+                var quer = "http://localhost:" + config.PORT + "/api/products?id=" + req.params.idP;
+                request.get({ url: quer, proxy: config.PROXY }, function(error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        var prod = JSON.parse(body);
+                        var pvps = [
+                            prod.Prices.PVP1,
+                            prod.Prices.PVP1,
+                            prod.Prices.PVP2,
+                            prod.Prices.PVP3,
+                            prod.Prices.PVP4,
+                            prod.Prices.PVP5,
+                            prod.Prices.PVP6
+                        ];
+
+                        var utype = req.session.typeUser;
+                        if (utype == undefined) utype = 0;
+                        var Price = ((pvps[utype] * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * qty;
+                        req.session.totalCart = req.session.totalCart + Price;
+                        res.redirect('/cart');
+                    }
+                });
             }
             else {
                 res.render('404');
@@ -323,14 +377,34 @@ router.get('/addProductToCart/:idP/:quantity', function (req, res) {
 });
 
 
-router.get('/removeProductFromCart/:idP/:quant', function (req, res) {
+router.get('/removeProductFromCart/:idP/:quant', function(req, res) {
     if (req.session.user == undefined) {
         res.redirect('/login');
     }
     else {
-        db.removeProductFromCart(req.params.idP, req.session.user, req.params.quant, function (suc) {
+        db.removeProductFromCart(req.params.idP, req.session.user, req.params.quant, function(suc) {
             if (suc == 'sem problema') {
-                res.redirect('/cart');
+                var quer = "http://localhost:" + config.PORT + "/api/products?id=" + req.params.idP;
+                request.get({ url: quer, proxy: config.PROXY }, function(error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        var prod = JSON.parse(body);
+                        var pvps = [
+                            prod.Prices.PVP1,
+                            prod.Prices.PVP1,
+                            prod.Prices.PVP2,
+                            prod.Prices.PVP3,
+                            prod.Prices.PVP4,
+                            prod.Prices.PVP5,
+                            prod.Prices.PVP6
+                        ];
+
+                        var utype = req.session.typeUser;
+                        if (utype == undefined) utype = 0;
+                        var Price = ((pvps[utype] * (1 - req.session.discount * 0.01) * (1 - prod.Discount * 0.01)) * (prod.IVA * 0.01 + 1)) * req.params.quant;
+                        req.session.totalCart = req.session.totalCart - Price;
+                        res.redirect('/cart');
+                    }
+                });
             }
             else {
                 res.render('404');

@@ -10,8 +10,8 @@ router.get('/', function (req, res) {
     res.render('admin');
 });
 
-router.get('/payments', function (req, res) {
-    res.render('adminPayment');
+router.get('/ordersNotPayed', function(req, res) {
+    res.render('adminOrders');
 });
 
 router.get('/products', function (req, res) {

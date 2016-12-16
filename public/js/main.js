@@ -86,16 +86,8 @@ jQuery(document).ready(function($){
     })      
 });
 
-function callProduct(idP, num) {
-    console.log("NUM -------> " + num);
-    
-    if (num == "#quantity"){
-        var quantity = $('#quantity').val();
-        console.log("QUANTIDADE: " + quantity);
-    }
-    else{
-        window.location.href = "/addProductToCart/" + idP + "/" + num;
-    }
+function callProduct(idP) {
+    console.log("val: " + $("#quantity").val());
     window.location.href = "/addProductToCart/" + idP + "/" + $("#quantity").val();
 }
 
@@ -116,3 +108,14 @@ $(".editFields").editable({
 $(document).ready(function() {
     $(".dropdown-toggle").dropdown();
 });
+
+
+function addProductHTML(idP) {
+    window.location.href = "/addProductToCart/" + idP + "/1";
+}
+
+function removeProductHTML(idP) {
+    var temp = "#" + idP;
+    if ($(temp).val() > 1) 
+        window.location.href = "/removeProductFromCart/" + idP + "/1";
+}
