@@ -141,10 +141,9 @@ namespace WebStoreAPI.Controllers
         {
             Lib_Primavera.Model.ResponseError erro = new Lib_Primavera.Model.ResponseError();
             erro = Lib_Primavera.PriIntegration.Encomendas_New(dv);
-
             if (erro.Erro == 0)
             {
-                var response = Request.CreateResponse(HttpStatusCode.Created, dv.id);
+                var response = Request.CreateResponse(HttpStatusCode.Created, erro.Descricao);
                 return response;
             }
             else

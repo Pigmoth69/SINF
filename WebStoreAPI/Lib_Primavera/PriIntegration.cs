@@ -631,7 +631,7 @@ namespace WebStoreAPI.Lib_Primavera
                 {
                     // Atribui valores ao cabecalho do doc
 
-                    myEnc.set_DataDoc(dv.Data);
+                    myEnc.set_DataDoc(DateTime.Now);
                     myEnc.set_Entidade(dv.Client.CodClient);
                     myEnc.set_CondPag(dv.Client.PaymentType);
                     myEnc.set_ModoPag(dv.Client.PaymentWay);
@@ -645,6 +645,7 @@ namespace WebStoreAPI.Lib_Primavera
                     lstlindv = dv.LinhasDoc;
                     //PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc, rl);
                     PriEngine.Engine.Comercial.Vendas.PreencheDadosRelacionados(myEnc);
+                   
                     foreach (Model.LinhaDocVenda lin in lstlindv)
                     {
                         PriEngine.Engine.Comercial.Vendas.AdicionaLinha(myEnc, lin.CodArtigo, lin.Quantidade, lin.Armazem, "", lin.PrecoUnitario, lin.Desconto, "", 0, 0, 0, dv.Client.ClientDiscount);
@@ -655,7 +656,7 @@ namespace WebStoreAPI.Lib_Primavera
                     PriEngine.Engine.Comercial.Vendas.Actualiza(myEnc, "Teste");
                     PriEngine.Engine.TerminaTransaccao();
                     erro.Erro = 0;
-                    erro.Descricao = "Sucesso";
+                    erro.Descricao = myEnc.get_ID();
                     return erro;
 
                 }
