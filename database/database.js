@@ -307,8 +307,14 @@ function getApprovedProducts(next) {
     });
 }
 
+function insertOrder(idO, idU, next){
+    pool.query('INSERT INTO Encomenda VALUES (?, 0, ?)', [idO, idU], function(err, rows, fields){
+
+    });
+}
+
 module.exports = {
     populateProducts, getProducts, updateTotalSpent, populateClients, compareLogin, addProductToCart, getCart, removeCart, removeProductFromCart, registerUser, addImageToProduct, getUsers,
-    getCommentsOnProduct, commentOnProduct, requestType, getUsersNotApproved, approveUser, getProductByID, getApprovedProducts, removeProductFromCartNo, getUser
+    getCommentsOnProduct, commentOnProduct, requestType, getUsersNotApproved, approveUser, getProductByID, getApprovedProducts, removeProductFromCartNo, getUser, insertOrder
 
 };

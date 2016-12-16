@@ -69,10 +69,11 @@ function selectArrow(id){
             arrow[i].css('color', colorInactive);
     }
 }
-
+/*
 $('.orderRow').click(function(){
     $(this).next().toggle();
 });
+*/
 
 function changePage(newPage) {
 
