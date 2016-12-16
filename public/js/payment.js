@@ -62,14 +62,15 @@ function confirmPayment(){
     result.Client.ExpeditionWay = shipmentChosen;
     console.log(result);
     $.post("http://localhost:3000/payment/confirm", result, function (data1) {
+        
         console.log(data1);
         if (data1 == 'success') {
             console.log("wow");
-            //window.location.href = "/";
+            window.location.href = "/";
         }
         else {
             console.log("not wow");
-            //window.location.href = "/erro";
+            window.location.href = "/404";
         }
     }, 'json');
 }

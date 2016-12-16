@@ -6,43 +6,54 @@ var db = require('../database/database.js');
 var utils = require('./utils.js');
 
 router.get('/', function (req, res) {
+    //console.log("Puta que pariu esta merda, wtf se ta a passar com o checkout?");
     if (req.session.user == undefined)
         res.redirect('/login');
     else {
+        console.log("user logado");
         if (req.session.admin == 'admin')
             res.redirect('/admin');
         else {
             var url = "http://localhost:" + config.PORT + "/api/clients?id=" + req.session.user;
+            //console.log(url);
             request.get({ url: url, proxy: config.PROXY }, function (error, response, wares) {
                 if (!error && response.statusCode == 200) {
                     var client = JSON.parse(wares);
                     var ware = "http://localhost:" + config.PORT + "/api/utils/countries";
+                    //console.log(wares);
                     request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
                         if (!error && response.statusCode == 200) {
                             var countries = JSON.parse(body);
                             ware = "http://localhost:" + config.PORT + "/api/utils/paymenttypes";
+                            //console.log(body);
                             request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
                                 if (!error && response.statusCode == 200) {
                                     var paymentTypes = JSON.parse(body);
                                     ware = "http://localhost:" + config.PORT + "/api/utils/paymentways";
+                                    //console.log(body);
                                     request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
                                         if (!error && response.statusCode == 200) {
                                             var paymentWays = JSON.parse(body);
                                             ware = "http://localhost:" + config.PORT + "/api/utils/expeditionway";
+                                            //console.log(body);
                                             request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
                                                 if (!error && response.statusCode == 200) {
                                                     var expeditionWay = JSON.parse(body);
                                                     ware = "http://localhost:" + config.PORT + "/api/utils/districts";
+                                                    //console.log(body);
                                                     request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
                                                         if (!error && response.statusCode == 200) {
                                                             var districts = JSON.parse(body);
                                                             ware = "http://localhost:" + config.PORT + "/api/clients/types";
+                                                            //console.log(body);
                                                             request.get({ url: ware, proxy: config.PROXY }, function (error, response, body) {
                                                                 if (!error && response.statusCode == 200) {
                                                                     var clientTypes = JSON.parse(body);
+                                                                    //console.log(clientTypes);
                                                                     addCodes(client, paymentTypes, paymentWays, expeditionWay, countries, districts, clientTypes, function (result) {
                                                                         // tratar das merdas para por la
                                                                         utils.getCategoriesPrimavera(function(cats) {
+                                                                            //console.log("render profile");
                                                                             res.render('profile1', {
                                                                                 profile: client, countries: countries, districts: districts, expeditionWay: expeditionWay,
                                                                                 paymentTypes: paymentTypes, paymentWays: paymentWays, pWay: result.paymentWay, pType: result.paymentType,

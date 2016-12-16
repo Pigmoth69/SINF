@@ -128,10 +128,13 @@ router.get('/', function (req, res) {
 
 router.post('/confirm', function (req, res) {
     var urlQuer = "http://localhost:" + config.PORT + "/api/DocVenda";
+    console.log(urlQuer);
     //console.log("req ----------------------");
     //console.log(req.body);
-    userD.ExpeditionWay = req.body[0].ExpeditionWay;
-    console.log(exp);
+    console.log(userD);
+    console.log(req.body.Client.ExpeditionWay);
+    userD.ExpeditionWay = req.body.Client.ExpeditionWay;
+    console.log(userD.ExpeditionWay);
 
     db.getCart(req.session.user, function (cart) {
         db.getProducts(function (prods) {
@@ -188,16 +191,23 @@ router.post('/confirm', function (req, res) {
                                 console.log("cart removed");
                             });
                             //console.log(body);
-                            res.render('404');
+                            
+                            
+                            res.json('success');
+                            
+                            
 
                         }
                     });
                     
 
-
-                    res.render('404');
+                    //res.render('/profile');
+                    
+                    //res.render('404');
                     //console.log(form);
                 });
+
+                
             });
         });
     });
